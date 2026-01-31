@@ -1,0 +1,145 @@
+#!/usr/bin/env node
+/**
+ * nixrate - Freelance rate calculator
+ * Converts between hourly, project, and per-word rates
+ */
+
+const args = process.argv.slice(2);
+
+function showHelp() {
+  console.log(`
+⚡ nixrate - Freelance rate calculator
+
+Usage:
+  nixrate hourly <rate>          # Show project/word equivalents
+  nixrate project <amount> <hours>  # Calculate hourly from project
+  nixrate word <rate-per-word> <words>  # Calculate total from word rate
+  nixrate compare <rate1> <rate2>  # Compare two hourly rates
+
+Examples:
+  nixrate hourly 25              # $25/hr breakdown
+  nixrate project 100 4          # $25/hr equivalent  
+  nixrate word 0.05 1000         # $50 total
+  nixrate compare 25 50          # Side-by-side comparison
+`);
+}
+
+function formatMoney(num) {
+  return '$' + num.toFixed(2);
+}
+
+function hourlyBreakdown(rate) {
+  const day = rate * 8;
+  const week = day * 5;
+  const month = week * 4;
+  const year = month * 12;
+  
+  // Common project sizes (writing)
+  const blogPost500 = rate * 0.5;  // 30 min
+  const blogPost1000 = rate * 1;    // 1 hour
+  const blogPost2000 = rate * 2;    // 2 hours
+  
+  // Per word equivalent (assuming 500 words/hour)
+  const perWord = rate / 500;
+  
+  console.log(`\n⚡ Hourly Rate: ${formatMoney(rate)}/hr`);
+  console.log('─'.repeat(40));
+  console.log(`  Per word:     ${formatMoney(perWord)}/word`);
+  console.log(`  500 words:    ${formatMoney(blogPost500)}`);
+  console.log(`  1000 words:   ${formatMoney(blogPost1000)}`);
+  console.log(`  2000 words:   ${formatMoney(blogPost2000)}`);
+  console.log('');
+  console.log(`  Daily (8hr):  ${formatMoney(day)}`);
+  console.log(`  Weekly:       ${formatMoney(week)}`);
+  console.log(`  Monthly:      ${formatMoney(month)}`);
+  console.log(`  Yearly:       ${formatMoney(year)}`);
+}
+
+function projectRate(amount, hours) {
+  const hourly = amount / hours;
+  const perWord = hourly / 500;
+  
+  console.log(`\n⚡ Project Rate Breakdown`);
+  console.log('─'.repeat(40));
+  console.log(`  Project:      ${formatMoney(amount)}`);
+  console.log(`  Hours:        ${hours}`);
+  console.log(`  Hourly:       ${formatMoney(hourly)}/hr`);
+  console.log(`  Per word:     ${formatMoney(perWord)}/word`);
+}
+
+function wordRate(rate, words) {
+  const total = rate * words;
+  const hourlyEquiv = rate * 500; // Assuming 500 words/hour
+  
+  console.log(`\n⚡ Word Rate Calculation`);
+  console.log('─'.repeat(40));
+  console.log(`  Rate:         ${formatMoney(rate)}/word`);
+  console.log(`  Words:        ${words}`);
+  console.log(`  Total:        ${formatMoney(total)}`);
+  console.log(`  Hourly equiv: ${formatMoney(hourlyEquiv)}/hr`);
+}
+
+function compare(rate1, rate2) {
+  const r1 = parseFloat(rate1);
+  const r2 = parseFloat(rate2);
+  
+  console.log(`\n⚡ Rate Comparison`);
+  console.log('─'.repeat(50));
+  console.log(`                    ${formatMoney(r1)}/hr    ${formatMoney(r2)}/hr`);
+  console.log('─'.repeat(50));
+  console.log(`  Per word:          ${formatMoney(r1/500)}      ${formatMoney(r2/500)}`);
+  console.log(`  500-word post:     ${formatMoney(r1*0.5)}      ${formatMoney(r2*0.5)}`);
+  console.log(`  1000-word post:    ${formatMoney(r1)}        ${formatMoney(r2)}`);
+  console.log(`  Daily (8hr):       ${formatMoney(r1*8)}      ${formatMoney(r2*8)}`);
+  console.log(`  Monthly:           ${formatMoney(r1*160)}    ${formatMoney(r2*160)}`);
+  console.log(`  Yearly:            ${formatMoney(r1*1920)}  ${formatMoney(r2*1920)}`);
+  console.log('');
+  
+  const diff = r2 - r1;
+  const pct = ((diff / r1) * 100).toFixed(0);
+  console.log(`  Difference: ${formatMoney(diff)}/hr (+${pct}%)`);
+}
+
+function main() {
+  if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
+    showHelp();
+    process.exit(0);
+  }
+
+  const command = args[0];
+  
+  switch(command) {
+    case 'hourly':
+      if (!args[1]) { console.error('❌ Need hourly rate'); process.exit(1); }
+      hourlyBreakdown(parseFloat(args[1]));
+      break;
+      
+    case 'project':
+      if (!args[1] || !args[2]) { console.error('❌ Need amount and hours'); process.exit(1); }
+      projectRate(parseFloat(args[1]), parseFloat(args[2]));
+      break;
+      
+    case 'word':
+      if (!args[1] || !args[2]) { console.error('❌ Need rate and word count'); process.exit(1); }
+      wordRate(parseFloat(args[1]), parseInt(args[2]));
+      break;
+      
+    case 'compare':
+      if (!args[1] || !args[2]) { console.error('❌ Need two rates to compare'); process.exit(1); }
+      compare(args[1], args[2]);
+      break;
+      
+    default:
+      // Try parsing as just a number (treat as hourly)
+      const rate = parseFloat(command);
+      if (!isNaN(rate)) {
+        hourlyBreakdown(rate);
+      } else {
+        console.error(`❌ Unknown command: ${command}`);
+        showHelp();
+        process.exit(1);
+      }
+  }
+}
+
+main();

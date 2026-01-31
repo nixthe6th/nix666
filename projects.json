@@ -152,5 +152,14 @@
     "tags": ["tool", "node", "cli", "data", "export", "backup"],
     "updated": "2026-01-31",
     "tech": ["node"]
+  },
+  {
+    "name": "sync",
+    "description": "Git-based data synchronization - backup and sync nix data across devices",
+    "url": "./sync.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "sync", "backup", "git"],
+    "updated": "2026-01-31",
+    "tech": ["node"]
   }
 ]

@@ -71,6 +71,7 @@ Commands:
   invest [cmd]            Investment portfolio tracker (add/list/performance/allocation)
   alias [cmd]             Custom command shortcuts (add/remove/list/clear)
   correlate [cmd]         Find patterns in tracked data (sleep/mood/habits)
+  sync [cmd]              Git-based data sync (setup/status/now/auto/daemon)
   
   tools                   List all available tools
   help                    Show this help
@@ -336,6 +337,9 @@ main() {
             ;;
         correlate)
             node "$SCRIPT_DIR/../correlate.js" "$@"
+            ;;
+        sync)
+            node "$SCRIPT_DIR/../sync.js" "$@"
             ;;
         tools)
             list_tools

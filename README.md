@@ -371,6 +371,24 @@ Finds insights like:
 - Exercise vs wellbeing
 - Gratitude practice impact
 
+`nix sync` — Git-based data synchronization across devices:
+```bash
+nix sync setup https://github.com/user/nix666-data.git  # Configure sync
+nix sync                                                # Sync now
+nix sync status                                         # Check sync status
+nix sync now                                            # Force immediate sync
+nix sync auto                                           # Enable auto-sync
+nix sync daemon                                         # Run continuous sync
+nix sync history                                        # View sync history
+```
+
+Features:
+- Automatic backup to Git repository
+- Multi-device synchronization
+- Conflict detection and resolution
+- Auto-sync daemon mode
+- Sync status and history tracking
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

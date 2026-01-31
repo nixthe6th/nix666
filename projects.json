@@ -94,5 +94,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "backlog", "productivity"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "todo",
+    "description": "Sprint-mode task tracker - priority-based todos with fast CLI",
+    "url": "./todo.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "tasks", "productivity"],
+    "updated": "2026-01-31"
   }
 ]

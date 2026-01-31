@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #20 — Mood Tracker)
+### Added
+- `mood.js` — Daily mood & emotion tracker
+  - Log mood on 1-5 scale (😢😕😐🙂🤩) with optional notes
+  - View last 14 days of mood history
+  - Stats dashboard with distribution visualization
+  - 7-day trend analysis (improving/declining/stable)
+  - Best "good mood" streak tracking
+  - Average mood calculations (all-time and recent)
+  - CLI: `mood.js log <1-5> [note]`, `show`, `stats`, `today`
+  - Integrated into `nix` CLI as `nix mood`
+  - Added to `projects.json` as active wellness tool
+- `data/mood.json` — Mood data storage with timestamps
+
 ## 2026-01-31 (GitHub Sprint #19 — Habit Tracker)
 ### Added
 - `habits.js` — Daily habit tracker with streak visualization

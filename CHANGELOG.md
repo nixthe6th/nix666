@@ -4,6 +4,13 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #33 — CLI Polish)
+### Fixed
+- Resolved merge conflict in README.md
+- Added missing `nix today` command to CLI (was documented but not implemented)
+- Added missing `nix when` command to CLI (was documented but not implemented)
+- Added missing `nix tag` command to CLI (tool existed but wasn't wired up)
+
 ## 2026-01-31 (GitHub Sprint #32 — Hydration Tracker)
 ### Added
 - `water.js` — Hydration tracker for daily water intake

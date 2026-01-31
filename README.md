@@ -29,7 +29,6 @@ nix decide     # Decision log
 nix when       # Time calculator
 ```
 
-<<<<<<< HEAD
 **New:** `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

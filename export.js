@@ -15,11 +15,18 @@
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
-const NIX_DIR = path.join(os.homedir(), '.nix');
-const DATA_DIR = path.join(NIX_DIR, 'data');
+const DATA_DIR = path.join(process.cwd(), 'data');
 const EXPORT_DIR = path.join(process.cwd(), 'exports');
+
+// Root-level data files in nix666
+const ROOT_FILES = {
+  bookmarks: 'bookmarks.json',
+  ideas: 'ideas.json',
+  projects: 'projects.json',
+  quotes: 'quotes.json',
+  sprints: 'sprints.json'
+};
 
 // Colors
 const C = {
@@ -53,8 +60,8 @@ const DATA_FILES = {
   energy: 'energy.json'
 };
 
-function loadData(filename) {
-  const filePath = path.join(DATA_DIR, filename);
+function loadData(filename, fromDataDir = true) {
+  const filePath = fromDataDir ? path.join(DATA_DIR, filename) : path.join(process.cwd(), filename);
   if (!fs.existsSync(filePath)) return null;
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -96,6 +103,21 @@ function exportJSON(outputDir, since) {
   const exported = [];
   const sinceDate = since ? new Date(since) : null;
   
+  // Export root-level files first
+  for (const [name, filename] of Object.entries(ROOT_FILES)) {
+    const data = loadData(filename, false);
+    if (!data) continue;
+    
+    const outputFile = path.join(outputDir, `${name}.json`);
+    fs.writeFileSync(outputFile, JSON.stringify(data, null, 2));
+    
+    const count = data.sprints?.length || data.ideas?.length || data.projects?.length || 
+                  data.bookmarks?.length || data.quotes?.length || 1;
+    exported.push({ name, count, file: `${name}.json` });
+    console.log(`  ${C.green}✓${C.reset} ${name.padEnd(15)} ${C.dim}${count} items${C.reset}`);
+  }
+  
+  // Export data directory files
   for (const [name, filename] of Object.entries(DATA_FILES)) {
     const data = loadData(filename);
     if (!data) continue;
@@ -378,17 +400,29 @@ function showSummary() {
   let totalFiles = 0;
   let totalItems = 0;
   
+  // Root files
+  for (const [name, filename] of Object.entries(ROOT_FILES)) {
+    const data = loadData(filename, false);
+    if (!data) continue;
+    const count = data.sprints?.length || data.ideas?.length || data.projects?.length || 
+                  data.bookmarks?.length || data.quotes?.length || 1;
+    totalItems += count;
+    totalFiles++;
+    console.log(`  ${name.padEnd(15)} ${C.dim}${count} items${C.reset}`);
+  }
+  
+  // Data files
   for (const [name, filename] of Object.entries(DATA_FILES)) {
     const data = loadData(filename);
     if (!data) continue;
-    const count = Array.isArray(data) ? data.length : 1;
+    const count = Array.isArray(data) ? data.length : data.entries?.length || 1;
     totalItems += count;
     totalFiles++;
     console.log(`  ${name.padEnd(15)} ${C.dim}${count} items${C.reset}`);
   }
   
   console.log(`\n${C.bold}Total:${C.reset} ${totalFiles} files, ${totalItems} items`);
-  console.log(`\n${C.dim}Data directory: ${DATA_DIR}${C.reset}`);
+  console.log(`\n${C.dim}Data from: ${process.cwd()} and ${DATA_DIR}${C.reset}`);
 }
 
 // Show help
@@ -416,7 +450,7 @@ ${C.bold}Formats:${C.reset}
   csv       - Spreadsheet compatible (todos, habits, expenses, etc.)
   markdown  - Human-readable notes (zettel, reading list)
 
-${C.dim}Data is exported from ~/.nix/data/${C.reset}
+${C.dim}Data is exported from current directory and data/${C.reset}
 `);
 }
 

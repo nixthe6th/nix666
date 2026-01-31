@@ -4,6 +4,18 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #16 — Task Tracker)
+### Added
+- `todo.js` — Sprint-mode task tracker
+  - Quick task capture with priority levels (high/medium/low)
+  - Short IDs for easy reference (4-char)
+  - List view sorted by priority + age
+  - Complete, remove, reprioritize commands
+  - Stats overview showing active/completed by priority
+  - Color-coded priority display (🔴🟡🔵)
+  - Integrated into `nix` CLI as `nix todo`
+  - Data stored in `data/todos.json`
+
 ## 2026-01-31 (GitHub Sprint #15 — Idea Pipeline)
 ### Added
 - `ideas.js` — Idea backlog and project pipeline tracker

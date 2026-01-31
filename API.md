@@ -14,11 +14,13 @@
 - [focus](#focus) — focus.js - Pomodoro focus timer with motivation
 - [habits](#habits) — CLI tool
 - [ideas](#ideas) — ideas.js - Idea backlog and project pipeline tracker
+- [later](#later) — later.js - Read/Watch later queue
 - [log](#log) — log.js — Quick daily logger
 - [mood](#mood) — mood.js — Daily mood & emotion tracker
 - [note](#note) — note.js - Quick capture for thoughts, ideas, and tasks
 - [pass](#pass) — pass.js - Quick password generator
 - [projstats](#projstats) — projstats - Quick project dashboard stats
+- [qr](#qr) — qr.js — Quick QR code generator for URLs, text, WiFi, contact info
 - [quote](#quote) — quote - Terminal motivation from NIX
 - [review](#review) — review.js - Daily/weekly progress review
 - [server](#server) — server.js - Quick HTTP server for static files
@@ -30,6 +32,7 @@
 - [tag](#tag) — tag.js — Universal tag manager for all NIX data
 - [today](#today) — today.js - Daily briefing: date, quote, streak, sprint status
 - [todo](#todo) — todo.js - Sprint-mode task tracker
+- [water](#water) — water.js — Hydration tracker
 - [week](#week) — week.js - Weekly retrospective: commits, sprints, stats, progress
 - [when](#when) — when.js - Time calculator & deadline tracker
 
@@ -308,6 +311,43 @@ ${COLORS.reset}
 
 ---
 
+## later
+
+later.js - Read/Watch later queue
+
+**File:** `later.js`
+
+### Usage
+
+```bash
+nix later <url> [title] [--tags tag1,tag2]
+```
+```bash
+${COLORS.reset}
+```
+```bash
+nix later done <id>${COLORS.reset}`);
+```
+```bash
+nix later delete <id>${COLORS.reset}`);
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--tags` | — |
+| `--help` | — |
+| `--all` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## log
 
 log.js — Quick daily logger
@@ -445,6 +485,42 @@ projstats
 ### Commands
 
 - `projstats`
+
+---
+
+## qr
+
+qr.js — Quick QR code generator for URLs, text, WiFi, contact info
+
+**File:** `qr.js`
+
+### Usage
+
+```bash
+*   nix qr <text|url>           # Generate QR code for text/URL
+```
+```bash
+');
+```
+```bash
+nix qr wifi <ssid> [password]');
+```
+```bash
+nix qr contact <name> <phone>');
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--small <text>` | — |
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
 
 ---
 
@@ -751,6 +827,35 @@ ${COLORS.reset}
 
 ---
 
+## water
+
+water.js — Hydration tracker
+
+**File:** `water.js`
+
+### Usage
+
+```bash
+nix water [command] [amount]
+```
+```bash
+')} nix water [command] [amount]
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## week
 
 week.js - Weekly retrospective: commits, sprints, stats, progress
@@ -838,11 +943,13 @@ when deadline <name> <date>')); process.exit(1); }
 | [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
 | [habits](#habits) | — |
 | [ideas](#ideas) | ideas.js - Idea backlog and project pipeline tracker |
+| [later](#later) | later.js - Read/Watch later queue |
 | [log](#log) | log.js — Quick daily logger |
 | [mood](#mood) | mood.js — Daily mood & emotion tracker |
 | [note](#note) | note.js - Quick capture for thoughts, ideas, and tasks |
 | [pass](#pass) | pass.js - Quick password generator |
 | [projstats](#projstats) | projstats - Quick project dashboard stats |
+| [qr](#qr) | qr.js — Quick QR code generator for URLs, text, WiFi, contact info |
 | [quote](#quote) | quote - Terminal motivation from NIX |
 | [review](#review) | review.js - Daily/weekly progress review |
 | [server](#server) | server.js - Quick HTTP server for static files |
@@ -854,6 +961,7 @@ when deadline <name> <date>')); process.exit(1); }
 | [tag](#tag) | tag.js — Universal tag manager for all NIX data |
 | [today](#today) | today.js - Daily briefing: date, quote, streak, sprint status |
 | [todo](#todo) | todo.js - Sprint-mode task tracker |
+| [water](#water) | water.js — Hydration tracker |
 | [week](#week) | week.js - Weekly retrospective: commits, sprints, stats, progress |
 | [when](#when) | when.js - Time calculator & deadline tracker |
 

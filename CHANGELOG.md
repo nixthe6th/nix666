@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #36a — Sleep Tracker)
+### Added
+- `sleep.js` — Sleep quality tracker for better rest and recovery
+  - Quick logging: `nix sleep log 7.5 4` (hours + quality 1-5)
+  - Flexible time input: `nix sleep bed 11pm`, `nix sleep wake 6:30`
+  - Duration auto-calculation with midnight crossing support
+  - 7-day view: `nix sleep week` with visual progress bars
+  - Sleep debt analysis: `nix sleep debt` for 30-day trends
+  - Insights: `nix sleep avg` shows averages, best/worst nights
+  - Custom goals: `nix sleep goal 8` to set target hours
+  - Quality scale: 😴 Terrible → 🤩 Excellent
+  - Streak tracking for consistent logging
+  - Companion to `water.js` for holistic health tracking
+- Wrapper script `scripts/nixsleep` for PATH integration
+- Updated documentation in README.md and ROADMAP.md
+
 ## 2026-01-31 (GitHub Sprint #35d — Text Summarizer)
 ### Added
 - `summarize.js` — Extractive text summarizer for articles and long text

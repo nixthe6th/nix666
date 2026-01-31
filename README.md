@@ -120,6 +120,17 @@ nix uuid -p user_           # Add prefix: user_a3f7b2d9
 nix uuid --no-dashes        # Compact UUID without dashes
 ```
 
+`nix sleep` — Sleep quality tracker for better rest:
+```bash
+nix sleep                   # Show last night's sleep & trends
+nix sleep log 7.5 4         # Log 7.5 hours, quality 4 (good)
+nix sleep bed 11pm          # Set bedtime
+nix sleep wake 6:30         # Set wake time
+nix sleep week              # 7-night history
+nix sleep debt              # Sleep debt analysis
+nix sleep goal 8            # Set 8-hour sleep goal
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

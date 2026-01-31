@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+// Wrapper for sleep.js - Sleep quality tracker
+require('../sleep.js');

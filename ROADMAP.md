@@ -15,7 +15,7 @@ The future of NIX — what's planned, what's cooking, what's possible.
 - [x] `nix summarize` — Auto-summarize long text/articles
 
 ### Sprint #36 — Health & Wellness
-- [ ] `nix sleep` — Sleep quality tracker
+- [x] `nix sleep` — Sleep quality tracker
 - [ ] `nix workout` — Quick workout logger
 - [ ] `nix meditate` — Guided breathing timer
 

@@ -38,6 +38,7 @@ nix tools                   # List all tools
 | `nixweather` | Weather checker | `nixweather [location]` |
 | `nixdecide` | Decision log | `nixdecide add "Switch to TS"` |
 | `nixwater` | Hydration tracker | `nixwater 500` / `nixwater week` |
+| `nixsleep` | Sleep quality tracker | `nixsleep 7.5 4` / `nixsleep week` |
 
 ### Root-Level Tools (via `nix` command)
 
@@ -61,6 +62,7 @@ nix tools                   # List all tools
 | `backup.js` | Data backup and export | `nix backup` |
 | `tag.js` | Universal tag manager | `nix tag work` |
 | `water.js` | Hydration tracker | `nix water 500` |
+| `sleep.js` | Sleep quality tracker | `nix sleep log 7.5 4` |
 
 ## Quick Start
 

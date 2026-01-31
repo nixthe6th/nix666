@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38h — Savings Goals)
+### Added
+- `goal.js` — Savings goal tracker with progress visualization
+  - `nix goal add <name> <target> [deadline]` — Create new savings goal
+  - `nix goal contribute <id> <amount> [note]` — Add contribution to goal
+  - `nix goal list` — Show all goals with progress bars and stats
+  - `nix goal progress` — Dashboard with totals, recent activity, deadlines
+  - Visual progress bars with color coding (red → yellow → green)
+  - Automatic calculation of monthly savings needed to hit deadline
+  - Tracks all contributions with timestamps and notes
+  - Shows urgent goals (deadlines within 30 days)
+  - Displays recent contribution history
+  - Stores data in `data/goals.json`
+  - Complements existing finance tools (expense.js, subscription.js)
+  - Addresses ROADMAP: Finance - goal tracking feature
+
 ## 2026-01-31 (GitHub Sprint #38g — Distraction Tracker)
 ### Added
 - `distraction.js` — Track and analyze focus interruptions

@@ -54,8 +54,8 @@ The future of NIX — what's planned, what's cooking, what's possible.
 
 #### Finance
 - `nix invest` — Investment portfolio tracker
-- `nix subscription` — Track recurring expenses
-- `nix goal` — Savings goal visualizer
+- [x] `nix subscription` — Track recurring expenses
+- [x] `nix goal` — Savings goal visualizer
 
 #### Social
 - `nix network` — Contact/relationship tracker

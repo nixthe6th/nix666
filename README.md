@@ -98,6 +98,15 @@ nix subscription yearly                # Yearly cost breakdown
 nix subscription upcoming              # Due in next 7 days
 ```
 
+`nix goal` — Savings goal tracker with progress bars:
+```bash
+nix goal add "Vacation" 3000 "2026-06-01"   # Create goal with deadline
+nix goal add "Emergency Fund" 10000         # Create goal without deadline
+nix goal contribute abc1 500 "Tax refund"   # Add contribution
+nix goal list                               # All goals with progress
+nix goal progress                           # Dashboard view
+```
+
 `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

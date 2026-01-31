@@ -4,6 +4,15 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #5 — Momentum)
+### Added
+- 5 fresh quotes to `quotes.json` (24 total)
+  - Sprint mode mindset: "If you can ship in a day, why wait a week?"
+  - Finish strong: "The last 10% is where good becomes great"
+  - Habits: "Consistency compounds. Show up daily"
+  - Build ethos: "Build what you wish existed"
+  - V6 identity: "V6 has no brakes"
+
 ## 2026-01-31 (GitHub Sprint #4 — Fast Builds)
 ### Added
 - `quote.js` — Terminal motivation tool

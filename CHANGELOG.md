@@ -4,6 +4,21 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #17 — Productivity Dashboard)
+### Added
+- `stats.js` — Comprehensive productivity analytics dashboard
+  - Sprint velocity tracking with visual sparklines
+  - Task completion rates with progress bars
+  - Project overview with tech stack breakdown
+  - Coding activity streak (30-day view)
+  - Modular views: `--sprints`, `--tasks`, `--projects`, `--json`
+  - Color-coded output for terminal readability
+  - Replaced `projstats.js` with enhanced analytics
+
+### Changed
+- Updated `scripts/nix` CLI to use new `stats.js` with subcommand options
+- Added `stats` entry to `projects.json` with dashboard category
+
 ## 2026-01-31 (GitHub Sprint #16 — Task Tracker)
 ### Added
 - `todo.js` — Sprint-mode task tracker

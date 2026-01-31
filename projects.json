@@ -56,12 +56,13 @@
     "updated": "2026-01-31"
   },
   {
-    "name": "projstats",
-    "description": "Quick dashboard stats - projects, quotes, sprints overview",
-    "url": "./projstats.js",
+    "name": "stats",
+    "description": "Productivity dashboard - sprint velocity, task completion, coding streaks",
+    "url": "./stats.js",
     "status": "active",
-    "tags": ["tool", "node", "cli", "dashboard"],
-    "updated": "2026-01-31"
+    "tags": ["tool", "node", "cli", "dashboard", "analytics"],
+    "updated": "2026-01-31",
+    "tech": ["node"]
   },
   {
     "name": "focus",

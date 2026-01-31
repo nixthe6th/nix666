@@ -29,7 +29,7 @@ Commands:
   focus [minutes]         Pomodoro timer (default 25m)
   done "what" [durs]      Log sprint completion
   streak                  Show git activity streak
-  stats                   Quick project stats
+  stats [options]         Productivity dashboard (--sprints, --tasks, --json)
   check                   API health check
   week [--commits]        Weekly retrospective
   bm [cmd]                Bookmark manager (list/search/open/add)
@@ -141,7 +141,7 @@ main() {
             node "$SCRIPT_DIR/../streak.js" "$@"
             ;;
         stats)
-            node "$SCRIPT_DIR/../projstats.js"
+            node "$SCRIPT_DIR/../stats.js" "$@"
             ;;
         check)
             node "$SCRIPT_DIR/../apicheck.js"

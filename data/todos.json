@@ -14,5 +14,21 @@
     "created": "2026-01-31T08:59:59.116Z",
     "done": true,
     "completed": "2026-01-31T09:00:14.653Z"
+  },
+  {
+    "id": "1jlc",
+    "text": "Document todo.js in projects.json",
+    "priority": "medium",
+    "created": "2026-01-31T09:01:22.416Z",
+    "done": true,
+    "completed": "2026-01-31T09:01:37.563Z"
+  },
+  {
+    "id": "1jm2",
+    "text": "Test nix CLI integration",
+    "priority": "low",
+    "created": "2026-01-31T09:01:22.442Z",
+    "done": true,
+    "completed": "2026-01-31T09:01:37.584Z"
   }
 ]

@@ -2,6 +2,21 @@
 
 Quick tools for the Nix ecosystem. All scripts are self-contained and just work.
 
+## 🚀 Quick Start (use the `nix` dispatcher)
+
+```bash
+# Add to PATH (in ~/.bashrc)
+export PATH="$PATH:/home/ec2-user/.openclaw/workspace/scripts"
+
+# Then use the unified CLI
+nix do "my task" high      # Add task
+nix note "my idea"          # Capture idea
+nix track income 150        # Log income
+nix sprint "commit msg"     # Git push
+nix status                  # System check
+nix tools                   # List all tools
+```
+
 ## Available Tools
 
 | Script | Purpose | Usage |

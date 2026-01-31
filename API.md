@@ -9,38 +9,50 @@
 - [bm](#bm) — bm.js - Bookmark CLI for quick access to saved links
 - [calc](#calc) — calc.js - Quick calculation utility
 - [clip](#clip) — clip.js - Code snippet manager
+- [connect](#connect) — connect.js - Discover connections between zettel notes
 - [convert](#convert) — convert.js — Swiss Army knife converter utility
 - [done](#done) — done.js - Sprint completion tracker
+- [energy](#energy) — energy.js — Energy level tracker throughout the day
 - [expense](#expense) — expense.js - Personal expense tracker
+- [export](#export) — export.js - Export nix data in various formats for portability
 - [find](#find) — find.js - Universal search across all NIX data
 - [flashcard](#flashcard) — flashcard.js — CLI flashcard system for memorization
 - [focus](#focus) — focus.js - Pomodoro focus timer with motivation
+- [gratitude](#gratitude) — gratitude.js — Daily gratitude practice
 - [habits](#habits) — CLI tool
 - [ideas](#ideas) — ideas.js - Idea backlog and project pipeline tracker
 - [later](#later) — later.js - Read/Watch later queue
 - [learn](#learn) — learn.js — Learning tracker with spaced repetition
 - [log](#log) — log.js — Quick daily logger
+- [meditate](#meditate) — meditate.js — Guided breathing timer
 - [mood](#mood) — mood.js — Daily mood & emotion tracker
 - [note](#note) — note.js - Quick capture for thoughts, ideas, and tasks
 - [pass](#pass) — pass.js - Quick password generator
 - [projstats](#projstats) — projstats - Quick project dashboard stats
 - [qr](#qr) — qr.js — Quick QR code generator for URLs, text, WiFi, contact info
 - [quote](#quote) — quote - Terminal motivation from NIX
+- [read](#read) — read.js — Reading list with progress tracking
 - [review](#review) — review.js - Daily/weekly progress review
 - [roll](#roll) — roll.js - Quick dice roller and random picker
 - [server](#server) — server.js - Quick HTTP server for static files
 - [session](#session) — session.js - Work session tracker
+- [sleep](#sleep) — sleep.js — Sleep quality tracker
 - [sprint](#sprint) — sprint.js — Quick sprint management CLI
 - [sprintstats](#sprintstats) — sprintstats.js — Sprint performance analytics
 - [standup](#standup) — standup.js - Daily standup report aggregator
 - [stats](#stats) — stats.js — Productivity Stats Dashboard
 - [streak](#streak) — streak.js - Git activity streak tracker
+- [summarize](#summarize) — summarize.js - Text summarizer
 - [tag](#tag) — tag.js — Universal tag manager for all NIX data
+- [timer](#timer) — nix timer - Pomodoro-style focus timer
 - [today](#today) — today.js - Daily briefing: date, quote, streak, sprint status
 - [todo](#todo) — todo.js - Sprint-mode task tracker
+- [uuid](#uuid) — uuid.js - Generate UUIDs and random IDs
 - [water](#water) — water.js — Hydration tracker
 - [week](#week) — week.js - Weekly retrospective: commits, sprints, stats, progress
 - [when](#when) — when.js - Time calculator & deadline tracker
+- [workout](#workout) — workout.js - Quick workout logger
+- [zettel](#zettel) — zettel.js - Zettelkasten note system for atomic, connected notes
 
 ## backup
 
@@ -162,6 +174,36 @@ cat file.js | nix clip add "My Snippet" js utils array' + COLORS.reset);
 
 ---
 
+## connect
+
+connect.js - Discover connections between zettel notes
+
+**File:** `connect.js`
+
+### Usage
+
+```bash
+*   nix connect related <ID>          Find notes related to ID
+```
+```bash
+nix connect related <note-id>');
+```
+```bash
+nix connect suggest <note-id>');
+```
+```bash
+nix connect path <from-id> <to-id>');
+```
+```bash
+nix connect related <ID>          Find notes with shared tags
+```
+
+### Commands
+
+- `nix`
+
+---
+
 ## convert
 
 convert.js — Swiss Army knife converter utility
@@ -226,6 +268,35 @@ done ["accomplishment text"] [--stats]');
 
 ---
 
+## energy
+
+energy.js — Energy level tracker throughout the day
+
+**File:** `energy.js`
+
+### Usage
+
+```bash
+nix energy [command] [options]
+```
+```bash
+nix energy log <1-5> [note]');
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## expense
 
 expense.js - Personal expense tracker
@@ -249,6 +320,34 @@ ${COLORS.reset}
 
 | Flag | Description |
 |------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## export
+
+export.js - Export nix data in various formats for portability
+
+**File:** `export.js`
+
+### Usage
+
+```bash
+*   nix export                  # Export all data to export/ directory
+```
+```bash
+${C.reset}
+```
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--output-dir <path>` | — |
+| `--since <date>` | — |
+| `---` | — |
 | `--help` | — |
 
 > 💡 Run with `--help` for full usage information
@@ -346,6 +445,35 @@ focus [minutes] [--quote]
 | Flag | Description |
 |------|-------------|
 | `--quote` | — |
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## gratitude
+
+gratitude.js — Daily gratitude practice
+
+**File:** `gratitude.js`
+
+### Usage
+
+```bash
+nix gratitude [command] [entry]
+```
+```bash
+nix gratitude add "something you\'re grateful for"');
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
 | `--help` | — |
 
 > 💡 Run with `--help` for full usage information
@@ -502,6 +630,35 @@ nix log add <text>     Add entry
 ### Commands
 
 - `nix`
+
+---
+
+## meditate
+
+meditate.js — Guided breathing timer
+
+**File:** `meditate.js`
+
+### Usage
+
+```bash
+nix meditate [pattern] [duration]
+```
+```bash
+'));
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
 
 ---
 
@@ -678,6 +835,44 @@ quote search <term>');
 
 ---
 
+## read
+
+read.js — Reading list with progress tracking
+
+**File:** `read.js`
+
+### Usage
+
+```bash
+nix read <command> [args]
+```
+```bash
+nix read add <title> [type]'));
+```
+```bash
+nix read progress <id> <percent>'));
+```
+```bash
+nix read note <id> <text>'));
+```
+```bash
+nix read done <id>'));
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## review
 
 review.js - Daily/weekly progress review
@@ -778,6 +973,35 @@ session.js <command> [args]\n');
 
 - `session`
 - `start`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## sleep
+
+sleep.js — Sleep quality tracker
+
+**File:** `sleep.js`
+
+### Usage
+
+```bash
+nix sleep [command] [args]
+```
+```bash
+')} nix sleep [command] [args]
+```
+
+### Commands
+
+- `nix`
 
 ### Flags
 
@@ -931,6 +1155,39 @@ streak [options]
 
 ---
 
+## summarize
+
+summarize.js - Text summarizer
+
+**File:** `summarize.js`
+
+### Usage
+
+```bash
+*   nix summarize <file>              Summarize file content
+```
+```bash
+nix summarize <file>                  Summarize file content
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--text` | — |
+| `--url <url>` | — |
+| `--sentences` | — |
+| `--percent` | — |
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## tag
 
 tag.js — Universal tag manager for all NIX data
@@ -950,6 +1207,36 @@ ${C.reset}
 
 | Flag | Description |
 |------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## timer
+
+nix timer - Pomodoro-style focus timer
+
+**File:** `timer.js`
+
+### Usage
+
+```bash
+nix timer [minutes] [--message "task name"]
+```
+```bash
+nix timer [minutes] [options]
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--message` | — |
 | `--help` | — |
 
 > 💡 Run with `--help` for full usage information
@@ -1008,6 +1295,41 @@ ${COLORS.reset}
 
 | Flag | Description |
 |------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## uuid
+
+uuid.js - Generate UUIDs and random IDs
+
+**File:** `uuid.js`
+
+### Usage
+
+```bash
+nix uuid [options]
+```
+```bash
+nix uuid [options]');
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--count <n>` | — |
+| `--short` | — |
+| `--nano` | — |
+| `--upper` | — |
+| `--no-dashes` | — |
+| `--prefix <str>` | — |
 | `--help` | — |
 
 > 💡 Run with `--help` for full usage information
@@ -1117,6 +1439,86 @@ when deadline <name> <date>')); process.exit(1); }
 
 ---
 
+## workout
+
+workout.js - Quick workout logger
+
+**File:** `workout.js`
+
+### Usage
+
+```bash
+nix workout <command> [args]
+```
+```bash
+')}
+```
+```bash
+nix workout start <name>'));
+```
+```bash
+nix workout log <exercise> <detail> [weight]'));
+```
+```bash
+nix workout routine <name>'));
+```
+```bash
+nix workout template <name> <exercise1> [ex2...]'));
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## zettel
+
+zettel.js - Zettelkasten note system for atomic, connected notes
+
+**File:** `zettel.js`
+
+### Usage
+
+```bash
+*   nix zettel new "Note title"           # Create new note
+```
+```bash
+nix zettel new "Note title"');
+```
+```bash
+nix zettel show <ID>');
+```
+```bash
+nix zettel search <term>');
+```
+```bash
+nix zettel link <from-id> <to-id>');
+```
+```bash
+nix zettel new "Title" --tag concept    Create new note
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--tag` | — |
+
+---
+
 ## Quick Reference
 
 | Tool | Purpose |
@@ -1125,38 +1527,50 @@ when deadline <name> <date>')); process.exit(1); }
 | [bm](#bm) | bm.js - Bookmark CLI for quick access to saved links |
 | [calc](#calc) | calc.js - Quick calculation utility |
 | [clip](#clip) | clip.js - Code snippet manager |
+| [connect](#connect) | connect.js - Discover connections between zettel notes |
 | [convert](#convert) | convert.js — Swiss Army knife converter utility |
 | [done](#done) | done.js - Sprint completion tracker |
+| [energy](#energy) | energy.js — Energy level tracker throughout the day |
 | [expense](#expense) | expense.js - Personal expense tracker |
+| [export](#export) | export.js - Export nix data in various formats for portability |
 | [find](#find) | find.js - Universal search across all NIX data |
 | [flashcard](#flashcard) | flashcard.js — CLI flashcard system for memorization |
 | [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
+| [gratitude](#gratitude) | gratitude.js — Daily gratitude practice |
 | [habits](#habits) | — |
 | [ideas](#ideas) | ideas.js - Idea backlog and project pipeline tracker |
 | [later](#later) | later.js - Read/Watch later queue |
 | [learn](#learn) | learn.js — Learning tracker with spaced repetition |
 | [log](#log) | log.js — Quick daily logger |
+| [meditate](#meditate) | meditate.js — Guided breathing timer |
 | [mood](#mood) | mood.js — Daily mood & emotion tracker |
 | [note](#note) | note.js - Quick capture for thoughts, ideas, and tasks |
 | [pass](#pass) | pass.js - Quick password generator |
 | [projstats](#projstats) | projstats - Quick project dashboard stats |
 | [qr](#qr) | qr.js — Quick QR code generator for URLs, text, WiFi, contact info |
 | [quote](#quote) | quote - Terminal motivation from NIX |
+| [read](#read) | read.js — Reading list with progress tracking |
 | [review](#review) | review.js - Daily/weekly progress review |
 | [roll](#roll) | roll.js - Quick dice roller and random picker |
 | [server](#server) | server.js - Quick HTTP server for static files |
 | [session](#session) | session.js - Work session tracker |
+| [sleep](#sleep) | sleep.js — Sleep quality tracker |
 | [sprint](#sprint) | sprint.js — Quick sprint management CLI |
 | [sprintstats](#sprintstats) | sprintstats.js — Sprint performance analytics |
 | [standup](#standup) | standup.js - Daily standup report aggregator |
 | [stats](#stats) | stats.js — Productivity Stats Dashboard |
 | [streak](#streak) | streak.js - Git activity streak tracker |
+| [summarize](#summarize) | summarize.js - Text summarizer |
 | [tag](#tag) | tag.js — Universal tag manager for all NIX data |
+| [timer](#timer) | nix timer - Pomodoro-style focus timer |
 | [today](#today) | today.js - Daily briefing: date, quote, streak, sprint status |
 | [todo](#todo) | todo.js - Sprint-mode task tracker |
+| [uuid](#uuid) | uuid.js - Generate UUIDs and random IDs |
 | [water](#water) | water.js — Hydration tracker |
 | [week](#week) | week.js - Weekly retrospective: commits, sprints, stats, progress |
 | [when](#when) | when.js - Time calculator & deadline tracker |
+| [workout](#workout) | workout.js - Quick workout logger |
+| [zettel](#zettel) | zettel.js - Zettelkasten note system for atomic, connected notes |
 
 ---
 *Generated by docs.js — Part of [nix666](https://github.com/nix666/nix666)*

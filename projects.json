@@ -143,5 +143,14 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "search", "productivity"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "export",
+    "description": "Export nix data in multiple formats (JSON, CSV, Markdown) for data portability and backup",
+    "url": "./export.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "data", "export", "backup"],
+    "updated": "2026-01-31",
+    "tech": ["node"]
   }
 ]

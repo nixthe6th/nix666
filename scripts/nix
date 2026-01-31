@@ -65,6 +65,7 @@ Commands:
   uuid [options]          Generate UUIDs and random IDs (-s short, -n nano)
   zettel [cmd]            Zettelkasten note system (new/list/search/link)
   connect [cmd]           Discover note connections (related/orphaned/suggest)
+  export [format]         Export data (json/csv/markdown)
   
   tools                   List all available tools
   help                    Show this help
@@ -131,6 +132,7 @@ list_tools() {
     printf "  %-10s %s\n" "workout.js" "Workout logger"
     printf "  %-10s %s\n" "zettel.js" "Zettelkasten notes"
     printf "  %-10s %s\n" "connect.js" "Discover note connections"
+  printf "  %-10s %s\n" "export.js" "Export data in multiple formats"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -308,6 +310,9 @@ main() {
             ;;
         connect)
             node "$SCRIPT_DIR/../connect.js" "$@"
+            ;;
+        export)
+            node "$SCRIPT_DIR/../export.js" "$@"
             ;;
         tools)
             list_tools

@@ -216,6 +216,16 @@ nix connect serendipity                     # Random surprising connections
 nix connect clusters                        # View notes by tag clusters
 ```
 
+`nix export` — Export your data in multiple formats for portability:
+```bash
+nix export                                  # Show data summary
+nix export json                             # Export all data as JSON
+nix export csv                              # Export tabular data as CSV
+nix export markdown                         # Export notes as Markdown files
+nix export json --since 2026-01-01          # Export only recent data
+nix export csv --output-dir ./my-data       # Export to specific folder
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

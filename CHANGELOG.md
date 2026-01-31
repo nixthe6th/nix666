@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38 — Data Export)
+### Added
+- `export.js` — Export nix data in multiple formats for portability
+  - `nix export` — Show summary of all tracked data
+  - `nix export json` — Export all data as formatted JSON with optional date filtering
+  - `nix export csv` — Export tabular data (todos, habits, expenses, mood, sleep, zettel)
+  - `nix export markdown` — Export zettel notes and reading list as Markdown files
+  - `--since YYYY-MM-DD` flag to export only recent data
+  - `--output-dir` flag for custom export location
+  - CSV exports compatible with Excel/Google Sheets
+  - Markdown exports preserve metadata in YAML frontmatter
+  - Manifest.json generated with each export for tracking
+  - Addresses ROADMAP priority: High priority data portability feature
+
 ## 2026-01-31 (GitHub Sprint #37d — Wellness Tracking)
 ### Added
 - `energy.js` — Energy level tracking throughout the day

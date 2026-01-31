@@ -4,6 +4,19 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #15 — Idea Pipeline)
+### Added
+- `ideas.js` — Idea backlog and project pipeline tracker
+  - Capture ideas with priority (high/medium/low) and tags
+  - Pipeline stages: backlog → planning → ready → completed (or icebox)
+  - List filtering by status, priority, or tags
+  - Search across idea text and tags
+  - Stats dashboard showing pipeline distribution
+  - Integration with sprint system (`ideas promote <id>` shows sprint command)
+  - Archive on delete (recoverable history)
+  - Added to unified `nix` CLI as `nix ideas`
+  - Added to projects.json as active productivity tool
+
 ## 2026-01-31 (GitHub Sprint #14 — Week in Review)
 ### Added
 - `week.js` — Weekly retrospective CLI tool

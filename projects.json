@@ -86,5 +86,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "notes"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "ideas",
+    "description": "Idea backlog & pipeline - capture ideas before they become sprints",
+    "url": "./ideas.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "backlog", "productivity"],
+    "updated": "2026-01-31"
   }
 ]

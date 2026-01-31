@@ -35,6 +35,21 @@ nix tools                   # List all tools
 | `wcc` | Word count with goal check | `wcc <file> <goal>` |
 | `fiverr` | Fiverr business commands | `fiverr status` |
 
+### Root-Level Tools (via `nix` command)
+
+| Tool | Purpose | Example |
+|------|---------|---------|
+| `quote.js` | Random motivation quotes | `nix quote` |
+| `focus.js` | Pomodoro timer | `nix focus 25` |
+| `done.js` | Sprint completion tracker | `nix done "shipped feature"` |
+| `streak.js` | Git activity streak | `nix streak` |
+| `today.js` | Daily briefing | `nix today` |
+| `week.js` | Weekly retrospective | `nix week` |
+| `ideas.js` | Idea backlog & pipeline | `nix ideas "my idea" high` |
+| `note.js` | Quick timestamped notes | `nix note "remember this"` |
+| `projstats.js` | Project stats dashboard | `nix stats` |
+| `apicheck.js` | API health checker | `nix check` |
+
 ## Quick Start
 
 ```bash

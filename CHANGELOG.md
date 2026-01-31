@@ -4,7 +4,7 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
-## 2026-01-31 (GitHub Sprint #5 — CLI Tools)
+## 2026-01-31 (GitHub Sprint #8 — Sprint Infrastructure)
 ### Added
 - `nixsprint` — Sprint management CLI tool
   - `start`, `add`, `status`, `complete`, `list`, `report` commands
@@ -12,11 +12,43 @@ All notable changes to the NIX project hub.
   - Auto-logs completed sprints to daily memory files
   - Tracks stats: total sprints, deliverables count
 - `sprints.json` — Structured sprint history with full archive
-  - Migrated all 4 previous sprints into structured format
-  - 16 total deliverables tracked across 4 completed sprints
+  - Migrated all 7 previous sprints into structured format
+  - 22+ total deliverables tracked across completed sprints
 
 ### Changed
 - Updated `scripts/README.md` with `nixsprint` documentation
+
+## 2026-01-31 (GitHub Sprint #7 — Fast Builds)
+### Added
+- `done.js` — Sprint completion tracker
+  - Logs timestamped accomplishments to daily log files
+  - Shows git stats (commits, files changed, lines +/-)
+  - Displays random completion-themed quote
+  - Usage: `done.js "shipped the feature"` or just `done.js` for stats
+  - Creates `logs/YYYY-MM-DD.md` files automatically
+- 5 new quotes (29 total)
+  - Sprint finishers: "Ship it. The perfect moment doesn't exist"
+  - Momentum: "Today's commits are tomorrow's foundation"
+  - Habits: "Celebrate the small wins. They stack"
+  - Streak mindset: "Another one shipped. Keep the streak alive"
+
+## 2026-01-31 (GitHub Sprint #6 — Sprint Mode)
+### Added
+- `scripts/sprint.sh` — Git sprint automation tool
+  - Auto-stages, commits, and pushes in one command
+  - Smart commit message generation if none provided
+  - Works with `nix sprint "message"` CLI command
+  - Color-coded output for quick status checks
+- New sprint-mode quote: "The code you don't write can't ship"
+
+## 2026-01-31 (GitHub Sprint #5 — Momentum)
+### Added
+- 5 fresh quotes to `quotes.json` (24 total)
+  - Sprint mode mindset: "If you can ship in a day, why wait a week?"
+  - Finish strong: "The last 10% is where good becomes great"
+  - Habits: "Consistency compounds. Show up daily"
+  - Build ethos: "Build what you wish existed"
+  - V6 identity: "V6 has no brakes"
 
 ## 2026-01-31 (GitHub Sprint #4 — Fast Builds)
 ### Added

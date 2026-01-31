@@ -45,6 +45,11 @@
     "context": "sprint-mode"
   },
   {
+    "text": "The code you don't write can't ship.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
     "text": "Done is better than perfect.",
     "author": "Unknown",
     "context": "build"
@@ -93,5 +98,50 @@
     "text": "Sprint mode: activate.",
     "author": "NIX",
     "context": "sprint-mode"
+  },
+  {
+    "text": "If you can ship in a day, why wait a week?",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "The last 10% is where good becomes great.",
+    "author": "NIX",
+    "context": "finish"
+  },
+  {
+    "text": "Consistency compounds. Show up daily.",
+    "author": "NIX",
+    "context": "habits"
+  },
+  {
+    "text": "Build what you wish existed.",
+    "author": "Sahil Lavingia",
+    "context": "build"
+  },
+  {
+    "text": "V6 has no brakes.",
+    "author": "NIX",
+    "context": "incarnation-6"
+  },
+  {
+    "text": "Ship it. The perfect moment doesn't exist.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "Today's commits are tomorrow's foundation.",
+    "author": "NIX",
+    "context": "finish"
+  },
+  {
+    "text": "Celebrate the small wins. They stack.",
+    "author": "NIX",
+    "context": "habits"
+  },
+  {
+    "text": "Another one shipped. Keep the streak alive.",
+    "author": "NIX",
+    "context": "finish"
   }
 ]

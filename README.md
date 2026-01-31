@@ -110,6 +110,16 @@ nix qr wifi MyNetwork password123  # WiFi connection
 nix qr contact "John" 555-1234     # Contact card
 ```
 
+`nix uuid` — Generate UUIDs and random IDs:
+```bash
+nix uuid                    # Generate UUID v4
+nix uuid -c 5               # Generate 5 UUIDs
+nix uuid -s                 # Short ID (8 chars): a3f7b2d9
+nix uuid -n                 # Nano ID (12 chars, URL-safe)
+nix uuid -p user_           # Add prefix: user_a3f7b2d9
+nix uuid --no-dashes        # Compact UUID without dashes
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

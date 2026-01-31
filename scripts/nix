@@ -62,6 +62,7 @@ Commands:
   clip [cmd]              Code snippet manager (add/list/search/copy)
   roll [dice|coin|n]      Dice roller (2d6, coin, 100)
   summarize <file>        Summarize text/articles (-n 5 for 5 sentences)
+  uuid [options]          Generate UUIDs and random IDs (-s short, -n nano)
   
   tools                   List all available tools
   help                    Show this help
@@ -123,6 +124,7 @@ list_tools() {
     printf "  %-10s %s\n" "later.js" "Read/watch later queue"
     printf "  %-10s %s\n" "learn.js" "Learning tracker with SRS"
     printf "  %-10s %s\n" "summarize.js" "Text summarizer"
+    printf "  %-10s %s\n" "uuid.js" "UUID and random ID generator"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -279,6 +281,9 @@ main() {
             ;;
         clip)
             node "$SCRIPT_DIR/../clip.js" "$@"
+            ;;
+        uuid)
+            node "$SCRIPT_DIR/../uuid.js" "$@"
             ;;
         flashcard)
             node "$SCRIPT_DIR/../flashcard.js" "$@"

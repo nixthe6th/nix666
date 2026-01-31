@@ -1,0 +1,32 @@
+{
+  "name": "reconclaw",
+  "version": "1.0.0",
+  "description": "The Automated Reconnaissance Engine",
+  "main": "dist/cli.js",
+  "bin": {
+    "reconclaw": "./bin/reconclaw"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/cli.ts",
+    "test": "jest",
+    "lint": "eslint src/"
+  },
+  "keywords": ["osint", "security", "reconnaissance", "pentesting"],
+  "author": "Nix (nixthe6th)",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "chalk": "^4.1.2",
+    "dns2": "^2.1.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/node-fetch": "^2.6.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0"
+  }
+}

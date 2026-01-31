@@ -4,6 +4,13 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #3 — Fast Builds)
+### Added
+- `apicheck.js` — Quick API health checker for key services
+- Supports: github, telegram, openclaw, fiverr, or all
+- 5s timeout, latency reporting, simple CLI
+- Added to projects.json as active tool
+
 ## 2026-01-31 (GitHub Sprint #2 — Continued)
 ### Added
 - `/projects.html` — Dynamic project showcase page

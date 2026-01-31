@@ -22,5 +22,13 @@
     "status": "live",
     "tags": ["service", "writing", "income"],
     "updated": "2026-01-27"
+  },
+  {
+    "name": "apicheck",
+    "description": "Quick API health checker for key services",
+    "url": "./apicheck.js",
+    "status": "active",
+    "tags": ["tool", "node", "monitoring"],
+    "updated": "2026-01-31"
   }
 ]

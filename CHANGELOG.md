@@ -4,6 +4,23 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38n — Git-Based Data Sync)
+### Added
+- `sync.js` — Git-based data synchronization for cross-device backup
+  - `nix sync setup [url]` — Configure sync with remote repository
+  - `nix sync` — Sync data (commit, pull, push)
+  - `nix sync status` — Show sync status and configuration
+  - `nix sync now` — Force immediate sync
+  - `nix sync auto` — Enable automatic sync
+  - `nix sync daemon` — Run continuous sync daemon
+  - `nix sync history [n]` — View last n sync commits
+  - `nix sync resolve` — Show/resolve sync conflicts
+  - Multi-device synchronization via Git
+  - Conflict detection and resolution helpers
+  - Configurable sync intervals
+  - Device identification for multi-device tracking
+  - Addresses ROADMAP: Core CLI Enhancements > `nix sync` (High Priority)
+
 ## 2026-01-31 (GitHub Sprint #38m — Data Correlation Analysis)
 ### Added
 - `correlate.js` — Discover patterns and correlations in tracked data

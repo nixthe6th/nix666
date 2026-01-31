@@ -145,6 +145,15 @@ nix workout template "Pull Day" "Rows" "Curls" # Save a routine
 nix workout routine "Pull Day"                # Start a saved routine
 ```
 
+`nix meditate` — Guided breathing exercises:
+```bash
+nix meditate box 5m           # 5 min box breathing (4-4-4-4) — focus
+nix meditate 478              # 4-7-8 technique — relaxation & sleep
+nix meditate coherent 3m      # 5-5 coherent breathing — stress relief
+nix meditate relax            # 4-6 relaxing rhythm — natural calm
+nix meditate energy           # Quick 3-3 energizing breaths
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

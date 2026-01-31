@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #36c — Meditation Timer)
+### Added
+- `meditate.js` — Guided breathing timer with multiple patterns
+  - Box breathing (4-4-4-4): Navy SEAL focus technique
+  - 4-7-8 breathing: Relaxation and sleep aid
+  - Coherent breathing (5-5): Stress reduction
+  - Relaxing breath (4-6): Natural calming rhythm
+  - Energizing breath (3-3): Quick energy boost
+  - Visual progress bars for each phase
+  - Duration support: `nix meditate box 5m`
+  - Terminal bell on phase changes
+  - Graceful Ctrl+C handling
+  - No data persistence — pure in-the-moment tool
+
 ## 2026-01-31 (GitHub Sprint #36b — Workout Logger)
 ### Added
 - `workout.js` — Quick workout logger with PR tracking

@@ -31,6 +31,7 @@ Commands:
   streak                  Show git activity streak
   stats                   Quick project stats
   check                   API health check
+  week [--commits]        Weekly retrospective
   
   tools                   List all available tools
   help                    Show this help
@@ -138,6 +139,9 @@ main() {
             ;;
         check)
             node "$SCRIPT_DIR/../apicheck.js"
+            ;;
+        week)
+            node "$SCRIPT_DIR/../week.js" "$@"
             ;;
         tools)
             list_tools

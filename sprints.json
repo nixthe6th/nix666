@@ -2,6 +2,26 @@
   "current": null,
   "sprints": [
     {
+      "number": 14,
+      "name": "Week in Review",
+      "goal": "Create weekly retrospective tool for tracking progress",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T08:34:00",
+      "completed_at": "2026-01-31T08:37:00",
+      "deliverables": [
+        "week.js — Weekly retrospective CLI with activity charts",
+        "7-day commit visualization with bar charts",
+        "Sprint tracking integration",
+        "Added 'nix week' command to unified CLI"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "OpenClaw",
+        "target_time": "<10 min"
+      }
+    },
+    {
       "number": 13,
       "name": "CLI Unification",
       "goal": "Integrate all scattered tools into unified nix CLI",
@@ -267,8 +287,8 @@
     }
   ],
   "stats": {
-    "total": 13,
-    "completed": 13,
-    "deliverables": 46
+    "total": 14,
+    "completed": 14,
+    "deliverables": 50
   }
 }

@@ -4,6 +4,25 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #14 — Week in Review)
+### Added
+- `week.js` — Weekly retrospective CLI tool
+  - 7-day commit activity chart with visual bars
+  - Daily breakdown: commits per day with week visualization
+  - Weekly stats: total commits, active days, daily average
+  - Sprint tracking: sprints completed this week
+  - All-time stats integration
+  - Random reflection quote each run
+  - `--commits` flag for detailed commit log
+  - `--sprints` flag for sprint deliverables
+  - `--json` flag for programmatic output
+  - Added to unified `nix` CLI as `nix week`
+
+## 2026-01-31 (GitHub Sprint #13 — CLI Unification)
+### Added
+- Unified `nix` CLI with 6 commands: quote, focus, done, streak, stats, check
+- 9 new quotes (50 total)
+
 ## 2026-01-31 (GitHub Sprint #12 — Daily Briefing)
 ### Added
 - `today.js` — Daily briefing CLI tool

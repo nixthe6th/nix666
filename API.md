@@ -10,6 +10,7 @@
 - [calc](#calc) — calc.js - Quick calculation utility
 - [convert](#convert) — convert.js — Swiss Army knife converter utility
 - [done](#done) — done.js - Sprint completion tracker
+- [expense](#expense) — expense.js - Personal expense tracker
 - [find](#find) — find.js - Universal search across all NIX data
 - [focus](#focus) — focus.js - Pomodoro focus timer with motivation
 - [habits](#habits) — CLI tool
@@ -183,6 +184,35 @@ done ["accomplishment text"] [--stats]');
 | `--shortstat` | — |
 | `--format` | — |
 | `--stats` | — |
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## expense
+
+expense.js - Personal expense tracker
+
+**File:** `expense.js`
+
+### Usage
+
+```bash
+nix expense [command] [args]
+```
+```bash
+${COLORS.reset}
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
 | `--help` | — |
 
 > 💡 Run with `--help` for full usage information
@@ -939,6 +969,7 @@ when deadline <name> <date>')); process.exit(1); }
 | [calc](#calc) | calc.js - Quick calculation utility |
 | [convert](#convert) | convert.js — Swiss Army knife converter utility |
 | [done](#done) | done.js - Sprint completion tracker |
+| [expense](#expense) | expense.js - Personal expense tracker |
 | [find](#find) | find.js - Universal search across all NIX data |
 | [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
 | [habits](#habits) | — |

@@ -35,16 +35,43 @@
   <h2>Quick Reference</h2>
   <table>
     <tr><th>Tool</th><th>Description</th></tr>
-    <tr><td><a href="#bm">bm</a></td><td>bm.js - Bookmark CLI for quick access to saved links</td></tr><tr><td><a href="#done">done</a></td><td>done.js - Sprint completion tracker</td></tr><tr><td><a href="#focus">focus</a></td><td>focus.js - Pomodoro focus timer with motivation</td></tr><tr><td><a href="#habits">habits</a></td><td>—</td></tr><tr><td><a href="#ideas">ideas</a></td><td>ideas.js - Idea backlog and project pipeline tracker</td></tr><tr><td><a href="#log">log</a></td><td>log.js — Quick daily logger</td></tr><tr><td><a href="#mood">mood</a></td><td>mood.js — Daily mood & emotion tracker</td></tr><tr><td><a href="#note">note</a></td><td>note.js - Quick capture for thoughts, ideas, and tasks</td></tr><tr><td><a href="#projstats">projstats</a></td><td>projstats - Quick project dashboard stats</td></tr><tr><td><a href="#quote">quote</a></td><td>quote - Terminal motivation from NIX</td></tr><tr><td><a href="#session">session</a></td><td>session.js - Work session tracker</td></tr><tr><td><a href="#stats">stats</a></td><td>stats.js — Productivity Stats Dashboard</td></tr><tr><td><a href="#streak">streak</a></td><td>streak.js - Git activity streak tracker</td></tr><tr><td><a href="#today">today</a></td><td>today.js - Daily briefing: date, quote, streak, sprint status</td></tr><tr><td><a href="#todo">todo</a></td><td>todo.js - Sprint-mode task tracker</td></tr><tr><td><a href="#week">week</a></td><td>week.js - Weekly retrospective: commits, sprints, stats, progress</td></tr>
+    <tr><td><a href="#backup">backup</a></td><td>backup.js - Data backup and export for NIX</td></tr><tr><td><a href="#bm">bm</a></td><td>bm.js - Bookmark CLI for quick access to saved links</td></tr><tr><td><a href="#calc">calc</a></td><td>calc.js - Quick calculation utility</td></tr><tr><td><a href="#convert">convert</a></td><td>convert.js — Swiss Army knife converter utility</td></tr><tr><td><a href="#done">done</a></td><td>done.js - Sprint completion tracker</td></tr><tr><td><a href="#expense">expense</a></td><td>expense.js - Personal expense tracker</td></tr><tr><td><a href="#find">find</a></td><td>find.js - Universal search across all NIX data</td></tr><tr><td><a href="#focus">focus</a></td><td>focus.js - Pomodoro focus timer with motivation</td></tr><tr><td><a href="#habits">habits</a></td><td>—</td></tr><tr><td><a href="#ideas">ideas</a></td><td>ideas.js - Idea backlog and project pipeline tracker</td></tr><tr><td><a href="#later">later</a></td><td>later.js - Read/Watch later queue</td></tr><tr><td><a href="#log">log</a></td><td>log.js — Quick daily logger</td></tr><tr><td><a href="#mood">mood</a></td><td>mood.js — Daily mood & emotion tracker</td></tr><tr><td><a href="#note">note</a></td><td>note.js - Quick capture for thoughts, ideas, and tasks</td></tr><tr><td><a href="#pass">pass</a></td><td>pass.js - Quick password generator</td></tr><tr><td><a href="#projstats">projstats</a></td><td>projstats - Quick project dashboard stats</td></tr><tr><td><a href="#qr">qr</a></td><td>qr.js — Quick QR code generator for URLs, text, WiFi, contact info</td></tr><tr><td><a href="#quote">quote</a></td><td>quote - Terminal motivation from NIX</td></tr><tr><td><a href="#review">review</a></td><td>review.js - Daily/weekly progress review</td></tr><tr><td><a href="#server">server</a></td><td>server.js - Quick HTTP server for static files</td></tr><tr><td><a href="#session">session</a></td><td>session.js - Work session tracker</td></tr><tr><td><a href="#sprint">sprint</a></td><td>sprint.js — Quick sprint management CLI</td></tr><tr><td><a href="#standup">standup</a></td><td>standup.js - Daily standup report aggregator</td></tr><tr><td><a href="#stats">stats</a></td><td>stats.js — Productivity Stats Dashboard</td></tr><tr><td><a href="#streak">streak</a></td><td>streak.js - Git activity streak tracker</td></tr><tr><td><a href="#tag">tag</a></td><td>tag.js — Universal tag manager for all NIX data</td></tr><tr><td><a href="#today">today</a></td><td>today.js - Daily briefing: date, quote, streak, sprint status</td></tr><tr><td><a href="#todo">todo</a></td><td>todo.js - Sprint-mode task tracker</td></tr><tr><td><a href="#water">water</a></td><td>water.js — Hydration tracker</td></tr><tr><td><a href="#week">week</a></td><td>week.js - Weekly retrospective: commits, sprints, stats, progress</td></tr><tr><td><a href="#when">when</a></td><td>when.js - Time calculator & deadline tracker</td></tr>
   </table>
   
   <h2>Tools</h2>
   
+      <section id="backup">
+        <h3>backup <code>backup.js</code></h3>
+        <p>backup.js - Data backup and export for NIX</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix backup [command] [options]</code></pre><pre><code>${C.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
       <section id="bm">
         <h3>bm <code>bm.js</code></h3>
         <p>bm.js - Bookmark CLI for quick access to saved links</p>
         <span class="badge">--help available</span>
         <div class="section"><h4>Usage</h4><pre><code>bm [list|search|open|add] [args]</code></pre><pre><code>bm <command> [args]</code></pre><pre><code>bm search <query>' + COLORS.reset);</code></pre><pre><code>bm open <title/term>' + COLORS.reset);</code></pre><pre><code>bm add <title> <url> [category] [description] [tags]' + COLORS.reset);</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="calc">
+        <h3>calc <code>calc.js</code></h3>
+        <p>calc.js - Quick calculation utility</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>${COLORS.reset} nix calc <expression></code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="convert">
+        <h3>convert <code>convert.js</code></h3>
+        <p>convert.js — Swiss Army knife converter utility</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix convert <command> [input]</code></pre><pre><code>${C.reset} nix convert <command> [input]`);</code></pre></div>
         <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
         
       </section>
@@ -55,6 +82,24 @@
         <span class="badge">--help available</span>
         <div class="section"><h4>Usage</h4><pre><code>done ["what you accomplished"] or just "done" for stats + motivation</code></pre><pre><code>done ["accomplishment text"] [--stats]');</code></pre></div>
         <div class="section"><h4>Flags</h4><table><tr><td><code>--oneline</code></td><td>—</td></tr><tr><td><code>--since</code></td><td>—</td></tr><tr><td><code>--until</code></td><td>—</td></tr><tr><td><code>--shortstat</code></td><td>—</td></tr><tr><td><code>--format</code></td><td>—</td></tr><tr><td><code>--stats</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="expense">
+        <h3>expense <code>expense.js</code></h3>
+        <p>expense.js - Personal expense tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix expense [command] [args]</code></pre><pre><code>${COLORS.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="find">
+        <h3>find <code>find.js</code></h3>
+        <p>find.js - Universal search across all NIX data</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>find [query] [options]</code></pre><pre><code>${COLORS.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--todos</code></td><td>—</td></tr><tr><td><code>--ideas</code></td><td>—</td></tr><tr><td><code>--quotes</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr><tr><td><code>--projects</code></td><td>—</td></tr><tr><td><code>--sprints</code></td><td>—</td></tr><tr><td><code>--bookmarks</code></td><td>—</td></tr></table></div>
         
       </section>
     
@@ -85,6 +130,15 @@
         
       </section>
     
+      <section id="later">
+        <h3>later <code>later.js</code></h3>
+        <p>later.js - Read/Watch later queue</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix later <url> [title] [--tags tag1,tag2]</code></pre><pre><code>${COLORS.reset}</code></pre><pre><code>nix later done <id>${COLORS.reset}`);</code></pre><pre><code>nix later delete <id>${COLORS.reset}`);</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--tags</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr><tr><td><code>--all</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
       <section id="log">
         <h3>log <code>log.js</code></h3>
         <p>log.js — Quick daily logger</p>
@@ -112,12 +166,30 @@
         
       </section>
     
+      <section id="pass">
+        <h3>pass <code>pass.js</code></h3>
+        <p>pass.js - Quick password generator</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix pass [length] [--strong|--pin|--phrase]</code></pre><pre><code>${COLORS.reset}`);</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--strong</code></td><td>—</td></tr><tr><td><code>--pin</code></td><td>—</td></tr><tr><td><code>--phrase</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
       <section id="projstats">
         <h3>projstats <code>projstats.js</code></h3>
         <p>projstats - Quick project dashboard stats</p>
         
         <div class="section"><h4>Usage</h4><pre><code>projstats</code></pre></div>
         
+        
+      </section>
+    
+      <section id="qr">
+        <h3>qr <code>qr.js</code></h3>
+        <p>qr.js — Quick QR code generator for URLs, text, WiFi, contact info</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>*   nix qr <text|url>           # Generate QR code for text/URL</code></pre><pre><code>');</code></pre><pre><code>nix qr wifi <ssid> [password]');</code></pre><pre><code>nix qr contact <name> <phone>');</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--small <text></code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr></table></div>
         
       </section>
     
@@ -130,11 +202,47 @@
         
       </section>
     
+      <section id="review">
+        <h3>review <code>review.js</code></h3>
+        <p>review.js - Daily/weekly progress review</p>
+        
+        <div class="section"><h4>Usage</h4><pre><code>review [today|week]</code></pre></div>
+        
+        
+      </section>
+    
+      <section id="server">
+        <h3>server <code>server.js</code></h3>
+        <p>server.js - Quick HTTP server for static files</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix server [port] [--dir <path>] [--open]</code></pre><pre><code>${COLORS.reset}`);</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--dir <path></code></td><td>—</td></tr><tr><td><code>--open</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
       <section id="session">
         <h3>session <code>session.js</code></h3>
         <p>session.js - Work session tracker</p>
         <span class="badge">--help available</span>
         <div class="section"><h4>Usage</h4><pre><code>session.js <command> [args]</code></pre><pre><code>session.js start <project> [tag]${C.reset}`);</code></pre><pre><code>session.js <command> [args]\n');</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="sprint">
+        <h3>sprint <code>sprint.js</code></h3>
+        <p>sprint.js — Quick sprint management CLI</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>*   sprint                    Show current sprint status</code></pre><pre><code>${C.reset}`);</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="standup">
+        <h3>standup <code>standup.js</code></h3>
+        <p>standup.js - Daily standup report aggregator</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>node standup.js [today|yesterday|week]</code></pre><pre><code>nix standup              Show today's standup (default)</code></pre></div>
         <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
         
       </section>
@@ -157,6 +265,15 @@
         
       </section>
     
+      <section id="tag">
+        <h3>tag <code>tag.js</code></h3>
+        <p>tag.js — Universal tag manager for all NIX data</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>*   nix tag                    # List all tags with counts</code></pre><pre><code>${C.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
       <section id="today">
         <h3>today <code>today.js</code></h3>
         <p>today.js - Daily briefing: date, quote, streak, sprint status</p>
@@ -175,12 +292,30 @@
         
       </section>
     
+      <section id="water">
+        <h3>water <code>water.js</code></h3>
+        <p>water.js — Hydration tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix water [command] [amount]</code></pre><pre><code>')} nix water [command] [amount]</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
       <section id="week">
         <h3>week <code>week.js</code></h3>
         <p>week.js - Weekly retrospective: commits, sprints, stats, progress</p>
         
         <div class="section"><h4>Usage</h4><pre><code>week [--commits|--sprints|--json]</code></pre></div>
         <div class="section"><h4>Flags</h4><table><tr><td><code>--commits</code></td><td>—</td></tr><tr><td><code>--sprints</code></td><td>—</td></tr><tr><td><code>--json</code></td><td>—</td></tr><tr><td><code>--oneline</code></td><td>—</td></tr><tr><td><code>--since</code></td><td>—</td></tr><tr><td><code>--all</code></td><td>—</td></tr><tr><td><code>--until</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="when">
+        <h3>when <code>when.js</code></h3>
+        <p>when.js - Time calculator & deadline tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>when [in|until|since|add] [time] [args]</code></pre><pre><code>')}</code></pre><pre><code>when in <duration>')); process.exit(1); }</code></pre><pre><code>when until <date>')); process.exit(1); }</code></pre><pre><code>when since <date>')); process.exit(1); }</code></pre><pre><code>when add <date> <duration>')); process.exit(1); }</code></pre><pre><code>when deadline <name> <date>')); process.exit(1); }</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
         
       </section>
     

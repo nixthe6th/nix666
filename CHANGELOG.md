@@ -4,6 +4,21 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #34 — Expense Tracker)
+### Added
+- `expense.js` — Personal expense tracker for financial awareness
+  - Log expenses: `nix expense add 15.50 "Lunch" food`
+  - Categories: food, transport, tech, bills, entertainment, shopping, health, other
+  - Visual category icons for quick scanning
+  - List by time period: `nix expense list [today|week|month]`
+  - Monthly summary with category breakdown
+  - Budget tracking with visual progress bar
+  - Daily spending indicator vs monthly budget
+  - Delete entries: `nix expense delete <id>`
+  - Set custom budget: `nix expense budget 2000`
+- Integrated into `nix` CLI dispatcher
+- Updated README.md with expense tracker examples
+
 ## 2026-01-31 (GitHub Sprint #33 — CLI Polish)
 ### Added
 - `qr.js` — QR code generator for quick sharing

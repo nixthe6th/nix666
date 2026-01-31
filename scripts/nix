@@ -53,6 +53,7 @@ Commands:
   backup [cmd]            Backup/export data (list/export/clean)
   decide [cmd]            Decision log (add/list/review/stats)
   water [cmd]             Hydration tracker (add/status/week/goal)
+  expense [cmd]           Expense tracker (add/list/summary/budget)
   commit [msg]            Quick git commit helper (--sprint for rapid mode)
   standup [period]        Daily standup report (today/yesterday/week)
   later [url|cmd]         Read/watch later queue (add/list/done)
@@ -256,6 +257,9 @@ main() {
             ;;
         today)
             node "$SCRIPT_DIR/../today.js" "$@"
+            ;;
+        expense)
+            node "$SCRIPT_DIR/../expense.js" "$@"
             ;;
         commit)
             "$SCRIPT_DIR/nixcommit" "$@"

@@ -29,7 +29,17 @@ nix decide     # Decision log
 nix when       # Time calculator
 ```
 
-**New:** `nix water` — Hydration tracker with daily goals:
+**New:** `nix expense` — Expense tracker for personal finance:
+```bash
+nix expense add 15.50 "Lunch" food       # Log expense
+nix expense add 120 "Keyboard" tech      # With category
+nix expense list today                   # Today's expenses
+nix expense list week                    # Last 7 days
+nix expense summary                      # Monthly breakdown
+nix expense budget 2000                  # Set monthly budget
+```
+
+`nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml
 nix water glass                # Add 250ml (quick)

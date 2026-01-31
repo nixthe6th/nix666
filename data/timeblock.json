@@ -1,0 +1,83 @@
+{
+  "schedules": {
+    "2026-01-31": [
+      {
+        "start": "06:00",
+        "end": "07:00",
+        "activity": "🌅 Morning routine",
+        "type": "routine",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "07:00",
+        "end": "09:00",
+        "activity": "💻 Deep work #1",
+        "type": "deep",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "09:00",
+        "end": "09:15",
+        "activity": "☕ Break",
+        "type": "break",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "09:15",
+        "end": "11:00",
+        "activity": "💻 Deep work #2",
+        "type": "deep",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "11:00",
+        "end": "12:00",
+        "activity": "📧 Email & admin",
+        "type": "shallow",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "12:00",
+        "end": "13:00",
+        "activity": "🍽️ Lunch",
+        "type": "break",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "13:00",
+        "end": "15:00",
+        "activity": "💻 Deep work #3",
+        "type": "deep",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "15:00",
+        "end": "15:15",
+        "activity": "☕ Break",
+        "type": "break",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "15:15",
+        "end": "17:00",
+        "activity": "📊 Meetings & calls",
+        "type": "shallow",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "17:00",
+        "end": "18:00",
+        "activity": "📝 Review & plan",
+        "type": "shallow",
+        "added": "2026-01-31T14:56:29.220Z"
+      },
+      {
+        "start": "18:00",
+        "end": "22:00",
+        "activity": "🌙 Evening",
+        "type": "routine",
+        "added": "2026-01-31T14:56:29.220Z"
+      }
+    ]
+  }
+}

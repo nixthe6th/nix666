@@ -67,6 +67,7 @@ Commands:
   connect [cmd]           Discover note connections (related/orphaned/suggest)
   export [format]         Export data (json/csv/markdown)
   outline [cmd]           Quick outliner for writing (new/list/add/done/export)
+  timeblock [cmd]         Daily time blocking planner (add/template/clear)
   
   tools                   List all available tools
   help                    Show this help
@@ -318,6 +319,9 @@ main() {
             ;;
         outline)
             node "$SCRIPT_DIR/../outline.js" "$@"
+            ;;
+        timeblock)
+            node "$SCRIPT_DIR/../timeblock.js" "$@"
             ;;
         tools)
             list_tools

@@ -4,6 +4,19 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38f — Time Blocking)
+### Added
+- `timeblock.js` — Daily time blocking planner for focused work
+  - `nix timeblock` — Display today's schedule with current block highlight
+  - `nix timeblock add <start> <end> "activity" [type]` — Add custom blocks
+  - `nix timeblock template [default|creative|admin]` — Apply preset schedules
+  - `nix timeblock clear` — Reset today's schedule
+  - `nix timeblock stats` — Weekly deep work analytics
+  - Block types: deep (focused work), shallow (admin), break, routine
+  - Visual indicators for current/past/future blocks
+  - Deep work hour tracking and reporting
+  - Addresses ROADMAP: Productivity > time blocking planner
+
 ## 2026-01-31 (GitHub Sprint #38e — Outliner)
 ### Added
 - `outline.js` — Quick outliner for writing and brainstorming

@@ -117,10 +117,19 @@ nix timer stats                # View session history
 
 `nix energy` — Energy level tracking throughout the day:
 ```bash
-nix energy log 4               # Log energy level 1-5
-nix energy log 5 "Peak flow!"  # With note
-nix energy chart               # See energy by hour
-nix energy insights            # Find your peak hours
+nix energy 5 "Feeling great"           # Log energy level 1-5 with note
+nix energy log                         # Show today's entries
+nix energy stats                       # Weekly energy patterns
+```
+
+`nix timeblock` — Daily time blocking planner:
+```bash
+nix timeblock                          # Show today's schedule
+nix timeblock template                 # Apply default time blocks
+nix timeblock template creative        # Creative-focused schedule
+nix timeblock add 9:00 11:00 "Deep work" deep
+nix timeblock clear                    # Clear today's schedule
+nix timeblock stats                    # Weekly deep work stats
 ```
 
 `nix gratitude` — Daily gratitude practice:

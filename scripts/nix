@@ -68,6 +68,7 @@ Commands:
   export [format]         Export data (json/csv/markdown)
   outline [cmd]           Quick outliner for writing (new/list/add/done/export)
   timeblock [cmd]         Daily time blocking planner (add/template/clear)
+  invest [cmd]            Investment portfolio tracker (add/list/performance/allocation)
   
   tools                   List all available tools
   help                    Show this help
@@ -136,6 +137,7 @@ list_tools() {
     printf "  %-10s %s\n" "connect.js" "Discover note connections"
   printf "  %-10s %s\n" "export.js" "Export data in multiple formats"
   printf "  %-10s %s\n" "outline.js" "Quick outliner for writing"
+  printf "  %-10s %s\n" "invest.js" "Investment portfolio tracker"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -322,6 +324,9 @@ main() {
             ;;
         timeblock)
             node "$SCRIPT_DIR/../timeblock.js" "$@"
+            ;;
+        invest)
+            node "$SCRIPT_DIR/../invest.js" "$@"
             ;;
         tools)
             list_tools

@@ -295,6 +295,29 @@ nix import file.json --dry-run              # Preview changes
 nix import file.json --backup               # Auto-backup before import
 ```
 
+`nix goal` — Savings goal tracker with progress visualization:
+```bash
+nix goal add "Vacation" 3000 "2026-06-01"   # Create goal with target & deadline
+nix goal add "Emergency Fund" 10000         # Create goal without deadline
+nix goal contribute abc1 500 "Tax refund"   # Add contribution with note
+nix goal list                               # All goals with progress bars
+nix goal progress                           # Dashboard with savings rate
+```
+
+`nix invest` — Investment portfolio tracker with performance metrics:
+```bash
+nix invest add AAPL 10 175.50 stock "Apple Inc"   # Add stock holding
+nix invest add BTC 0.5 45000 crypto "Bitcoin"     # Add crypto position  
+nix invest add VTI 25 220.00 etf                  # Add ETF position
+nix invest list                                   # Show all holdings & P&L
+nix invest performance                            # Portfolio performance summary
+nix invest allocation                             # Asset allocation by type
+nix invest update AAPL 185.25                     # Update current price
+nix invest dividend add AAPL 25.50                # Log dividend received
+nix invest dividend list                          # View all dividends
+nix invest history AAPL                           # Show price/purchase history
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

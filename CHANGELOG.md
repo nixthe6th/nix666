@@ -4,6 +4,29 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38i — Investment Portfolio Tracker)
+### Added
+- `invest.js` — Complete investment portfolio tracking system
+  - `nix invest add <symbol> <shares> <cost> [type] [name]` — Add holdings
+  - `nix invest remove <symbol>` — Remove position from portfolio
+  - `nix invest list` — Display all holdings with live P&L
+  - `nix invest performance` — Portfolio summary with total return
+  - `nix invest allocation` — Asset allocation visualization by type
+  - `nix invest update <symbol> <price>` — Update current market price
+  - `nix invest history <symbol>` — Show purchase and price history
+  - `nix invest dividend add <symbol> <amount> [date]` — Log dividends
+  - `nix invest dividend list [symbol]` — View dividend payments
+  - Supports multiple asset types: stock, crypto, etf, bond, reit, commodity, forex
+  - Dollar-cost averaging: automatically calculates average cost on additional purchases
+  - Visual progress tracking with color-coded returns (green/red)
+  - Asset allocation bar charts with type icons
+  - Tracks both unrealized and total return (including dividends)
+  - Best/worst performer identification
+  - Stores data in `~/.nix666/investments.json`, `dividends.json`, `invest_history.json`
+  - Integrates with main nix CLI: `nix invest <command>`
+  - Completes the finance suite: expense + subscription + goal + invest
+  - Addresses ROADMAP: Finance > investment portfolio tracker
+
 ## 2026-01-31 (GitHub Sprint #38h — Savings Goals)
 ### Added
 - `goal.js` — Savings goal tracker with progress visualization

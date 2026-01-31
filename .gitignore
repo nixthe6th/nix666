@@ -1,0 +1,15 @@
+# Secrets and credentials
+credentials/
+.env
+*.pem
+*.key
+secrets/
+
+# System files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Node modules (if added later)
+node_modules/

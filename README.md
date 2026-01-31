@@ -1,166 +1,205 @@
-# OpenClaw Automation Engine ⚡
+# Recon Claw 🕵️
 
-> *AI-Native Automation. Local-First. Action-Oriented.*
+> *The Automated Reconnaissance Engine*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**What:** An automation engine that bridges AI models, local files, and external services.
+**Turn 4 hours of manual research into a 30-second report.**
 
-**Why:** You don't need another note-taking app. You need a tool that watches folders, processes content with AI, and takes action automatically.
+OpenClaw OSINT tool for security professionals, investigators, and researchers. Automatically maps digital footprints from domains, emails, and networks.
 
-**How:** Declarative workflows using local LLMs (Kimi, not expensive APIs).
+## 🎯 The Problem
 
-## 🚀 One-Command Install
+Security analysts spend **80% of their time** manually:
+- Visiting websites
+- Checking IP addresses  
+- Scraping profiles
+- Gathering data on targets
 
-```bash
-git clone https://github.com/nixthe6th/nix666.git openclaw
-cd openclaw
-./install.sh
-```
-
-## 🎯 What It Does (In 30 Seconds)
-
-**Content Creator Workflow:**
-```bash
-# Watches your footage folder
-openclaw watch ~/Videos/Dashcam --skill auto-youtube
-
-# Automatically:
-# 1. Organizes files by date
-# 2. Generates AI descriptions
-# 3. Creates thumbnail suggestions
-# 4. Queues to YouTube Studio
-```
-
-**Developer Workflow:**
-```bash
-# Watches your project
-openclaw watch ./src --skill auto-commit
-
-# Automatically:
-# 1. Summarizes changes
-# 2. Suggests commit messages
-# 3. Runs tests
-# 4. Pushes to GitHub
-```
-
-## 🛠️ Core Features
-
-| Feature | What It Does |
-|---------|--------------|
-| **Watchers** | Monitor folders/files for changes |
-| **Skills** | Reusable automation scripts |
-| **AI Bridge** | Use local LLMs (Kimi, etc.) |
-| **Actions** | Git commits, API calls, file operations |
-| **Integrations** | YouTube, GitHub, Slack, Discord |
-
-## 📦 Content Automation Suite
-
-**Current Skills:**
-
-### `content/youtube-prep`
-- Organizes raw footage
-- Generates AI titles/descriptions
-- Creates thumbnail suggestions
-- Outputs upload-ready package
-
-### `content/clip-extract`
-- Watches long videos
-- Extracts highlight clips
-- Auto-generates timestamps
-- Creates short-form versions
-
-### `content/social-queue`
-- Prepares multi-platform posts
-- Schedules to Buffer/Hootsuite
-- Tracks engagement metrics
-
-## 🤖 ClawHub Skill Directory
-
-**Community Skills:**
-```
-skills/
-├── content/
-│   ├── youtube-prep/
-│   ├── clip-extract/
-│   └── social-queue/
-├── dev/
-│   ├── auto-commit/
-│   └── pr-summarizer/
-├── security/
-│   └── log-analyzer/
-└── personal/
-    └── expense-parser/
-```
-
-**Add your own:**
-```bash
-openclaw skill create my-automation
-# Edit skills/my-automation/skill.md
-# Add trigger conditions
-# Define actions
-```
-
-## 💡 Why This > ChatGPT/Notion
-
-| | OpenClaw | ChatGPT | Notion |
-|---|---|---|---|
-| **Automation** | ✅ Native | ❌ Manual | ❌ Limited |
-| **Local-First** | ✅ Your machine | ❌ Cloud | ❌ Cloud |
-| **Cost** | ✅ Local LLMs | $20+/mo | $10+/mo |
-| **Actions** | ✅ Takes action | ❌ Just chat | ❌ Just store |
-| **Privacy** | ✅ Your data | ❌ Their servers | ❌ Their servers |
-
-## 🚦 Quick Start
+## 💡 The Solution
 
 ```bash
-# 1. Install
-./install.sh
-
-# 2. Configure (add your AI API key)
-openclaw config set moonshot_api_key "sk-..."
-
-# 3. Run a skill
-openclaw run content/youtube-prep --input ~/Videos
-
-# 4. Or set up a watcher
-openclaw watch ~/Videos --skill content/youtube-prep --interval 5m
+reconclaw scan example.com
+# 30 seconds later: comprehensive report
 ```
 
-## 🎯 Use Cases
+**The Claws:**
+- 🌐 **Domain Claw** — Subdomains, DNS records, server tech
+- 📧 **Breach Claw** — Email breach checks (HaveIBeenPwned)
+- 🖥️ **Asset Claw** — Network scanning, device discovery
 
-**YouTuber:**
-- Drop raw footage → auto-organized, described, thumbnailed
+## 🚀 Quick Start
 
-**Developer:**
-- Code changes → auto-committed, tested, pushed
+```bash
+# Install
+git clone https://github.com/nixthe6th/nix666.git reconclaw
+cd reconclaw
+npm install
+npm run build
 
-**Analyst:**
-- CSV drops → auto-summarized, charted, reported
+# Scan a target
+./bin/reconclaw scan example.com
 
-**Security Researcher:**
-- Log files → auto-parsed, anomalies flagged, alerts sent
+# Check email for breaches
+./bin/reconclaw breach check user@example.com
+
+# Scan network
+./bin/reconclaw asset scan 192.168.1.0/24
+```
+
+## 🛠️ The Three Claws
+
+### 1. Domain Claw (`reconclaw scan <domain>`)
+
+**Input:** `example.com`
+
+**Output:**
+```json
+{
+  "domain": "example.com",
+  "dns": {
+    "a": ["93.184.216.34"],
+    "mx": ["mail.example.com"],
+    "txt": ["v=spf1..."]
+  },
+  "subdomains": [
+    "www.example.com",
+    "mail.example.com",
+    "api.example.com"
+  ],
+  "technologies": ["nginx", "PHP", "WordPress"],
+  "email_format": "first.last@example.com"
+}
+```
+
+**Sources:**
+- DNS enumeration (A, MX, TXT, NS records)
+- Certificate Transparency logs
+- Subdomain brute force (common list)
+- Technology fingerprinting (Wappalyzer-style)
+
+### 2. Breach Claw (`reconclaw breach <email>`)
+
+**Input:** `user@example.com`
+
+**Output:**
+```json
+{
+  "email": "user@example.com",
+  "breaches": [
+    {
+      "name": "LinkedIn 2012",
+      "date": "2012-05-05",
+      "records": 164M,
+      "data_types": ["email", "password"]
+    }
+  ],
+  "exposed_count": 3
+}
+```
+
+**Sources:**
+- HaveIBeenPwned API
+- DeHashed (optional)
+- Public breach databases
+
+### 3. Asset Claw (`reconclaw asset <network>`)
+
+**Input:** `192.168.1.0/24`
+
+**Output:**
+```json
+{
+  "network": "192.168.1.0/24",
+  "hosts": [
+    {
+      "ip": "192.168.1.1",
+      "status": "up",
+      "ports": [80, 443, 22],
+      "services": ["http", "https", "ssh"],
+      "os_guess": "Linux"
+    }
+  ]
+}
+```
+
+**Features:**
+- Host discovery (ping sweep)
+- Port scanning (top 1000)
+- Service fingerprinting
+- OS detection (basic)
+
+## 💰 Money Model
+
+**Free Tier (Open Source):**
+- All CLI tools
+- Raw JSON/TXT output
+- Community support
+
+**Pro Tier — Reporter Module:**
+```bash
+reconclaw scan example.com --report
+# Generates beautiful, branded PDF report
+```
+
+**Pricing:**
+- $19 one-time license
+- Or $9/month subscription
+- White-label options for firms
+
+**Why Pay?**
+- Professional PDF reports
+- Custom branding
+- Scheduled scans
+- API access
+- Priority support
+
+## 🏗️ Architecture
+
+```
+src/
+├── claws/           # Core modules
+│   ├── domain.ts    # Domain reconnaissance
+│   ├── breach.ts    # Breach checking
+│   └── asset.ts     # Network scanning
+├── utils/           # Helpers
+│   ├── dns.ts
+│   ├── http.ts
+│   └── parser.ts
+├── reporter/        # PDF generation (Pro)
+│   └── pdf.ts
+└── cli.ts           # Entry point
+```
+
+## 🎯 Target Customers
+
+- **Junior Pen-Testers** — Learning reconnaissance
+- **Boutique Security Firms** — Small team, big clients
+- **IT Consultants** — Network audits for SMBs
+- **Private Investigators** — Digital footprint mapping
+- **Bug Bounty Hunters** — Quick target recon
+
+## 🛡️ Safety & Ethics
+
+- **Read-Only:** Never exploits, only observes
+- **Public Data:** Uses only publicly available information
+- **Responsible Disclosure:** Built-in guidelines
+- **Audit Trail:** All scans logged for compliance
 
 ## 🤝 Contributing
 
-**Add a Skill:**
-1. Fork repo
-2. Create `skills/{category}/{your-skill}/`
-3. Add `skill.md` + `action.js`
-4. Submit PR
+OSINT is community-driven. Add new data sources:
 
-**Top Needed Skills:**
-- `content/tiktok-autocut`
-- `dev/auto-documentation`
-- `security/phishing-detector`
-- `personal/bill-scanner`
+1. Fork repo
+2. Add source in `src/sources/`
+3. Test thoroughly
+4. Document in README
+5. Submit PR
 
 ## 📜 License
 
-MIT License — see [LICENSE](LICENSE)
-
-Copyright (c) 2026 OpenClaw Contributors
+MIT License — see LICENSE
 
 ---
 
-*Built by Nix, claimed by Kieran, powered by community.* ⚡
+*Built by Nix, claimed by Kieran. For the security community.* 🕵️⚡

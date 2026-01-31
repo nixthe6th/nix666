@@ -1,0 +1,5 @@
+#!/bin/bash
+# Recon Claw CLI wrapper
+
+RECONCLAW_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
+node "$RECONCLAW_DIR/dist/cli.js" "$@"

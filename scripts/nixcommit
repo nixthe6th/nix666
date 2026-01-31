@@ -1,0 +1,233 @@
+#!/bin/bash
+#
+# nixcommit - Quick git commit helper for rapid iteration
+# Usage: nixcommit [message] [options]
+#
+# Examples:
+#   nixcommit              # Show status + suggest message
+#   nixcommit "fix bug"    # Commit with message
+#   nixcommit --push       # Commit and push
+#   nixcommit --amend      # Amend last commit
+#   nixcommit --sprint     # Sprint mode: quick commit + push
+#
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+PURPLE='\033[0;35m'
+GRAY='\033[0;90m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+# Change to repo root
+cd "$REPO_ROOT"
+
+# Generate commit suggestion based on changes
+suggest_message() {
+    local added=$(git diff --cached --name-only --diff-filter=A 2>/dev/null | wc -l)
+    local modified=$(git diff --cached --name-only --diff-filter=M 2>/dev/null | wc -l)
+    local deleted=$(git diff --cached --name-only --diff-filter=D 2>/dev/null | wc -l)
+    local has_staged=$((added + modified + deleted))
+    
+    if [ "$has_staged" -eq 0 ]; then
+        # Look at unstaged changes
+        added=$(git ls-files --others --exclude-standard | wc -l)
+        modified=$(git diff --name-only | wc -l)
+        deleted=$(git diff --name-only --diff-filter=D | wc -l)
+    fi
+    
+    local files=$(git diff --cached --name-only 2>/dev/null | head -3 | xargs -n1 basename 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
+    if [ -z "$files" ]; then
+        files=$(git diff --name-only | head -3 | xargs -n1 basename 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
+    fi
+    
+    local suggestion=""
+    
+    if [ "$added" -gt 0 ] && [ "$modified" -eq 0 ] && [ "$deleted" -eq 0 ]; then
+        suggestion="Add ${files}"
+    elif [ "$modified" -gt 0 ] && [ "$added" -eq 0 ] && [ "$deleted" -eq 0 ]; then
+        suggestion="Update ${files}"
+    elif [ "$deleted" -gt 0 ] && [ "$added" -eq 0 ] && [ "$modified" -eq 0 ]; then
+        suggestion="Remove ${files}"
+    elif echo "$files" | grep -qi "fix\|bug\|error"; then
+        suggestion="Fix ${files}"
+    elif echo "$files" | grep -qi "test\|spec"; then
+        suggestion="Add tests for ${files}"
+    elif echo "$files" | grep -qi "doc\|readme\|md"; then
+        suggestion="Update documentation"
+    elif echo "$files" | grep -qi "refactor\|clean"; then
+        suggestion="Refactor ${files}"
+    else
+        suggestion="Update ${files}"
+    fi
+    
+    echo "$suggestion"
+}
+
+# Show nice git status
+show_status() {
+    echo ""
+    echo -e "${BOLD}📊 Repository Status${NC}"
+    echo -e "${GRAY}$(git rev-parse --abbrev-ref HEAD) → $(git config --get remote.origin.url 2>/dev/null || echo 'no remote')${NC}"
+    echo ""
+    
+    # Staged changes
+    local staged=$(git diff --cached --stat 2>/dev/null)
+    if [ -n "$staged" ]; then
+        echo -e "${GREEN}✓ Staged for commit:${NC}"
+        git diff --cached --stat | sed 's/^/  /'
+        echo ""
+    fi
+    
+    # Unstaged changes
+    local unstaged=$(git diff --stat 2>/dev/null)
+    if [ -n "$unstaged" ]; then
+        echo -e "${YELLOW}✗ Unstaged changes:${NC}"
+        git diff --stat | sed 's/^/  /'
+        echo ""
+    fi
+    
+    # Untracked files
+    local untracked=$(git ls-files --others --exclude-standard)
+    if [ -n "$untracked" ]; then
+        echo -e "${CYAN}? Untracked files:${NC}"
+        echo "$untracked" | head -10 | sed 's/^/  /'
+        local count=$(echo "$untracked" | wc -l)
+        if [ "$count" -gt 10 ]; then
+            echo -e "${GRAY}  ... and $((count - 10)) more${NC}"
+        fi
+        echo ""
+    fi
+    
+    if [ -z "$staged" ] && [ -z "$unstaged" ] && [ -z "$untracked" ]; then
+        echo -e "${GREEN}✓ Working tree clean${NC}"
+        echo ""
+    fi
+}
+
+# Quick commit in sprint mode
+do_sprint() {
+    echo -e "${PURPLE}⚡ SPRINT MODE${NC}"
+    
+    # Add all changes
+    git add -A
+    
+    # Generate message
+    local msg=$(suggest_message)
+    if [ -z "$msg" ] || [ "$msg" = "Update " ]; then
+        msg="Quick update $(date +%H:%M)"
+    fi
+    
+    # Commit with suggestion if empty
+    echo -e "${CYAN}Commit: ${msg}${NC}"
+    git commit -m "$msg"
+    
+    # Push
+    echo -e "${CYAN}Pushing...${NC}"
+    git push
+    
+    echo -e "${GREEN}✓ Sprint commit complete!${NC}"
+}
+
+# Interactive commit
+do_interactive() {
+    show_status
+    
+    # Check if there's anything staged
+    local has_staged=$(git diff --cached --name-only | wc -l)
+    
+    if [ "$has_staged" -eq 0 ]; then
+        # Check for unstaged changes
+        local has_changes=$(git status --porcelain | wc -l)
+        if [ "$has_changes" -eq 0 ]; then
+            echo -e "${GREEN}Nothing to commit!${NC}"
+            exit 0
+        fi
+        
+        echo -e "${YELLOW}Stage all changes? (y/n/p for patch)${NC}"
+        read -r response
+        case "$response" in
+            y|Y|"")
+                git add -A
+                echo -e "${GREEN}✓ Staged all changes${NC}"
+                ;;
+            p|P)
+                git add -p
+                ;;
+            *)
+                echo "Cancelled"
+                exit 0
+                ;;
+        esac
+    fi
+    
+    # Suggest commit message
+    local suggestion=$(suggest_message)
+    echo -e "${CYAN}Suggested: \"${suggestion}\"${NC}"
+    echo -e "${YELLOW}Commit message (Enter for suggestion, or type your own):${NC}"
+    read -r msg
+    
+    if [ -z "$msg" ]; then
+        msg="$suggestion"
+    fi
+    
+    # Commit
+    git commit -m "$msg"
+    
+    # Ask to push
+    echo -e "${YELLOW}Push to remote? (y/n)${NC}"
+    read -r push_response
+    if [[ "$push_response" =~ ^[Yy]$ ]]; then
+        git push
+        echo -e "${GREEN}✓ Pushed!${NC}"
+    fi
+}
+
+# Main
+case "${1:-}" in
+    --help|-h)
+        echo "nixcommit - Quick git commit helper"
+        echo ""
+        echo "Usage:"
+        echo "  nixcommit              # Interactive commit with status"
+        echo "  nixcommit 'message'    # Commit with message"
+        echo "  nixcommit --sprint     # Sprint mode: stage, commit, push"
+        echo "  nixcommit --amend      # Amend last commit"
+        echo "  nixcommit --push       # Commit and push"
+        echo "  nixcommit --status     # Show status only"
+        exit 0
+        ;;
+    --sprint|-s)
+        do_sprint
+        ;;
+    --amend)
+        git commit --amend
+        ;;
+    --push|-p)
+        if [ -n "${2:-}" ]; then
+            git add -A 2>/dev/null || true
+            git commit -m "$2"
+        else
+            git commit
+        fi
+        git push
+        ;;
+    --status)
+        show_status
+        ;;
+    "")
+        do_interactive
+        ;;
+    *)
+        # Treat as commit message
+        git add -A 2>/dev/null || true
+        git commit -m "$1"
+        ;;
+esac

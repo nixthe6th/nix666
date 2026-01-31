@@ -48,6 +48,7 @@ Commands:
   convert <cmd> [input]   Data converter (b64, url, json, case)
   backup [cmd]            Backup/export data (list/export/clean)
   decide [cmd]            Decision log (add/list/review/stats)
+  commit [msg]            Quick git commit helper (--sprint for rapid mode)
   
   tools                   List all available tools
   help                    Show this help
@@ -78,6 +79,7 @@ list_tools() {
             nixrate) desc="Freelance rate calc" ;;
     nixweather) desc="Weather checker" ;;
             nixdecide) desc="Decision log" ;;
+            nixcommit) desc="Quick git commit helper" ;;
         esac
         printf "  %-10s %s\n" "$name" "$desc"
     done
@@ -222,6 +224,9 @@ main() {
             ;;
         decide)
             "$SCRIPT_DIR/nixdecide" "$@"
+            ;;
+        commit)
+            "$SCRIPT_DIR/nixcommit" "$@"
             ;;
         tools)
             list_tools

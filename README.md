@@ -236,6 +236,17 @@ nix connect serendipity                     # Random surprising connections
 nix connect clusters                        # View notes by tag clusters
 ```
 
+`nix outline` — Quick outliner for writing and brainstorming:
+```bash
+nix outline new "Blog Post"                 # Create new outline
+nix outline list                            # Show all outlines
+nix outline show abc123                     # Display outline structure
+nix outline add abc123 "Introduction"       # Add level 1 item
+nix outline add abc123 "Hook" 2             # Add level 2 (sub-item)
+nix outline done abc123 1.2                 # Toggle item done status
+nix outline export abc123                   # Export as Markdown
+```
+
 `nix export` — Export your data in multiple formats for portability:
 ```bash
 nix export                                  # Show data summary

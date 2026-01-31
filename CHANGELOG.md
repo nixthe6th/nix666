@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38e — Outliner)
+### Added
+- `outline.js` — Quick outliner for writing and brainstorming
+  - `nix outline new "Title"` — Create a new outline
+  - `nix outline list` — Show all outlines with item counts
+  - `nix outline show <id>` — Display outline structure visually
+  - `nix outline add <id> "Item" [level]` — Add items (level 1 or 2)
+  - `nix outline done <id> <path>` — Toggle item completion (e.g., 1.2)
+  - `nix outline delete <id>` — Delete an outline
+  - `nix outline export <id>` — Export as Markdown with checkboxes
+  - Hierarchical structure with 2 levels of nesting
+  - Visual tree display with color-coded bullets
+  - Tracks created/updated timestamps
+  - Stores data in `~/.nix666/outlines.json`
+  - Addresses ROADMAP: Knowledge Management - outline tool
+
 ## 2026-01-31 (GitHub Sprint #38d — Data Import)
 ### Added
 - `import.js` — Import data into nix from various formats

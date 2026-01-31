@@ -48,9 +48,9 @@ The future of NIX — what's planned, what's cooking, what's possible.
 
 #### Knowledge Management
 - [x] `nix read` — Reading list with progress tracking
-- [ ] `nix zettel` — Zettelkasten note system
-- `nix connect` — Find connections between notes
-- `nix outline` — Quick outlining for writing
+- [x] `nix zettel` — Zettelkasten note system
+- [x] `nix connect` — Find connections between notes
+- [x] `nix outline` — Quick outlining for writing
 
 #### Finance
 - `nix invest` — Investment portfolio tracker

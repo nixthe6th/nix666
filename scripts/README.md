@@ -63,6 +63,7 @@ nix tools                   # List all tools
 | `tag.js` | Universal tag manager | `nix tag work` |
 | `water.js` | Hydration tracker | `nix water 500` |
 | `sleep.js` | Sleep quality tracker | `nix sleep log 7.5 4` |
+| `outline.js` | Quick outliner for writing | `nix outline new "Blog Post"` |
 
 ## Quick Start
 

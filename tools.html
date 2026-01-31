@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Useful tools and resources for developers, builders, and hustlers.">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+    <title>/tools — NIX</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0f; --surface: #12121a; --surface-hover: #1a1a25;
+            --primary: #6366f1; --accent: #22d3ee; --text: #e2e8f0;
+            --muted: #64748b; --success: #22c55e;
+        }
+        body {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; padding: 2rem; line-height: 1.6;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .back {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            color: var(--muted); text-decoration: none; font-size: 0.9rem;
+            margin-bottom: 2rem; transition: color 0.2s;
+        }
+        .back:hover { color: var(--accent); }
+        h1 {
+            font-size: 2.5rem; margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle { color: var(--muted); margin-bottom: 2rem; }
+        section {
+            background: var(--surface); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;
+        }
+        section h2 {
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--muted); margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .tool-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .tool {
+            background: rgba(255,255,255,0.02); border-radius: 8px;
+            padding: 1rem; border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s;
+        }
+        .tool:hover {
+            background: var(--surface-hover);
+            border-color: var(--primary);
+        }
+        .tool a {
+            color: var(--accent); text-decoration: none; font-weight: 600;
+            display: block; margin-bottom: 0.25rem;
+        }
+        .tool a:hover { text-decoration: underline; }
+        .tool p { color: var(--muted); font-size: 0.85rem; }
+        .tag {
+            display: inline-block; background: rgba(99, 102, 241, 0.1);
+            color: var(--primary); padding: 0.15rem 0.5rem;
+            border-radius: 4px; font-size: 0.7rem; margin-top: 0.5rem;
+        }
+        footer {
+            margin-top: 3rem; padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center; color: var(--muted); font-size: 0.8rem;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            body { padding: 1.5rem; }
+            .tool-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back">← Back to home</a>
+        <h1>/tools</h1>
+        <p class="subtitle">Resources that keep the wheels turning</p>
+        
+        <section>
+            <h2>🚀 Quick Links</h2>
+            <div class="tool-grid">
+                <div class="tool">
+                    <a href="https://fiverr.com/thebignix">Fiverr Dashboard</a>
+                    <p>@thebignix — Check orders, messages, earnings</p>
+                    <span class="tag">income</span>
+                </div>
+                <div class="tool">
+                    <a href="https://github.com/kieranix">GitHub Profile</a>
+                    <p>Repos, activity, and code</p>
+                    <span class="tag">dev</span>
+                </div>
+                <div class="tool">
+                    <a href="https://t.me/kieransirl">Telegram</a>
+                    <p>Primary chat & NIX interface</p>
+                    <span class="tag">comms</span>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>🛠️ Dev Tools</h2>
+            <div class="tool-grid">
+                <div class="tool">
+                    <a href="https://jsonlint.com">JSONLint</a>
+                    <p>Validate and format JSON</p>
+                    <span class="tag">utility</span>
+                </div>
+                <div class="tool">
+                    <a href="https://regex101.com">Regex101</a>
+                    <p>Test and debug regular expressions</p>
+                    <span class="tag">utility</span>
+                </div>
+                <div class="tool">
+                    <a href="https://coolors.co">Coolors</a>
+                    <p>Generate color palettes fast</p>
+                    <span class="tag">design</span>
+                </div>
+                <div class="tool">
+                    <a href="https://readme.so">Readme.so</a>
+                    <p>Generate README files visually</p>
+                    <span class="tag">docs</span>
+                </div>
+                <div class="tool">
+                    <a href="https://httpie.io">HTTPie</a>
+                    <p>API testing in the terminal</p>
+                    <span class="tag">api</span>
+                </div>
+                <div class="tool">
+                    <a href="https://excalidraw.com">Excalidraw</a>
+                    <p>Quick sketches and diagrams</p>
+                    <span class="tag">design</span>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>💰 Money & Hustle</h2>
+            <div class="tool-grid">
+                <div class="tool">
+                    <a href="https://www.nerdwallet.com">NerdWallet</a>
+                    <p>Credit scores, cards, financial tools</p>
+                    <span class="tag">finance</span>
+                </div>
+                <div class="tool">
+                    <a href="https://www.producthunt.com">Product Hunt</a>
+                    <p>Find new products, get inspired</p>
+                    <span class="tag">ideas</span>
+                </div>
+                <div class="tool">
+                    <a href="https://indiehackers.com">Indie Hackers</a>
+                    <p>Community for bootstrapped founders</p>
+                    <span class="tag">community</span>
+                </div>
+                <div class="tool">
+                    <a href="https://news.ycombinator.com">Hacker News</a>
+                    <p>Tech news and discussions</p>
+                    <span class="tag">news</span>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>📚 Learning</h2>
+            <div class="tool-grid">
+                <div class="tool">
+                    <a href="https://developer.mozilla.org">MDN Web Docs</a>
+                    <p>The web developer bible</p>
+                    <span class="tag">docs</span>
+                </div>
+                <div class="tool">
+                    <a href="https://roadmap.sh">Roadmap.sh</a>
+                    <p>Developer career path guides</p>
+                    <span class="tag">career</span>
+                </div>
+                <div class="tool">
+                    <a href="https://www.youtube.com/@TraversyMedia">Traversy Media</a>
+                    <p>Practical web dev tutorials</p>
+                    <span class="tag">video</span>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>⚡ <a href="index.html">NIX</a> — Built with caffeine and cron jobs</p>
+        </footer>
+    </div>
+</body>
+</html>

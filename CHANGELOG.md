@@ -4,6 +4,11 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #1 — Volume & Momentum)
+### Added
+- `/tools.html` — Curated resources page for dev, money, and learning
+- `quotes.json` — API endpoint with motivational quotes
+
 ## 2026-01-31 (Sprint Mode)
 ### Added
 - `manifest.json` — PWA support, installable as app

@@ -189,6 +189,17 @@ nix zettel graph                                        # Knowledge graph view
 nix zettel tags                                         # List all tags
 ```
 
+`nix connect` — Discover connections between zettel notes:
+```bash
+nix connect related 2601311423              # Find notes with shared tags
+nix connect orphaned                        # Find unlinked notes
+nix connect bridges                         # Show knowledge clusters
+nix connect suggest 2601311423              # Suggest link candidates
+nix connect path 2601311423 2601311456      # Find path between notes
+nix connect serendipity                     # Random surprising connections
+nix connect clusters                        # View notes by tag clusters
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

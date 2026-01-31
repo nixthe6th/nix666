@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #37c — Note Connections)
+### Added
+- `connect.js` — Discover connections between zettel notes
+  - Find related notes by shared tags: `nix connect related <id>`
+  - Identify orphaned notes: `nix connect orphaned`
+  - Discover knowledge clusters: `nix connect bridges`
+  - Suggest link candidates: `nix connect suggest <id>`
+  - Find paths between notes: `nix connect path <id1> <id2>`
+  - Serendipitous connections: `nix connect serendipity`
+  - Tag cluster view: `nix connect clusters`
+  - Graph algorithms: BFS pathfinding, connected components
+  - Scoring system for link suggestions
+  - Integrates with zettel.json and zettel-links.json data
+
 ## 2026-01-31 (GitHub Sprint #37b — Zettelkasten Notes)
 ### Added
 - `zettel.js` — Zettelkasten note system for atomic, connected notes

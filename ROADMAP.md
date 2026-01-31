@@ -22,7 +22,7 @@ The future of NIX — what's planned, what's cooking, what's possible.
 ### Sprint #37 — Knowledge Capture
 - [x] `nix read` — Reading list with progress tracking (books, articles, papers)
 - [x] `nix zettel` — Zettelkasten note system
-- [ ] `nix connect` — Find connections between notes
+- [x] `nix connect` — Find connections between notes
 
 ---
 

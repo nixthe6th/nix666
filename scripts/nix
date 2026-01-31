@@ -58,6 +58,7 @@ Commands:
   standup [period]        Daily standup report (today/yesterday/week)
   later [url|cmd]         Read/watch later queue (add/list/done)
   learn [cmd]             Learning tracker with spaced repetition
+  roll [dice|coin|n]      Dice roller (2d6, coin, 100)
   
   tools                   List all available tools
   help                    Show this help
@@ -268,6 +269,9 @@ main() {
             ;;
         commit)
             "$SCRIPT_DIR/nixcommit" "$@"
+            ;;
+        roll)
+            node "$SCRIPT_DIR/../roll.js" "$@"
             ;;
         tools)
             list_tools

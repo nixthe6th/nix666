@@ -21,6 +21,9 @@ ls -la memory/
 
 # Git sprint mode (commit & push)
 ./scripts/sprint.sh "your commit message"
+
+# Scan workspace health
+./scripts/nixscan
 ```
 
 ## Philosophy

@@ -1,0 +1,309 @@
+#!/bin/bash
+# nixscan - Workspace health scanner
+# Scans for TODOs, FIXMEs, and project insights
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_ROOT="$(dirname "$SCRIPT_DIR")"
+DATA_DIR="$WORKSPACE_ROOT/.nixscan"
+SCAN_LOG="$DATA_DIR/scan-history.log"
+
+cd "$WORKSPACE_ROOT" || exit 1
+
+# Colors
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Initialize data dir
+mkdir -p "$DATA_DIR"
+
+show_help() {
+    cat << 'EOF'
+Usage: nixscan [command] [options]
+
+Commands:
+  todos           Show all TODO/FIXME items
+  stats           Workspace statistics
+  health          Overall health check
+  changed         Files changed since last scan
+  trends          Show scan history trends
+  
+Options:
+  -h, --help      Show this help
+  -q, --quiet     Quiet output (for scripts)
+
+Examples:
+  nixscan todos           # List all action items
+  nixscan stats           # Show repo statistics
+  nixscan health          # Full health report
+EOF
+}
+
+scan_todos() {
+    local quiet="$1"
+    local count=0
+    local critical=0
+    
+    [[ "$quiet" != "true" ]] && echo -e "${BLUE}🔍 Scanning for action items...${NC}\n"
+    
+    # Find TODOs and FIXMEs (exclude .git, node_modules)
+    local todos
+    todos=$(grep -rn "TODO\|FIXME\|XXX\|HACK" --include="*.md" --include="*.sh" --include="*.py" --include="*.js" --exclude-dir=".git" --exclude-dir="node_modules" --exclude-dir="credentials" . 2>/dev/null || true)
+    
+    if [[ -z "$todos" ]]; then
+        [[ "$quiet" != "true" ]] && echo -e "${GREEN}✅ No TODOs or FIXMEs found!${NC}"
+        return 0
+    fi
+    
+    # Group by priority/type
+    local critical_items=""
+    local normal_items=""
+    local minor_items=""
+    
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        
+        file=$(echo "$line" | cut -d: -f1)
+        lineno=$(echo "$line" | cut -d: -f2)
+        content=$(echo "$line" | cut -d: -f3-)
+        
+        if echo "$content" | grep -qi "FIXME\|CRITICAL\|URGENT"; then
+            critical_items+="  ${RED}●${NC} $file:$lineno\n     $content\n\n"
+            ((critical++))
+        elif echo "$content" | grep -qi "TODO"; then
+            normal_items+="  ${YELLOW}●${NC} $file:$lineno\n     $content\n\n"
+        else
+            minor_items+="  ${BLUE}○${NC} $file:$lineno\n     $content\n\n"
+        fi
+        ((count++))
+    done <<< "$todos"
+    
+    # Output grouped results
+    if [[ -n "$critical_items" && "$quiet" != "true" ]]; then
+        echo -e "${RED}🚨 CRITICAL ($critical)${NC}"
+        echo -e "$critical_items"
+    fi
+    
+    if [[ -n "$normal_items" && "$quiet" != "true" ]]; then
+        echo -e "${YELLOW}📝 TODOs${NC}"
+        echo -e "$normal_items"
+    fi
+    
+    if [[ -n "$minor_items" && "$quiet" != "true" ]]; then
+        echo -e "${BLUE}💡 Notes${NC}"
+        echo -e "$minor_items"
+    fi
+    
+    # Always show count
+    [[ "$quiet" != "true" ]] && echo -e "─────────────────────────"
+    echo "$count"
+}
+
+show_stats() {
+    local quiet="$1"
+    
+    [[ "$quiet" != "true" ]] && echo -e "${BLUE}📊 Workspace Statistics${NC}\n"
+    
+    # File counts
+    local md_count sh_count py_count js_count total_count
+    md_count=$(find . -name "*.md" -not -path "./.git/*" | wc -l)
+    sh_count=$(find . -name "*.sh" -not -path "./.git/*" | wc -l)
+    py_count=$(find . -name "*.py" -not -path "./.git/*" | wc -l)
+    js_count=$(find . -name "*.js" -not -path "./.git/*" | wc -l)
+    total_count=$(find . -type f -not -path "./.git/*" | wc -l)
+    
+    # Line counts
+    local md_lines sh_lines
+    md_lines=$(find . -name "*.md" -not -path "./.git/*" -exec cat {} \; 2>/dev/null | wc -l)
+    sh_lines=$(find . -name "*.sh" -not -path "./.git/*" -exec cat {} \; 2>/dev/null | wc -l)
+    
+    # Git stats
+    local commits branches
+    commits=$(git rev-list --count HEAD 2>/dev/null || echo "0")
+    branches=$(git branch -a 2>/dev/null | wc -l || echo "0")
+    
+    # Scripts
+    local script_count
+    script_count=$(ls -1 "$SCRIPT_DIR" 2>/dev/null | wc -l)
+    
+    if [[ "$quiet" != "true" ]]; then
+        echo "Files:"
+        echo "  Markdown:  $md_count files ($md_lines lines)"
+        echo "  Shell:     $sh_count files ($sh_lines lines)"
+        echo "  Python:    $py_count files"
+        echo "  JS:        $js_count files"
+        echo "  Total:     $total_count files"
+        echo ""
+        echo "Git:"
+        echo "  Commits:   $commits"
+        echo "  Branches:  $branches"
+        echo ""
+        echo "Scripts:     $script_count tools"
+    else
+        echo "$md_count,$sh_count,$py_count,$js_count,$total_count,$commits,$script_count"
+    fi
+}
+
+health_check() {
+    [[ "$1" != "true" ]] && echo -e "${BLUE}🏥 Health Check${NC}\n"
+    
+    local issues=0
+    local checks_passed=0
+    
+    # Check 1: Git status
+    if git diff-index --quiet HEAD -- 2>/dev/null; then
+        [[ "$1" != "true" ]] && echo -e "${GREEN}✓${NC} Git working tree clean"
+        ((checks_passed++))
+    else
+        [[ "$1" != "true" ]] && echo -e "${YELLOW}⚠${NC} Uncommitted changes present"
+        ((issues++))
+    fi
+    
+    # Check 2: Critical files exist
+    local critical_files=("README.md" "SOUL.md" "MEMORY.md")
+    for file in "${critical_files[@]}"; do
+        if [[ -f "$WORKSPACE_ROOT/$file" ]]; then
+            [[ "$1" != "true" ]] && echo -e "${GREEN}✓${NC} $file exists"
+            ((checks_passed++))
+        else
+            [[ "$1" != "true" ]] && echo -e "${RED}✗${NC} $file missing!"
+            ((issues++))
+        fi
+    done
+    
+    # Check 3: Memory directory
+    if [[ -d "$WORKSPACE_ROOT/memory" ]]; then
+        local mem_count
+        mem_count=$(ls -1 "$WORKSPACE_ROOT/memory" 2>/dev/null | wc -l)
+        [[ "$1" != "true" ]] && echo -e "${GREEN}✓${NC} Memory dir ($mem_count files)"
+        ((checks_passed++))
+    else
+        [[ "$1" != "true" ]] && echo -e "${RED}✗${NC} Memory dir missing!"
+        ((issues++))
+    fi
+    
+    # Check 4: TODO count (warn if high)
+    local todo_count
+    todo_count=$(scan_todos "true")
+    if [[ "$todo_count" -lt 10 ]]; then
+        [[ "$1" != "true" ]] && echo -e "${GREEN}✓${NC} TODOs under control ($todo_count)"
+        ((checks_passed++))
+    else
+        [[ "$1" != "true" ]] && echo -e "${YELLOW}⚠${NC} Many TODOs ($todo_count)"
+        ((issues++))
+    fi
+    
+    # Check 5: Scripts executable
+    local exec_issues=0
+    for script in "$SCRIPT_DIR"/*; do
+        [[ -f "$script" ]] || continue
+        [[ "$(basename "$script")" == "README.md" ]] && continue
+        if [[ ! -x "$script" ]]; then
+            ((exec_issues++))
+        fi
+    done
+    if [[ "$exec_issues" -eq 0 ]]; then
+        [[ "$1" != "true" ]] && echo -e "${GREEN}✓${NC} All scripts executable"
+        ((checks_passed++))
+    else
+        [[ "$1" != "true" ]] && echo -e "${YELLOW}⚠${NC} $exec_issues scripts not executable"
+        ((issues++))
+    fi
+    
+    [[ "$1" != "true" ]] && echo ""
+    [[ "$1" != "true" ]] && echo -e "Checks passed: $checks_passed | Issues: $issues"
+    
+    if [[ "$issues" -eq 0 ]]; then
+        [[ "$1" != "true" ]] && echo -e "${GREEN}🎉 All healthy!${NC}"
+        return 0
+    else
+        return 1
+    fi
+}
+
+show_changed() {
+    [[ "$1" != "true" ]] && echo -e "${BLUE}📁 Changed Files${NC}\n"
+    
+    # Files modified in last 24 hours
+    local recent
+    recent=$(find . -type f -mtime -1 -not -path "./.git/*" -not -path "./.nixscan/*" 2>/dev/null | head -20)
+    
+    if [[ -z "$recent" ]]; then
+        [[ "$1" != "true" ]] && echo "No files changed in last 24 hours"
+        return 0
+    fi
+    
+    [[ "$1" != "true" ]] && echo "$recent"
+    
+    local count
+    count=$(echo "$recent" | wc -l)
+    echo "$count files changed recently"
+}
+
+show_trends() {
+    [[ "$1" != "true" ]] && echo -e "${BLUE}📈 Scan History${NC}\n"
+    
+    if [[ ! -f "$SCAN_LOG" ]]; then
+        [[ "$1" != "true" ]] && echo "No history yet. Run 'nixscan health' to start tracking."
+        return 0
+    fi
+    
+    local entries
+    entries=$(wc -l < "$SCAN_LOG" 2>/dev/null || echo "0")
+    
+    [[ "$1" != "true" ]] && echo "Total scans: $entries"
+    [[ "$1" != "true" ]] && echo ""
+    [[ "$1" != "true" ]] && tail -10 "$SCAN_LOG" 2>/dev/null || true
+}
+
+log_scan() {
+    local timestamp
+    timestamp=$(date -Iseconds)
+    local todo_count
+    todo_count=$(scan_todos "true")
+    local stats
+    stats=$(show_stats "true")
+    echo "$timestamp,$todo_count,$stats" >> "$SCAN_LOG" 2>/dev/null || true
+}
+
+# Main
+case "${1:-}" in
+    -h|--help|help)
+        show_help
+        exit 0
+        ;;
+    todos|todo)
+        scan_todos
+        log_scan
+        ;;
+    stats|stat)
+        show_stats
+        log_scan
+        ;;
+    health|check)
+        health_check
+        log_scan
+        ;;
+    changed|recent)
+        show_changed
+        ;;
+    trends|history)
+        show_trends
+        ;;
+    "")
+        # Default: full health report
+        show_stats
+        echo ""
+        health_check
+        echo ""
+        scan_todos
+        log_scan
+        ;;
+    *)
+        echo "Unknown command: $1"
+        show_help
+        exit 1
+        ;;
+esac

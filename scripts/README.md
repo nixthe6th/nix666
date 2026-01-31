@@ -25,6 +25,7 @@ nix tools                   # List all tools
 | `nixnote` | Structured idea capture | `nixnote "my idea"` |
 | `nixdump` | Raw brain dump (no structure) | `nixdump` |
 | `nixtrack` | Fiverr income/orders tracker | `nixtrack income <amount>` |
+| `nixscan` | Workspace health scanner | `nixscan` or `nixscan todos` |
 | `dailylog.sh` | Daily memory template | `dailylog.sh` |
 | `sprint.sh` | Git commit & push | `sprint.sh "message"` |
 | `status.sh` | System check | `status.sh` |

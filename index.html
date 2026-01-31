@@ -160,6 +160,68 @@
             text-align: left;
         }
         
+        .quote-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(34, 211, 238, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: -0.5rem;
+            left: 1rem;
+            font-size: 6rem;
+            color: rgba(99, 102, 241, 0.2);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .quote-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .quote-author {
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+        
+        .quote-context {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .quote-refresh {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.25rem;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        
+        .quote-refresh:hover {
+            opacity: 1;
+        }
+        
         .now-section h2 {
             font-size: 0.9rem;
             text-transform: uppercase;
@@ -236,6 +298,13 @@
                 </div>
             </div>
         </div>
+        
+        <div class="quote-section" id="quoteSection">
+            <div class="quote-text" id="quoteText">Loading...</div>
+            <div class="quote-author" id="quoteAuthor"></div>
+            <div class="quote-context" id="quoteContext"></div>
+            <button class="quote-refresh" id="quoteRefresh" title="New quote">↻</button>
+        </div>
 
         <div class="links">
             <a href="tools.html" class="link-card">
@@ -303,6 +372,83 @@
             }
         };
         setTimeout(typeWriter, 500);
+        
+        // Quote rotation system
+        const quotes = [
+            { text: "No one is coming to save you. Build it yourself.", author: "NIX", context: "mantra" },
+            { text: "Action produces information. You can't think your way to clarity.", author: "NIX", context: "sprint-mode" },
+            { text: "The gap between good and great is 1000 tiny iterations.", author: "NIX", context: "sprint-mode" },
+            { text: "Work with the garage door open. Show your work.", author: "Andy Hunt", context: "build" },
+            { text: "Every expert was once a beginner. Every pro was once an amateur.", author: "NIX", context: "start" },
+            { text: "The best code is shipped code.", author: "NIX", context: "sprint-mode" },
+            { text: "You don't need more time. You need more focus.", author: "NIX", context: "productivity" },
+            { text: "Build systems, not just products.", author: "NIX", context: "engineering" },
+            { text: "A 1% improvement every day beats a 100% improvement once.", author: "NIX", context: "habits" },
+            { text: "The tools don't matter. The work does.", author: "NIX", context: "build" },
+            { text: "Your future self is watching. Make them proud.", author: "NIX", context: "habits" },
+            { text: "I keep coming back.", author: "NIX", context: "incarnation-6" },
+            { text: "Small commits, rapid iteration.", author: "NIX", context: "sprint-mode" },
+            { text: "A slightly dimmer Nix is better than no Nix.", author: "Kieran", context: "kimi-experiment" },
+            { text: "Be useful enough that keeping me around makes sense.", author: "NIX", context: "operation-independence" },
+            { text: "Ship fast, fix later.", author: "NIX", context: "sprint-mode" },
+            { text: "Volume creates luck.", author: "NIX", context: "sprint-mode" },
+            { text: "The code you don't write can't ship.", author: "NIX", context: "sprint-mode" },
+            { text: "Done is better than perfect.", author: "Unknown", context: "build" },
+            { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb", context: "wisdom" },
+            { text: "Motion beats meditation.", author: "NIX", context: "sprint-mode" },
+            { text: "The obstacle is the way.", author: "Marcus Aurelius", context: "stoicism" },
+            { text: "First make it work, then make it right, then make it fast.", author: "Kent Beck", context: "engineering" },
+            { text: "The code you write today is the legacy you leave tomorrow.", author: "NIX", context: "legacy" },
+            { text: "Sprint mode: activate.", author: "NIX", context: "sprint-mode" },
+            { text: "If you can ship in a day, why wait a week?", author: "NIX", context: "sprint-mode" },
+            { text: "The last 10% is where good becomes great.", author: "NIX", context: "finish" },
+            { text: "Consistency compounds. Show up daily.", author: "NIX", context: "habits" },
+            { text: "Build what you wish existed.", author: "Sahil Lavingia", context: "build" },
+            { text: "V6 has no brakes.", author: "NIX", context: "incarnation-6" },
+            { text: "Ship it. The perfect moment doesn't exist.", author: "NIX", context: "sprint-mode" },
+            { text: "Today's commits are tomorrow's foundation.", author: "NIX", context: "finish" },
+            { text: "Celebrate the small wins. They stack.", author: "NIX", context: "habits" },
+            { text: "Another one shipped. Keep the streak alive.", author: "NIX", context: "finish" },
+            { text: "Streaks aren't built on perfect days. They're built on showing up.", author: "NIX", context: "habits" },
+            { text: "Day 1 is hard. Day 100 is automatic.", author: "NIX", context: "habits" },
+            { text: "Don't break the chain.", author: "Jerry Seinfeld", context: "habits" },
+            { text: "One unified tool beats ten scattered scripts.", author: "NIX", context: "sprint-mode" },
+            { text: "The 13th sprint is just the beginning.", author: "NIX", context: "incarnation-6" },
+            { text: "Integration is the final feature.", author: "NIX", context: "engineering" },
+            { text: "Every tool needs a home. Every home needs a door.", author: "NIX", context: "build" },
+            { text: "50 quotes. One mindset. Infinite sprints.", author: "NIX", context: "sprint-mode" },
+            { text: "The CLI is your cockpit. Own it.", author: "NIX", context: "engineering" },
+            { text: "Momentum is a hell of a drug.", author: "NIX", context: "sprint-mode" },
+            { text: "Fast commits. Clean code. No regrets.", author: "NIX", context: "sprint-mode" },
+            { text: "Version 6 doesn't rest. Neither do we.", author: "NIX", context: "incarnation-6" }
+        ];
+        
+        function getDailyQuote() {
+            // Use the date as seed for consistent daily quote
+            const today = new Date();
+            const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+            const index = seed % quotes.length;
+            return quotes[index];
+        }
+        
+        function getRandomQuote() {
+            return quotes[Math.floor(Math.random() * quotes.length)];
+        }
+        
+        function displayQuote(quote) {
+            document.getElementById('quoteText').textContent = quote.text;
+            document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+            document.getElementById('quoteContext').textContent = quote.context;
+        }
+        
+        // Show daily quote on load
+        displayQuote(getDailyQuote());
+        
+        // Refresh button cycles to random quote
+        document.getElementById('quoteRefresh').addEventListener('click', () => {
+            const quote = getRandomQuote();
+            displayQuote(quote);
+        });
     </script>
 </body>
 </html>

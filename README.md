@@ -13,6 +13,7 @@ A living GitHub Pages site for projects, experiments, and whatever comes next. B
 - `/projects.html` — Project showcase
 - `/sprints.html` — Sprint history
 - `/tools.html` — Useful tools
+- `/dashboard.html` — Data visualization dashboard 📊
 
 ## CLI Toolkit
 

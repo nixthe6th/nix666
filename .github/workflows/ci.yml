@@ -44,6 +44,7 @@ jobs:
         test -f index.html
         test -f now.html
         test -f projects.html
+        test -f dashboard.html
         echo "✓ Core HTML files present"
     
     - name: Check docs are updated

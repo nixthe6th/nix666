@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIX Dashboard — Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--bg-secondary);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px var(--accent-glow);
+        }
+
+        .stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .trend {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .trend.up { color: var(--success); }
+        .trend.down { color: var(--danger); }
+        .trend.neutral { color: var(--text-secondary); }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--bg-secondary);
+        }
+
+        .chart-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+
+        .insights {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--bg-secondary);
+            margin-top: 2rem;
+        }
+
+        .insights h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .insight-list {
+            list-style: none;
+        }
+
+        .insight-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--bg-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+
+        .insight-icon {
+            font-size: 1.25rem;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .no-data-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.75rem;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--bg-secondary);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ NIX Dashboard</h1>
+            <p>Visualize your patterns. Understand your data.</p>
+        </header>
+
+        <div id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading your data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Color palette for charts
+        const colors = {
+            primary: '#6366f1',
+            secondary: '#a855f7',
+            success: '#22c55e',
+            warning: '#f59e0b',
+            danger: '#ef4444',
+            info: '#3b82f6',
+            grid: 'rgba(255, 255, 255, 0.05)',
+            text: '#a0a0b0'
+        };
+
+        // Chart.js defaults for dark theme
+        Chart.defaults.color = colors.text;
+        Chart.defaults.borderColor = colors.grid;
+        Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace";
+
+        // Sample data generator for demo (in production, this would fetch from data/)
+        function generateSampleData() {
+            const days = 7;
+            const dates = [];
+            const now = new Date();
+            
+            for (let i = days - 1; i >= 0; i--) {
+                const d = new Date(now);
+                d.setDate(d.getDate() - i);
+                dates.push(d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
+            }
+
+            return {
+                dates,
+                mood: [3, 4, 4, 5, 3, 4, 5],
+                energy: [3, 3, 4, 5, 4, 4, 5],
+                water: [2000, 1800, 2200, 2500, 1900, 2100, 2400],
+                sleep: [7, 6.5, 8, 7.5, 6, 7.5, 8],
+                habits: {
+                    labels: ['Meditation', 'Reading', 'Exercise', 'Journaling', 'Coding'],
+                    completed: [5, 4, 3, 6, 7],
+                    target: [7, 7, 5, 7, 7]
+                },
+                gratitude: [3, 3, 3, 3, 2, 3, 3],
+                expenses: {
+                    labels: ['Food', 'Transport', 'Tech', 'Entertainment', 'Other'],
+                    amounts: [150, 80, 200, 60, 45]
+                }
+            };
+        }
+
+        // Calculate statistics
+        function calculateStats(data) {
+            const avg = arr => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1);
+            const max = arr => Math.max(...arr);
+            const sum = arr => arr.reduce((a, b) => a + b, 0);
+
+            return {
+                avgMood: avg(data.mood),
+                avgEnergy: avg(data.energy),
+                totalWater: sum(data.water),
+                avgSleep: avg(data.sleep),
+                habitsCompleted: sum(data.habits.completed),
+                gratitudeEntries: sum(data.gratitude)
+            };
+        }
+
+        // Create stat cards HTML
+        function createStatCards(stats) {
+            const cards = [
+                { label: 'Average Mood', value: stats.avgMood + '/5', trend: '+12%', trendClass: 'up', icon: '😊' },
+                { label: 'Average Energy', value: stats.avgEnergy + '/5', trend: '+8%', trendClass: 'up', icon: '⚡' },
+                { label: 'Water Intake', value: (stats.totalWater / 1000).toFixed(1) + 'L', trend: 'Good', trendClass: 'neutral', icon: '💧' },
+                { label: 'Avg Sleep', value: stats.avgSleep + 'h', trend: 'Optimal', trendClass: 'up', icon: '😴' }
+            ];
+
+            return `
+                <div class="stats-grid">
+                    ${cards.map(card => `
+                        <div class="stat-card">
+                            <div class="label">${card.icon} ${card.label}</div>
+                            <div class="value" style="color: ${colors.primary}">${card.value}</div>
+                            <div class="trend ${card.trendClass}">
+                                ${card.trendClass === 'up' ? '↑' : card.trendClass === 'down' ? '↓' : '→'} ${card.trend}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Create mood & energy chart
+        function createMoodEnergyChart(ctx, data) {
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.dates,
+                    datasets: [
+                        {
+                            label: 'Mood',
+                            data: data.mood,
+                            borderColor: colors.primary,
+                            backgroundColor: colors.primary + '20',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Energy',
+                            data: data.energy,
+                            borderColor: colors.warning,
+                            backgroundColor: colors.warning + '20',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 1,
+                            max: 5,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create water intake chart
+        function createWaterChart(ctx, data) {
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.dates,
+                    datasets: [{
+                        label: 'Water (ml)',
+                        data: data.water,
+                        backgroundColor: colors.info,
+                        borderRadius: 6
+                    }, {
+                        label: 'Goal (2000ml)',
+                        data: data.dates.map(() => 2000),
+                        type: 'line',
+                        borderColor: colors.success,
+                        borderDash: [5, 5],
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create sleep chart
+        function createSleepChart(ctx, data) {
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.dates,
+                    datasets: [{
+                        label: 'Hours',
+                        data: data.sleep,
+                        backgroundColor: data.sleep.map(h => h >= 7 ? colors.success : h >= 6 ? colors.warning : colors.danger),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create habits radar chart
+        function createHabitsChart(ctx, data) {
+            return new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: data.habits.labels,
+                    datasets: [{
+                        label: 'Completed',
+                        data: data.habits.completed,
+                        borderColor: colors.primary,
+                        backgroundColor: colors.primary + '30',
+                    }, {
+                        label: 'Target',
+                        data: data.habits.target,
+                        borderColor: colors.text,
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 7,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create expenses pie chart
+        function createExpensesChart(ctx, data) {
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.expenses.labels,
+                    datasets: [{
+                        data: data.expenses.amounts,
+                        backgroundColor: [colors.primary, colors.secondary, colors.success, colors.warning, colors.info],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Generate insights
+        function generateInsights(stats, data) {
+            const insights = [];
+            
+            if (parseFloat(stats.avgMood) >= 4) {
+                insights.push({ icon: '😊', text: 'Your mood has been consistently positive this week. Great job!' });
+            } else if (parseFloat(stats.avgMood) < 3) {
+                insights.push({ icon: '💙', text: 'Your mood seems lower than usual. Consider prioritizing self-care activities.' });
+            }
+
+            if (parseFloat(stats.avgSleep) < 7) {
+                insights.push({ icon: '😴', text: `You're averaging ${stats.avgSleep}h of sleep. Aim for 7-8 hours for optimal performance.` });
+            } else {
+                insights.push({ icon: '⭐', text: 'Your sleep schedule is on point! Good sleep fuels everything else.' });
+            }
+
+            const waterLiters = (stats.totalWater / 1000 / 7).toFixed(1);
+            if (waterLiters < 2) {
+                insights.push({ icon: '💧', text: `Average water intake: ${waterLiters}L/day. Try to reach 2-3 liters for better hydration.` });
+            }
+
+            const habitRate = ((stats.habitsCompleted / data.habits.target.reduce((a,b) => a+b, 0)) * 100).toFixed(0);
+            insights.push({ icon: '🎯', text: `Habit completion rate: ${habitRate}%. ${habitRate > 70 ? 'Excellent consistency!' : 'Small improvements add up over time.'}` });
+
+            return insights;
+        }
+
+        // Main render function
+        function renderDashboard() {
+            const data = generateSampleData();
+            const stats = calculateStats(data);
+            const insights = generateInsights(stats, data);
+
+            document.getElementById('content').innerHTML = `
+                ${createStatCards(stats)}
+                
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>📈 Mood & Energy Trends</h3>
+                        <div class="chart-container">
+                            <canvas id="moodChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>💧 Hydration Tracking</h3>
+                        <div class="chart-container">
+                            <canvas id="waterChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>😴 Sleep Quality</h3>
+                        <div class="chart-container">
+                            <canvas id="sleepChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>🎯 Habit Performance</h3>
+                        <div class="chart-container">
+                            <canvas id="habitsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>💰 Expense Breakdown</h3>
+                        <div class="chart-container">
+                            <canvas id="expensesChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>🙏 Gratitude Practice</h3>
+                        <div class="chart-container">
+                            <canvas id="gratitudeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insights">
+                    <h3>💡 Insights</h3>
+                    <ul class="insight-list">
+                        ${insights.map(i => `
+                            <li>
+                                <span class="insight-icon">${i.icon}</span>
+                                <span>${i.text}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+
+            // Initialize charts
+            createMoodEnergyChart(document.getElementById('moodChart'), data);
+            createWaterChart(document.getElementById('waterChart'), data);
+            createSleepChart(document.getElementById('sleepChart'), data);
+            createHabitsChart(document.getElementById('habitsChart'), data);
+            createExpensesChart(document.getElementById('expensesChart'), data);
+            
+            // Simple gratitude bar chart
+            new Chart(document.getElementById('gratitudeChart'), {
+                type: 'line',
+                data: {
+                    labels: data.dates,
+                    datasets: [{
+                        label: 'Entries',
+                        data: data.gratitude,
+                        borderColor: colors.secondary,
+                        backgroundColor: colors.secondary + '20',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        // Load dashboard on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(renderDashboard, 500); // Simulate loading for effect
+        });
+    </script>
+</body>
+</html>

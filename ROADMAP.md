@@ -63,7 +63,7 @@ The future of NIX — what's planned, what's cooking, what's possible.
 - [x] `nix gratitude` — Daily gratitude log
 
 ### Web Interface
-- [ ] Interactive dashboard with charts
+- [x] Interactive dashboard with charts — See `dashboard.html`
 - [ ] Calendar view for all tracked data
 - [ ] Mobile-responsive layout improvements
 - [ ] PWA support for offline access

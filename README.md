@@ -39,6 +39,16 @@ nix expense summary                      # Monthly breakdown
 nix expense budget 2000                  # Set monthly budget
 ```
 
+`nix learn` — Learning tracker with spaced repetition:
+```bash
+nix learn add "Rust Programming" "https://doc.rust-lang.org"
+nix learn log "Rust" "learned about ownership" 60
+nix learn review                         # Show today's review queue
+nix learn list                           # All active skills
+nix learn stats                          # Learning dashboard
+nix learn done "Rust"                    # Mark as mastered
+```
+
 `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

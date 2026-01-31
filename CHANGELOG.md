@@ -4,6 +4,19 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #35 — Learning Tracker)
+### Added
+- `learn.js` — Learning tracker with spaced repetition
+  - Start learning new skills: `nix learn add "Rust Programming" "https://doc.rust-lang.org"`
+  - Log study sessions: `nix learn log "Rust" "learned ownership" 60`
+  - Spaced repetition scheduling: 1, 3, 7, 14, 30, 60, 90 day intervals
+  - Review queue: `nix learn review` shows what's due today
+  - Skill levels 1-5 with progression tracking
+  - Mark skills as completed: `nix learn done "Rust"`
+  - Learning statistics dashboard with streak tracking
+  - Total learning time tracking across all skills
+- `ROADMAP.md` — Future plans, feature ideas, and project direction
+
 ## 2026-01-31 (GitHub Sprint #34 — Expense Tracker)
 ### Added
 - `expense.js` — Personal expense tracker for financial awareness

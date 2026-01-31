@@ -57,6 +57,7 @@ Commands:
   commit [msg]            Quick git commit helper (--sprint for rapid mode)
   standup [period]        Daily standup report (today/yesterday/week)
   later [url|cmd]         Read/watch later queue (add/list/done)
+  learn [cmd]             Learning tracker with spaced repetition
   
   tools                   List all available tools
   help                    Show this help
@@ -116,6 +117,7 @@ list_tools() {
     printf "  %-10s %s\n" "water.js" "Hydration tracker"
     printf "  %-10s %s\n" "standup.js" "Daily standup report"
     printf "  %-10s %s\n" "later.js" "Read/watch later queue"
+    printf "  %-10s %s\n" "learn.js" "Learning tracker with SRS"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -242,6 +244,9 @@ main() {
             ;;
         later)
             node "$SCRIPT_DIR/../later.js" "$@"
+            ;;
+        learn)
+            node "$SCRIPT_DIR/../learn.js" "$@"
             ;;
         backup)
             node "$SCRIPT_DIR/../backup.js" "$@"

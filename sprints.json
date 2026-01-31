@@ -1,25 +1,27 @@
 {
-  "current": {
-    "number": 23,
-    "name": "Quick Calculator",
-    "goal": "Fast CLI calculator for math, time, and finance conversions",
-    "status": "in_progress",
-    "date": "2026-01-31",
-    "started_at": "2026-01-31T09:55:00",
-    "deliverables": [
-      "calc.js — Quick calculation utility with color output",
-      "Math operations: +, -, *, /, ^, sqrt",
-      "Time: mins/hours conversion",
-      "Finance: hourly/annual rate conversion",
-      "Percentages: X% of Y calculations"
-    ],
-    "meta": {
-      "trigger": "cron",
-      "builder": "OpenClaw",
-      "target_time": "<10 min"
-    }
-  },
+  "current": null,
   "sprints": [
+    {
+      "number": 23,
+      "name": "Quick Calculator",
+      "goal": "Fast CLI calculator for math, time, and finance conversions",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T09:55:00",
+      "completed_at": "2026-01-31T09:57:00",
+      "deliverables": [
+        "calc.js — Quick calculation utility with color output",
+        "Math operations: +, -, *, /, ^, sqrt",
+        "Time: mins/hours conversion",
+        "Finance: hourly/annual rate conversion",
+        "Percentages: X% of Y calculations"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "OpenClaw",
+        "target_time": "<10 min"
+      }
+    },
     {
       "number": 16,
       "name": "Daily Logger",
@@ -347,7 +349,7 @@
   ],
   "stats": {
     "total": 17,
-    "completed": 16,
+    "completed": 17,
     "deliverables": 59
   }
 }

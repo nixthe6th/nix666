@@ -38,6 +38,7 @@ Commands:
   log [cmd]               Daily logger (add/show/search)
   habits [cmd]            Daily habit tracker (check/list/stats)
   mood [cmd]              Daily mood tracker (log/show/stats)
+  session [cmd]           Work session tracker (start/stop/log/stats)
   
   tools                   List all available tools
   help                    Show this help
@@ -83,6 +84,7 @@ list_tools() {
     printf "  %-10s %s\n" "log.js" "Daily logger"
     printf "  %-10s %s\n" "habits.js" "Habit tracker"
     printf "  %-10s %s\n" "mood.js" "Mood tracker"
+    printf "  %-10s %s\n" "session.js" "Work session tracker"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -172,6 +174,9 @@ main() {
             ;;
         mood)
             node "$SCRIPT_DIR/../mood.js" "$@"
+            ;;
+        session)
+            node "$SCRIPT_DIR/../session.js" "$@"
             ;;
         tools)
             list_tools

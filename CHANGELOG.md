@@ -4,6 +4,21 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #21 — Session Tracker)
+### Added
+- `session.js` — Work session tracker for focused productivity
+  - Start/stop sessions with project and tag categorization
+  - Real-time status showing elapsed time for active sessions
+  - Session log with duration, project, tag, and optional notes
+  - Stats dashboard: total hours, session count, average duration
+  - Project breakdown with visual hour bars
+  - Time period filtering: today, week, month, all-time
+  - CSV export for external analysis
+  - Commands: `start <project> [tag]`, `stop [note]`, `status`, `log`, `stats`, `projects`, `export`
+  - Integrated into `nix` CLI as `nix session`
+  - Added to `projects.json` as active productivity tool
+- `data/sessions.json` — Session data storage with full history
+
 ## 2026-01-31 (GitHub Sprint #20 — Mood Tracker)
 ### Added
 - `mood.js` — Daily mood & emotion tracker

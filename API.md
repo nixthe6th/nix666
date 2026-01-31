@@ -8,10 +8,14 @@
 - [bm](#bm) — bm.js - Bookmark CLI for quick access to saved links
 - [done](#done) — done.js - Sprint completion tracker
 - [focus](#focus) — focus.js - Pomodoro focus timer with motivation
+- [habits](#habits) — CLI tool
 - [ideas](#ideas) — ideas.js - Idea backlog and project pipeline tracker
+- [log](#log) — log.js — Quick daily logger
+- [mood](#mood) — mood.js — Daily mood & emotion tracker
 - [note](#note) — note.js - Quick capture for thoughts, ideas, and tasks
 - [projstats](#projstats) — projstats - Quick project dashboard stats
 - [quote](#quote) — quote - Terminal motivation from NIX
+- [session](#session) — session.js - Work session tracker
 - [stats](#stats) — stats.js — Productivity Stats Dashboard
 - [streak](#streak) — streak.js - Git activity streak tracker
 - [today](#today) — today.js - Daily briefing: date, quote, streak, sprint status
@@ -121,6 +125,33 @@ focus [minutes] [--quote]
 
 ---
 
+## habits
+
+**File:** `habits.js`
+
+### Usage
+
+```bash
+habits.js [check|uncheck|list|add|remove|stats] [habit-id]
+```
+```bash
+');
+```
+
+### Commands
+
+- `habits`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## ideas
 
 ideas.js - Idea backlog and project pipeline tracker
@@ -140,6 +171,63 @@ ${COLORS.reset}
 
 - `ideas`
 - `nixsprint`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## log
+
+log.js — Quick daily logger
+
+**File:** `log.js`
+
+### Usage
+
+```bash
+nix log add <text>');
+```
+```bash
+nix log search <query>');
+```
+```bash
+nix log add <text>     Add entry
+```
+
+### Commands
+
+- `nix`
+
+---
+
+## mood
+
+mood.js — Daily mood & emotion tracker
+
+**File:** `mood.js`
+
+### Usage
+
+```bash
+mood.js [command] [options]
+```
+```bash
+mood.js log <1-5> [note]\n');
+```
+```bash
+mood.js log <1-5> [note]');
+```
+
+### Commands
+
+- `mood`
+- `log`
 
 ### Flags
 
@@ -220,6 +308,39 @@ quote search <term>');
 ### Commands
 
 - `quote`
+
+---
+
+## session
+
+session.js - Work session tracker
+
+**File:** `session.js`
+
+### Usage
+
+```bash
+session.js <command> [args]
+```
+```bash
+session.js start <project> [tag]${C.reset}`);
+```
+```bash
+session.js <command> [args]\n');
+```
+
+### Commands
+
+- `session`
+- `start`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
 
 ---
 
@@ -380,10 +501,14 @@ week [--commits|--sprints|--json]
 | [bm](#bm) | bm.js - Bookmark CLI for quick access to saved links |
 | [done](#done) | done.js - Sprint completion tracker |
 | [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
+| [habits](#habits) | — |
 | [ideas](#ideas) | ideas.js - Idea backlog and project pipeline tracker |
+| [log](#log) | log.js — Quick daily logger |
+| [mood](#mood) | mood.js — Daily mood & emotion tracker |
 | [note](#note) | note.js - Quick capture for thoughts, ideas, and tasks |
 | [projstats](#projstats) | projstats - Quick project dashboard stats |
 | [quote](#quote) | quote - Terminal motivation from NIX |
+| [session](#session) | session.js - Work session tracker |
 | [stats](#stats) | stats.js — Productivity Stats Dashboard |
 | [streak](#streak) | streak.js - Git activity streak tracker |
 | [today](#today) | today.js - Daily briefing: date, quote, streak, sprint status |

@@ -35,7 +35,7 @@
   <h2>Quick Reference</h2>
   <table>
     <tr><th>Tool</th><th>Description</th></tr>
-    <tr><td><a href="#bm">bm</a></td><td>bm.js - Bookmark CLI for quick access to saved links</td></tr><tr><td><a href="#done">done</a></td><td>done.js - Sprint completion tracker</td></tr><tr><td><a href="#focus">focus</a></td><td>focus.js - Pomodoro focus timer with motivation</td></tr><tr><td><a href="#ideas">ideas</a></td><td>ideas.js - Idea backlog and project pipeline tracker</td></tr><tr><td><a href="#note">note</a></td><td>note.js - Quick capture for thoughts, ideas, and tasks</td></tr><tr><td><a href="#projstats">projstats</a></td><td>projstats - Quick project dashboard stats</td></tr><tr><td><a href="#quote">quote</a></td><td>quote - Terminal motivation from NIX</td></tr><tr><td><a href="#stats">stats</a></td><td>stats.js — Productivity Stats Dashboard</td></tr><tr><td><a href="#streak">streak</a></td><td>streak.js - Git activity streak tracker</td></tr><tr><td><a href="#today">today</a></td><td>today.js - Daily briefing: date, quote, streak, sprint status</td></tr><tr><td><a href="#todo">todo</a></td><td>todo.js - Sprint-mode task tracker</td></tr><tr><td><a href="#week">week</a></td><td>week.js - Weekly retrospective: commits, sprints, stats, progress</td></tr>
+    <tr><td><a href="#bm">bm</a></td><td>bm.js - Bookmark CLI for quick access to saved links</td></tr><tr><td><a href="#done">done</a></td><td>done.js - Sprint completion tracker</td></tr><tr><td><a href="#focus">focus</a></td><td>focus.js - Pomodoro focus timer with motivation</td></tr><tr><td><a href="#habits">habits</a></td><td>—</td></tr><tr><td><a href="#ideas">ideas</a></td><td>ideas.js - Idea backlog and project pipeline tracker</td></tr><tr><td><a href="#log">log</a></td><td>log.js — Quick daily logger</td></tr><tr><td><a href="#mood">mood</a></td><td>mood.js — Daily mood & emotion tracker</td></tr><tr><td><a href="#note">note</a></td><td>note.js - Quick capture for thoughts, ideas, and tasks</td></tr><tr><td><a href="#projstats">projstats</a></td><td>projstats - Quick project dashboard stats</td></tr><tr><td><a href="#quote">quote</a></td><td>quote - Terminal motivation from NIX</td></tr><tr><td><a href="#session">session</a></td><td>session.js - Work session tracker</td></tr><tr><td><a href="#stats">stats</a></td><td>stats.js — Productivity Stats Dashboard</td></tr><tr><td><a href="#streak">streak</a></td><td>streak.js - Git activity streak tracker</td></tr><tr><td><a href="#today">today</a></td><td>today.js - Daily briefing: date, quote, streak, sprint status</td></tr><tr><td><a href="#todo">todo</a></td><td>todo.js - Sprint-mode task tracker</td></tr><tr><td><a href="#week">week</a></td><td>week.js - Weekly retrospective: commits, sprints, stats, progress</td></tr>
   </table>
   
   <h2>Tools</h2>
@@ -67,11 +67,38 @@
         
       </section>
     
+      <section id="habits">
+        <h3>habits <code>habits.js</code></h3>
+        <p>CLI tool</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>habits.js [check|uncheck|list|add|remove|stats] [habit-id]</code></pre><pre><code>');</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
       <section id="ideas">
         <h3>ideas <code>ideas.js</code></h3>
         <p>ideas.js - Idea backlog and project pipeline tracker</p>
         <span class="badge">--help available</span>
         <div class="section"><h4>Usage</h4><pre><code>ideas [command] [args]</code></pre><pre><code>${COLORS.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="log">
+        <h3>log <code>log.js</code></h3>
+        <p>log.js — Quick daily logger</p>
+        
+        <div class="section"><h4>Usage</h4><pre><code>nix log add <text>');</code></pre><pre><code>nix log search <query>');</code></pre><pre><code>nix log add <text>     Add entry</code></pre></div>
+        
+        
+      </section>
+    
+      <section id="mood">
+        <h3>mood <code>mood.js</code></h3>
+        <p>mood.js — Daily mood & emotion tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>mood.js [command] [options]</code></pre><pre><code>mood.js log <1-5> [note]\n');</code></pre><pre><code>mood.js log <1-5> [note]');</code></pre></div>
         <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
         
       </section>
@@ -100,6 +127,15 @@
         
         <div class="section"><h4>Usage</h4><pre><code>quote [context|all|search <term>|list]</code></pre><pre><code>quote search <term>');</code></pre></div>
         
+        
+      </section>
+    
+      <section id="session">
+        <h3>session <code>session.js</code></h3>
+        <p>session.js - Work session tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>session.js <command> [args]</code></pre><pre><code>session.js start <project> [tag]${C.reset}`);</code></pre><pre><code>session.js <command> [args]\n');</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
         
       </section>
     

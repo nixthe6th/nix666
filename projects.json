@@ -127,5 +127,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "mood", "health", "wellness"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "session",
+    "description": "Work session tracker - log focused work time by project with analytics",
+    "url": "./session.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "productivity", "time-tracking"],
+    "updated": "2026-01-31"
   }
 ]

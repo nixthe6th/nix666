@@ -48,6 +48,7 @@ Commands:
   convert <cmd> [input]   Data converter (b64, url, json, case)
   backup [cmd]            Backup/export data (list/export/clean)
   decide [cmd]            Decision log (add/list/review/stats)
+  water [cmd]             Hydration tracker (add/status/week/goal)
   commit [msg]            Quick git commit helper (--sprint for rapid mode)
   standup [period]        Daily standup report (today/yesterday/week)
   later [url|cmd]         Read/watch later queue (add/list/done)
@@ -81,6 +82,7 @@ list_tools() {
             nixrate) desc="Freelance rate calc" ;;
     nixweather) desc="Weather checker" ;;
             nixdecide) desc="Decision log" ;;
+            nixwater) desc="Hydration tracker" ;;
             nixcommit) desc="Quick git commit helper" ;;
         esac
         printf "  %-10s %s\n" "$name" "$desc"
@@ -106,6 +108,7 @@ list_tools() {
     printf "  %-10s %s\n" "find.js" "Universal search"
     printf "  %-10s %s\n" "convert.js" "Data format converter"
     printf "  %-10s %s\n" "backup.js" "Data backup and export"
+    printf "  %-10s %s\n" "water.js" "Hydration tracker"
     printf "  %-10s %s\n" "standup.js" "Daily standup report"
     printf "  %-10s %s\n" "later.js" "Read/watch later queue"
     echo ""
@@ -226,17 +229,20 @@ main() {
         standup)
             node "$SCRIPT_DIR/../standup.js" "$@"
             ;;
+        later)
+            node "$SCRIPT_DIR/../later.js" "$@"
+            ;;
         backup)
             node "$SCRIPT_DIR/../backup.js" "$@"
             ;;
         decide)
             "$SCRIPT_DIR/nixdecide" "$@"
             ;;
+        water)
+            "$SCRIPT_DIR/nixwater" "$@"
+            ;;
         commit)
             "$SCRIPT_DIR/nixcommit" "$@"
-            ;;
-        later)
-            node "$SCRIPT_DIR/../later.js" "$@"
             ;;
         tools)
             list_tools

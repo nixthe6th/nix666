@@ -29,7 +29,17 @@ nix decide     # Decision log
 nix when       # Time calculator
 ```
 
-**New:** `nix standup` — Daily standup report aggregating all productivity data:
+<<<<<<< HEAD
+**New:** `nix water` — Hydration tracker with daily goals:
+```bash
+nix water 500                  # Add 500ml
+nix water glass                # Add 250ml (quick)
+nix water bottle               # Add 500ml (quick)
+nix water week                 # Show last 7 days
+nix water goal 3000            # Set daily goal
+```
+
+`nix standup` — Daily standup report aggregating all productivity data:
 ```bash
 nix standup                    # Full daily standup report
 nix standup yesterday          # Yesterday's wins only
@@ -45,12 +55,6 @@ nix later stats                # Queue statistics
 ```
 
 `nix when` — Calculate deadlines, time remaining, future dates:
-```bash
-nix when in 2h30m              # What time will it be?
-nix when until 2026-02-15      # Days until deadline
-nix when deadline "Launch" 02-15   # Save & track deadlines
-nix when list                  # Show all deadlines
-```
 
 See [`scripts/README.md`](scripts/README.md) for all commands.
 

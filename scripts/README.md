@@ -37,6 +37,7 @@ nix tools                   # List all tools
 | `fiverr` | Fiverr business commands | `fiverr status` |
 | `nixweather` | Weather checker | `nixweather [location]` |
 | `nixdecide` | Decision log | `nixdecide add "Switch to TS"` |
+| `nixwater` | Hydration tracker | `nixwater 500` / `nixwater week` |
 
 ### Root-Level Tools (via `nix` command)
 
@@ -59,6 +60,7 @@ nix tools                   # List all tools
 | `convert.js` | Data format converter | `nix convert b64e "text"` |
 | `backup.js` | Data backup and export | `nix backup` |
 | `tag.js` | Universal tag manager | `nix tag work` |
+| `water.js` | Hydration tracker | `nix water 500` |
 
 ## Quick Start
 

@@ -4,6 +4,24 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #32 — Hydration Tracker)
+### Added
+- `water.js` — Hydration tracker for daily water intake
+  - Log water with: `nix water 500` (ml) or `nix water 16oz`
+  - Quick shortcuts: `nix water glass` (250ml), `nix water bottle` (500ml)
+  - Visual progress bar with percentage toward daily goal
+  - Color-coded motivation messages based on progress
+  - Daily goal customization: `nix water goal 3000`
+  - 7-day history view: `nix water week`
+  - Undo last entry: `nix water undo`
+  - Reset today's log: `nix water reset`
+  - Auto-converts oz to ml for imperial users
+  - Data stored in `data/water.json`
+  - Wrapper script: `scripts/nixwater` for direct access
+  - Integrated into `nix` CLI as `nix water`
+- Updated README.md with new tool examples
+- Updated scripts/README.md with tool reference
+
 ## 2026-01-31 (GitHub Sprint #31 — Read/Watch Later Queue)
 ### Added
 - `later.js` — Read/watch later queue for articles, videos, and links

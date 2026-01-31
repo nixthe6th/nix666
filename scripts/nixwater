@@ -1,0 +1,3 @@
+#!/bin/bash
+# nixwater - Hydration tracker wrapper
+exec node /home/ec2-user/nix666/water.js "$@"

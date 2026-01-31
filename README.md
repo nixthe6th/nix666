@@ -25,6 +25,7 @@ nix todo       # Task tracker
 nix focus 25   # Pomodoro timer
 nix streak     # Git activity
 nix stats      # Dashboard
+nix decide     # Decision log
 ```
 
 See [`scripts/README.md`](scripts/README.md) for all commands.

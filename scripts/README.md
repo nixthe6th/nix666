@@ -35,6 +35,7 @@ nix tools                   # List all tools
 | `wcc` | Word count with goal check | `wcc <file> <goal>` |
 | `fiverr` | Fiverr business commands | `fiverr status` |
 | `nixweather` | Weather checker | `nixweather [location]` |
+| `nixdecide` | Decision log | `nixdecide add "Switch to TS"` |
 
 ### Root-Level Tools (via `nix` command)
 

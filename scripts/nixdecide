@@ -1,0 +1,471 @@
+#!/bin/bash
+#
+# nixdecide - Decision log for tracking important choices
+# Usage: nixdecide <command> [args]
+#
+# Commands:
+#   add <title> [--priority high|medium|low] [--review days]
+#   list [--recent N] [--priority P] [--pending]
+#   show <id>
+#   edit <id>
+#   resolve <id> [--outcome "text"]
+#   search <query>
+#   review                    Show decisions due for review
+#   stats                     Decision statistics
+#
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+DATA_DIR="$REPO_ROOT/.data"
+LOG_FILE="$DATA_DIR/decisions.json"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+PURPLE='\033[0;35m'
+NC='\033[0m'
+
+# Ensure data directory exists
+mkdir -p "$DATA_DIR"
+
+# Initialize empty log if missing
+if [ ! -f "$LOG_FILE" ]; then
+    echo '[]' > "$LOG_FILE"
+fi
+
+# Generate unique ID
+generate_id() {
+    date +%s | tail -c 5
+}
+
+# Get current timestamp
+timestamp() {
+    date -Iseconds
+}
+
+# Show help
+show_help() {
+    cat << 'EOF'
+⚡ nixdecide - Decision log for tracking important choices
+
+Usage: nixdecide <command> [args]
+
+Commands:
+  add <title>        Add a new decision
+    --priority       high|medium|low (default: medium)
+    --review N       Review in N days (default: 30)
+    --context "text" Additional context
+    
+  list               List all decisions
+    --recent N       Show last N decisions
+    --priority P     Filter by priority
+    --pending        Show unresolved only
+    --resolved       Show resolved only
+    
+  show <id>          Show decision details
+  edit <id>          Edit decision interactively
+  resolve <id>       Mark decision as resolved
+    --outcome "text" What actually happened
+    
+  search <query>     Search decisions
+  review             Show decisions due for review
+  stats              Show decision statistics
+  help               Show this help
+
+Examples:
+  nixdecide add "Switch to TypeScript" --priority high --context "JS is becoming unmaintainable"
+  nixdecide list --recent 10
+  nixdecide resolve 12345 --outcome "Migration took 3 days, worth it"
+  nixdecide review
+
+EOF
+}
+
+# Add new decision
+add_decision() {
+    local title="$1"
+    shift
+    
+    local priority="medium"
+    local review_days=30
+    local context=""
+    local expected=""
+    local alternatives=""
+    
+    # Parse args
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --priority) priority="$2"; shift 2 ;;
+            --review) review_days="$2"; shift 2 ;;
+            --context) context="$2"; shift 2 ;;
+            --expected) expected="$2"; shift 2 ;;
+            --alternatives) alternatives="$2"; shift 2 ;;
+            *) shift ;;
+        esac
+    done
+    
+    # Validate priority
+    case "$priority" in
+        high|medium|low) ;;
+        *) echo -e "${RED}Invalid priority: $priority${NC}"; exit 1 ;;
+    esac
+    
+    # Calculate review date
+    local review_date
+    review_date=$(date -d "+$review_days days" -Iseconds 2>/dev/null || date -v+${review_days}d -Iseconds)
+    
+    # Interactive mode for missing fields
+    if [ -z "$context" ]; then
+        echo -e "${CYAN}Context (why this decision needed):${NC}"
+        read -r context
+    fi
+    
+    if [ -z "$alternatives" ]; then
+        echo -e "${CYAN}Alternatives considered:${NC}"
+        read -r alternatives
+    fi
+    
+    if [ -z "$expected" ]; then
+        echo -e "${CYAN}Expected outcome:${NC}"
+        read -r expected
+    fi
+    
+    # Create decision object
+    local id
+    id=$(generate_id)
+    local ts
+    ts=$(timestamp)
+    
+    local json
+    json=$(cat << EOF
+{
+  "id": "$id",
+  "title": "$title",
+  "priority": "$priority",
+  "context": "$context",
+  "alternatives": "$alternatives",
+  "expected_outcome": "$expected",
+  "created_at": "$ts",
+  "review_at": "$review_date",
+  "status": "pending",
+  "actual_outcome": "",
+  "resolved_at": "",
+  "tags": []
+}
+EOF
+)
+    
+    # Add to log using Node.js for JSON manipulation
+    node -e "
+        const fs = require('fs');
+        const data = JSON.parse(fs.readFileSync('$LOG_FILE', 'utf8'));
+        data.push($json);
+        fs.writeFileSync('$LOG_FILE', JSON.stringify(data, null, 2));
+    "
+    
+    echo -e "${GREEN}✓ Decision logged (#$id)${NC}"
+    echo -e "${CYAN}  $title${NC}"
+    echo -e "  Priority: $priority | Review: $review_days days"
+}
+
+# List decisions
+list_decisions() {
+    local limit=""
+    local priority_filter=""
+    local status_filter=""
+    
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --recent) limit="$2"; shift 2 ;;
+            --priority) priority_filter="$2"; shift 2 ;;
+            --pending) status_filter="pending"; shift ;;
+            --resolved) status_filter="resolved"; shift ;;
+            *) shift ;;
+        esac
+    done
+    
+    node -e "
+        const fs = require('fs');
+        let data = JSON.parse(fs.readFileSync('$LOG_FILE', 'utf8'));
+        
+        // Sort by created date, newest first
+        data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        
+        // Apply filters
+        if ('$priority_filter') {
+            data = data.filter(d => d.priority === '$priority_filter');
+        }
+        if ('$status_filter') {
+            data = data.filter(d => d.status === '$status_filter');
+        }
+        if ('$limit') {
+            data = data.slice(0, parseInt('$limit'));
+        }
+        
+        if (data.length === 0) {
+            console.log('No decisions found.');
+            process.exit(0);
+        }
+        
+        console.log('⚡ Decision Log\n');
+        
+        data.forEach(d => {
+            const statusColor = d.status === 'resolved' ? '\x1b[32m' : '\x1b[33m';
+            const priorityColor = d.priority === 'high' ? '\x1b[31m' : 
+                                  d.priority === 'medium' ? '\x1b[33m' : '\x1b[36m';
+            const reset = '\x1b[0m';
+            
+            const date = new Date(d.created_at).toLocaleDateString('en-US', { 
+                month: 'short', day: 'numeric' 
+            });
+            
+            console.log(\`\${statusColor}[\${d.status.toUpperCase()}]\${reset} #\${d.id} \${date}\`);
+            console.log(\`   \${priorityColor}[\${d.priority.toUpperCase()}]\${reset} \${d.title}\`);
+            if (d.expected_outcome) {
+                console.log(\`   → Expected: \${d.expected_outcome.substring(0, 50)}\${d.expected_outcome.length > 50 ? '...' : ''}\`);
+            }
+            console.log('');
+        });
+    "
+}
+
+# Show single decision
+show_decision() {
+    local id="$1"
+    
+    node -e "
+        const fs = require('fs');
+        const data = JSON.parse(fs.readFileSync('$LOG_FILE', 'utf8'));
+        const d = data.find(x => x.id === '$id');
+        
+        if (!d) {
+            console.log('Decision not found: $id');
+            process.exit(1);
+        }
+        
+        const statusColor = d.status === 'resolved' ? '\x1b[32m' : '\x1b[33m';
+        const reset = '\x1b[0m';
+        
+        console.log(\`\${statusColor}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\${reset}\`);
+        console.log(\`\${statusColor}  #\${d.id} \${d.title}\${reset}\`);
+        console.log(\`\${statusColor}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\${reset}\`);
+        console.log(\`\`);
+        console.log(\`Priority:    \${d.priority.toUpperCase()}\`);
+        console.log(\`Status:      \${d.status.toUpperCase()}\`);
+        console.log(\`Created:     \${new Date(d.created_at).toLocaleString()}\`);
+        console.log(\`Review by:   \${new Date(d.review_at).toLocaleDateString()}\`);
+        console.log(\`\`);
+        console.log(\`Context:\`);
+        console.log(\`  \${d.context || '(none)'}\`);
+        console.log(\`\`);
+        console.log(\`Alternatives considered:\`);
+        console.log(\`  \${d.alternatives || '(none)'}\`);
+        console.log(\`\`);
+        console.log(\`Expected outcome:\`);
+        console.log(\`  \${d.expected_outcome || '(none)'}\`);
+        
+        if (d.status === 'resolved') {
+            console.log(\`\`);
+            console.log(\`Actual outcome:\`);
+            console.log(\`  \${d.actual_outcome || '(not recorded)'}\`);
+            console.log(\`Resolved:    \${d.resolved_at ? new Date(d.resolved_at).toLocaleString() : 'unknown'}\`);
+        }
+    "
+}
+
+# Resolve decision
+resolve_decision() {
+    local id="$1"
+    shift
+    local outcome=""
+    
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --outcome) outcome="$2"; shift 2 ;;
+            *) shift ;;
+        esac
+    done
+    
+    # Get outcome if not provided
+    if [ -z "$outcome" ]; then
+        echo -e "${CYAN}What was the actual outcome?${NC}"
+        read -r outcome
+    fi
+    
+    local ts
+    ts=$(timestamp)
+    
+    node -e "
+        const fs = require('fs');
+        const data = JSON.parse(fs.readFileSync('$LOG_FILE', 'utf8'));
+        const d = data.find(x => x.id === '$id');
+        
+        if (!d) {
+            console.log('Decision not found: $id');
+            process.exit(1);
+        }
+        
+        d.status = 'resolved';
+        d.actual_outcome = '$outcome';
+        d.resolved_at = '$ts';
+        
+        fs.writeFileSync('$LOG_FILE', JSON.stringify(data, null, 2));
+        console.log('✓ Decision #' + '$id' + ' marked as resolved');
+    "
+}
+
+# Show decisions due for review
+show_reviews() {
+    node -e "
+        const fs = require('fs');
+        const data = JSON.parse(fs.readFileSync('$LOG_FILE', 'utf8'));
+        const now = new Date();
+        
+        const due = data.filter(d => {
+            if (d.status === 'resolved') return false;
+            return new Date(d.review_at) <= now;
+        });
+        
+        if (due.length === 0) {
+            console.log('✓ No decisions due for review');
+            process.exit(0);
+        }
+        
+        console.log('📋 Decisions Due for Review\n');
+        
+        due.forEach(d => {
+            const daysOverdue = Math.floor((now - new Date(d.review_at)) / (1000 * 60 * 60 * 24));
+            const overdue = daysOverdue > 0 ? \`(\${daysOverdue}d overdue)\` : '(today)';
+            
+            console.log(\`#\${d.id} \${overdue}\`);
+            console.log(\`  \${d.title}\`);
+            console.log(\`  Expected: \${d.expected_outcome}\`);
+            console.log('');
+        });
+    "
+}
+
+# Search decisions
+search_decisions() {
+    local query="$1"
+    
+    node -e "
+        const fs = require('fs');
+        const data = JSON.parse(fs.readFileSync('$LOG_FILE', 'utf8'));
+        const q = '$query'.toLowerCase();
+        
+        const results = data.filter(d => 
+            d.title.toLowerCase().includes(q) ||
+            d.context.toLowerCase().includes(q) ||
+            d.alternatives.toLowerCase().includes(q) ||
+            d.expected_outcome.toLowerCase().includes(q)
+        );
+        
+        if (results.length === 0) {
+            console.log('No decisions matching: $query');
+            process.exit(0);
+        }
+        
+        console.log(\`Found \${results.length} decision(s) matching '\${q}':\`);
+        console.log('');
+        
+        results.forEach(d => {
+            const status = d.status === 'resolved' ? '✓' : '○';
+            console.log(\`\${status} #\${d.id}: \${d.title}\`);
+        });
+    "
+}
+
+# Show statistics
+show_stats() {
+    node -e "
+        const fs = require('fs');
+        const data = JSON.parse(fs.readFileSync('$LOG_FILE', 'utf8'));
+        
+        const total = data.length;
+        const resolved = data.filter(d => d.status === 'resolved').length;
+        const pending = total - resolved;
+        const highPriority = data.filter(d => d.priority === 'high').length;
+        
+        // By month
+        const byMonth = {};
+        data.forEach(d => {
+            const month = new Date(d.created_at).toLocaleString('en-US', { month: 'short', year: 'numeric' });
+            byMonth[month] = (byMonth[month] || 0) + 1;
+        });
+        
+        console.log('📊 Decision Statistics\n');
+        console.log(\`Total decisions:    \${total}\`);
+        console.log(\`Resolved:           \${resolved} (\${Math.round(resolved/total*100 || 0)}%)\`);
+        console.log(\`Pending:            \${pending}\`);
+        console.log(\`High priority:      \${highPriority}\`);
+        console.log('');
+        
+        if (Object.keys(byMonth).length > 0) {
+            console.log('By month:');
+            Object.entries(byMonth).forEach(([m, c]) => {
+                console.log(\`  \${m}: \${c}\`);
+            });
+        }
+    "
+}
+
+# Main dispatcher
+main() {
+    local cmd="${1:-help}"
+    shift || true
+    
+    case "$cmd" in
+        add)
+            if [ $# -eq 0 ]; then
+                echo -e "${RED}Usage: nixdecide add <title> [options]${NC}"
+                exit 1
+            fi
+            add_decision "$@"
+            ;;
+        list)
+            list_decisions "$@"
+            ;;
+        show)
+            if [ $# -eq 0 ]; then
+                echo -e "${RED}Usage: nixdecide show <id>${NC}"
+                exit 1
+            fi
+            show_decision "$1"
+            ;;
+        resolve)
+            if [ $# -eq 0 ]; then
+                echo -e "${RED}Usage: nixdecide resolve <id> [--outcome text]${NC}"
+                exit 1
+            fi
+            resolve_decision "$@"
+            ;;
+        review)
+            show_reviews
+            ;;
+        search)
+            if [ $# -eq 0 ]; then
+                echo -e "${RED}Usage: nixdecide search <query>${NC}"
+                exit 1
+            fi
+            search_decisions "$1"
+            ;;
+        stats)
+            show_stats
+            ;;
+        help|--help|-h)
+            show_help
+            ;;
+        *)
+            echo -e "${RED}Unknown command: $cmd${NC}"
+            show_help
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

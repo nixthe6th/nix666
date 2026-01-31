@@ -21,3 +21,6 @@ Thumbs.db
 *.swp
 *.swo
 .backups/
+
+# Data files (personal tracking data)
+.data/

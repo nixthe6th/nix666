@@ -47,6 +47,7 @@ Commands:
   find <query>            Search across all data
   convert <cmd> [input]   Data converter (b64, url, json, case)
   backup [cmd]            Backup/export data (list/export/clean)
+  decide [cmd]            Decision log (add/list/review/stats)
   
   tools                   List all available tools
   help                    Show this help
@@ -76,6 +77,7 @@ list_tools() {
             nixsprint) desc="Sprint management" ;;
             nixrate) desc="Freelance rate calc" ;;
     nixweather) desc="Weather checker" ;;
+            nixdecide) desc="Decision log" ;;
         esac
         printf "  %-10s %s\n" "$name" "$desc"
     done
@@ -217,6 +219,9 @@ main() {
             ;;
         backup)
             node "$SCRIPT_DIR/../backup.js" "$@"
+            ;;
+        decide)
+            "$SCRIPT_DIR/nixdecide" "$@"
             ;;
         tools)
             list_tools

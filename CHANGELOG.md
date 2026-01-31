@@ -4,6 +4,16 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #11 — Focus Tools)
+### Added
+- `focus.js` — Pomodoro focus timer with motivation
+  - Default 25-minute focus sessions
+  - Custom duration: `focus 15` for 15 minutes
+  - Random quote displayed each session
+  - Live progress bar visualization
+  - Clean interrupt handling (Ctrl+C)
+  - `focus --quote` for quick motivation
+
 ## 2026-01-31 (GitHub Sprint #10 — CLI Polish)
 ### Added
 - `.gitignore` — Ignore OpenClog agent files + node/OS/editor noise

@@ -50,6 +50,11 @@ nix tools                   # List all tools
 | `note.js` | Quick timestamped notes | `nix note "remember this"` |
 | `projstats.js` | Project stats dashboard | `nix stats` |
 | `apicheck.js` | API health checker | `nix check` |
+| `calc.js` | Quick calculator | `nix calc 25 * 4` |
+| `pass.js` | Password generator | `nix pass -l 20` |
+| `server.js` | Quick HTTP server | `nix server 8080` |
+| `find.js` | Universal search | `nix find "query"` |
+| `convert.js` | Data format converter | `nix convert b64e "text"` |
 
 ## Quick Start
 

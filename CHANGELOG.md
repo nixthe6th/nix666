@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #25 — Utility Converter)
+### Added
+- `convert.js` — Swiss Army knife data converter
+  - Base64 encode/decode (`nix convert b64e|b64d`)
+  - URL encode/decode (`nix convert urle|urld`)
+  - JSON format/validate (`nix convert json`)
+  - Timestamp ↔ Date conversion (`nix convert ts2date|date2ts`)
+  - Case conversions: camelCase, PascalCase, snake_case, kebab-case
+  - Show all variants with `nix convert case <text>`
+  - Pipe support: `echo "text" | nix convert b64e`
+  - Integrated into `nix` CLI as `nix convert <cmd> [input]`
+- Updated API documentation (22 tools documented)
+- Updated `scripts/README.md` with new tool reference
+
 ## 2026-01-31 (GitHub Sprint #24 — Universal Search)
 ### Added
 - `find.js` — Universal search across all NIX data

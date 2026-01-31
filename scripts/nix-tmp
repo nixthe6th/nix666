@@ -1,0 +1,111 @@
+#!bash
+# nix-tmp: Quick temporary nix environments for one-off tasks
+
+set -e
+
+usage() {
+  cat << 'EOF'
+Usage: nix-tmp [options] [packages...]
+
+Create a temporary nix shell that disappears when you exit.
+Perfect for one-off tasks without polluting your system.
+
+Options:
+  -h, --help       Show this help
+  -p, --pure       Pure environment (no inherited vars)
+  -i, --impure     Impure environment (allows access to system)
+  -c, --command    Run command and exit (don't start shell)
+  -l, --list       List common temporary environments
+
+Examples:
+  nix-tmp imagemagick         # Quick image editing shell
+  nix-tmp ffmpeg yt-dlp       # Video processing shell
+  nix-tmp -c "hello"          # Run hello and exit
+  nix-tmp -p imagemagick      # Pure image editing environment
+
+Common package sets:
+  nix-tmp imagemagick gimp    # Image editing
+  nix-tmp ffmpeg mpv          # Video/Audio
+  nix-tmp unzip p7zip         # Archive tools
+  nix-tmp wget curl httpie    # HTTP tools
+EOF
+}
+
+log() { echo "→ $1"; }
+success() { echo "✓ $1"; }
+
+list_common() {
+  cat << 'EOF'
+Common temporary environments:
+
+  nix-tmp imagemagick              # Image manipulation
+  nix-tmp ffmpeg yt-dlp            # Video download/convert
+  nix-tmp qrencode                 # QR code generation
+  nix-tmp graphviz                 # Graph visualization
+  nix-tmp pandoc                   # Document conversion
+  nix-tmp jq yq                    # JSON/YAML processing
+  nix-tmp openssl                  # Cryptography tools
+  nix-tmp nmap                     # Network scanning
+  nix-tmp stress-ng                # System stress test
+  nix-tmp hexyl binutils           # Binary analysis
+
+Pro tip: Combine tools for specific workflows:
+  nix-tmp imagemagick exiftool     # Photo metadata + editing
+  nix-tmp ffmpeg sox               # Video + audio processing
+EOF
+}
+
+# Create temp shell with packages
+run_tmp_shell() {
+  local pure=""
+  local impure=""
+  local command=""
+  local packages=()
+  
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help) usage; exit 0 ;;
+      -l|--list) list_common; exit 0 ;;
+      -p|--pure) pure="--pure"; shift ;;
+      -i|--impure) impure="--impure"; shift ;;
+      -c|--command) 
+        shift
+        command="$1"
+        shift
+        ;;
+      -*) echo "Unknown option: $1"; usage; exit 1 ;;
+      *) packages+=("$1"); shift ;;
+    esac
+  done
+  
+  if [[ ''${#packages[@]} -eq 0 && -z "$command" ]]; then
+    echo "Error: No packages specified"
+    usage
+    exit 1
+  fi
+  
+  # Build nix shell command
+  local nix_args=()
+  [[ -n "$pure" ]] && nix_args+=("$pure")
+  [[ -n "$impure" ]] && nix_args+=("$impure")
+  
+  # Convert packages to nixpkgs#pkg format
+  local pkg_refs=()
+  for pkg in "''${packages[@]}"; do
+    pkg_refs+=("nixpkgs#$pkg")
+  done
+  
+  log "Starting temporary environment with: ''${packages[*]}"
+  echo "   (exit shell to clean up automatically)"
+  echo ""
+  
+  if [[ -n "$command" ]]; then
+    nix shell "''${nix_args[@]}" "''${pkg_refs[@]}" -c bash -c "$command"
+  else
+    nix shell "''${nix_args[@]}" "''${pkg_refs[@]}"
+  fi
+  
+  success "Temporary environment closed"
+}
+
+run_tmp_shell "$@"

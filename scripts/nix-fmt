@@ -1,0 +1,168 @@
+#!bash
+# nix-fmt: Format nix files with opinionated defaults
+
+set -e
+
+usage() {
+  cat << 'EOF'
+Usage: nix-fmt [options] [files...]
+
+Format nix files using nixpkgs-fmt or alejandra.
+Auto-detects formatter, prefers alejandra if available.
+
+Options:
+  -h, --help       Show this help
+  -c, --check      Check formatting without modifying
+  -w, --write      Write formatted output (default)
+  -a, --alejandra  Force use alejandra formatter
+  -n, --nixpkgs    Force use nixpkgs-fmt formatter
+  -q, --quiet      Suppress output
+  --               Pass remaining args to formatter
+
+Examples:
+  nix-fmt                    # Format all .nix files in current dir
+  nix-fmt flake.nix          # Format specific file
+  nix-fmt -c                 # Check all files, don't modify
+  nix-fmt -a *.nix           # Force alejandra formatter
+
+Formatting rules:
+  - 2 space indentation
+  - No trailing whitespace
+  - Consistent attribute spacing
+  - Proper list/set formatting
+EOF
+}
+
+log() { [[ "$QUIET" != "true" ]] && echo "→ $1"; }
+success() { [[ "$QUIET" != "true" ]] && echo "✓ $1"; }
+warn() { [[ "$QUIET" != "true" ]] && echo "⚠ $1"; }
+error() { echo "✗ $1" >&2; }
+
+# Detect which formatter to use
+detect_formatter() {
+  if [[ "$FORCE_ALEJANDRA" == "true" ]]; then
+    echo "alejandra"
+    return
+  fi
+  if [[ "$FORCE_NIXPKGS" == "true" ]]; then
+    echo "nixpkgs-fmt"
+    return
+  fi
+  
+  # Prefer alejandra if available
+  if command -v alejandra &>/dev/null; then
+    echo "alejandra"
+  elif command -v nixpkgs-fmt &>/dev/null; then
+    echo "nixpkgs-fmt"
+  else
+    echo ""
+  fi
+}
+
+# Find all nix files
+find_nix_files() {
+  local files=()
+  while IFS= read -r -d '' file; do
+    files+=("$file")
+  done < <(find . -name "*.nix" -type f -print0 2>/dev/null | head -z -n 100)
+  
+  if [[ ''${#files[@]} -eq 0 ]]; then
+    error "No .nix files found in current directory"
+    return 1
+  fi
+  
+  printf '%s\n' "''${files[@]}"
+}
+
+# Format files
+format_files() {
+  local formatter="$1"
+  local check="$2"
+  shift 2
+  local files=("$@")
+  
+  local fmt_args=()
+  if [[ "$formatter" == "alejandra" ]]; then
+    [[ "$check" == "true" ]] && fmt_args+=("--check")
+    fmt_args+=("--quiet")
+  elif [[ "$formatter" == "nixpkgs-fmt" ]]; then
+    [[ "$check" == "true" ]] && fmt_args+=("--check")
+  fi
+  
+  local failed=0
+  for file in "''${files[@]}"; do
+    if [[ "$check" == "true" ]]; then
+      if ! $formatter "''${fmt_args[@]}" "$file" 2>/dev/null; then
+        error "Would reformat: $file"
+        failed=$((failed + 1))
+      fi
+    else
+      if $formatter "''${fmt_args[@]}" "$file" 2>/dev/null; then
+        success "Formatted: $file"
+      else
+        error "Failed to format: $file"
+        failed=$((failed + 1))
+      fi
+    fi
+  done
+  
+  return $failed
+}
+
+main() {
+  local check="false"
+  local write="true"
+  local files=()
+  FORCE_ALEJANDRA="false"
+  FORCE_NIXPKGS="false"
+  QUIET="false"
+  
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help) usage; exit 0 ;;
+      -c|--check) check="true"; write="false"; shift ;;
+      -w|--write) check="false"; write="true"; shift ;;
+      -a|--alejandra) FORCE_ALEJANDRA="true"; shift ;;
+      -n|--nixpkgs) FORCE_NIXPKGS="true"; shift ;;
+      -q|--quiet) QUIET="true"; shift ;;
+      --) shift; break ;;
+      -*) echo "Unknown option: $1"; usage; exit 1 ;;
+      *) files+=("$1"); shift ;;
+    esac
+  done
+  
+  # Detect formatter
+  local formatter=$(detect_formatter)
+  if [[ -z "$formatter" ]]; then
+    error "No formatter found. Install alejandra or nixpkgs-fmt:"
+    error "  nix-env -iA nixpkgs.alejandra"
+    exit 1
+  fi
+  
+  log "Using formatter: $formatter"
+  
+  # If no files specified, find all nix files
+  if [[ ''${#files[@]} -eq 0 ]]; then
+    mapfile -t files < <(find_nix_files)
+    if [[ ''${#files[@]} -eq 0 ]]; then
+      exit 1
+    fi
+    log "Found ''${#files[@]} nix files"
+  fi
+  
+  # Format the files
+  format_files "$formatter" "$check" "''${files[@]}"
+  local result=$?
+  
+  if [[ "$check" == "true" ]]; then
+    if [[ $result -eq 0 ]]; then
+      success "All files are properly formatted"
+    else
+      error "$result file(s) need formatting"
+    fi
+  fi
+  
+  exit $result
+}
+
+main "$@"

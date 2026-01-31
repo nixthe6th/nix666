@@ -22,7 +22,8 @@ A living GitHub Pages site for projects, experiments, and whatever comes next. B
 # Quick start
 nix today      # Daily briefing
 nix todo       # Task tracker
-nix focus 25   # Pomodoro timer
+nix focus 25   # Pomodoro timer with quotes
+nix timer 25   # Pomodoro timer with session logging
 nix streak     # Git activity
 nix stats      # Dashboard
 nix decide     # Decision log
@@ -84,6 +85,14 @@ nix water glass                # Add 250ml (quick)
 nix water bottle               # Add 500ml (quick)
 nix water week                 # Show last 7 days
 nix water goal 3000            # Set daily goal
+```
+
+`nix timer` — Pomodoro timer with session tracking:
+```bash
+nix timer                      # 25-minute pomodoro (default)
+nix timer 15                   # 15-minute session
+nix timer 45 -m "Deep work"    # With message/description
+nix timer stats                # View session history
 ```
 
 `nix standup` — Daily standup report aggregating all productivity data:

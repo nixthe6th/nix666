@@ -1,0 +1,275 @@
+#!/usr/bin/env python3
+"""
+nixtimer - Dead-simple focus timer for deep work
+Logs sessions to daily memory files automatically.
+
+Usage:
+  nixtimer <minutes> [task description]  - Start a focus session
+  nixtimer log                           - Show today's sessions
+  nixtimer stats                         - Show weekly stats
+  nixtimer break <minutes>               - Take a break timer
+"""
+
+import json
+import os
+import sys
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
+
+MEMORY_DIR = Path("/home/ec2-user/.openclaw/workspace/memory")
+LOG_FILE = Path.home() / ".nixtimer.json"
+
+def load_log():
+    if LOG_FILE.exists():
+        with open(LOG_FILE) as f:
+            return json.load(f)
+    return {"sessions": []}
+
+def save_log(data):
+    with open(LOG_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+def get_today_file():
+    today = datetime.now().strftime("%Y-%m-%d")
+    return MEMORY_DIR / f"{today}.md"
+
+def format_duration(seconds):
+    mins = seconds // 60
+    secs = seconds % 60
+    if mins >= 60:
+        hours = mins // 60
+        mins = mins % 60
+        return f"{hours}h {mins}m"
+    return f"{mins}m {secs}s"
+
+def countdown(minutes, label="Focus"):
+    """Simple countdown with visual progress"""
+    total_seconds = minutes * 60
+    start_time = time.time()
+    end_time = start_time + total_seconds
+    
+    print(f"\n🔔 {label} timer: {minutes} minutes")
+    print("Press Ctrl+C to stop early\n")
+    
+    try:
+        while time.time() < end_time:
+            remaining = int(end_time - time.time())
+            elapsed = int(time.time() - start_time)
+            
+            # Progress bar
+            progress = elapsed / total_seconds
+            bar_width = 30
+            filled = int(bar_width * progress)
+            bar = "█" * filled + "░" * (bar_width - filled)
+            
+            # Time display
+            mins, secs = divmod(remaining, 60)
+            time_str = f"{mins:02d}:{secs:02d}"
+            
+            # Print progress
+            sys.stdout.write(f"\r  {bar} {time_str}")
+            sys.stdout.flush()
+            
+            time.sleep(1)
+        
+        # Timer complete
+        sys.stdout.write("\r  " + "█" * 30 + " 00:00 ✓\n")
+        sys.stdout.flush()
+        print(f"\n✅ {label} complete!")
+        return True, elapsed
+        
+    except KeyboardInterrupt:
+        elapsed = int(time.time() - start_time)
+        print(f"\n\n⏹ Stopped early after {format_duration(elapsed)}")
+        return False, elapsed
+
+def log_session(minutes, task, completed=True, actual_seconds=0):
+    """Log session to JSON and daily memory file"""
+    data = load_log()
+    
+    session = {
+        "id": len(data["sessions"]) + 1,
+        "date": datetime.now().isoformat(),
+        "planned_minutes": minutes,
+        "actual_seconds": actual_seconds,
+        "task": task or "Focus session",
+        "completed": completed
+    }
+    data["sessions"].append(session)
+    save_log(data)
+    
+    # Also append to today's memory file
+    today_file = get_today_file()
+    if today_file.exists():
+        with open(today_file, 'a') as f:
+            status = "✅" if completed else "⏹"
+            duration = format_duration(actual_seconds)
+            f.write(f"\n- {status} **Focus**: {task or 'Deep work'} ({duration})\n")
+    
+    return session
+
+def show_log():
+    """Show today's sessions"""
+    data = load_log()
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    today_sessions = [
+        s for s in data["sessions"]
+        if s["date"].startswith(today)
+    ]
+    
+    if not today_sessions:
+        print("No sessions today. Start one with: nixtimer 25 'my task'")
+        return
+    
+    print(f"\n📊 Today's Sessions ({today}):")
+    print()
+    
+    total_time = 0
+    for s in today_sessions:
+        status = "✅" if s["completed"] else "⏹"
+        duration = format_duration(s["actual_seconds"])
+        task = s["task"] or "Focus session"
+        print(f"  {status} {task} — {duration}")
+        total_time += s["actual_seconds"]
+    
+    print()
+    print(f"  Total: {format_duration(total_time)} in {len(today_sessions)} session(s)")
+
+def show_stats():
+    """Show weekly statistics"""
+    data = load_log()
+    
+    # Calculate week boundaries
+    now = datetime.now()
+    week_start = now - timedelta(days=now.weekday())
+    week_start = week_start.replace(hour=0, minute=0, second=0, microsecond=0)
+    
+    # Filter this week's sessions
+    week_sessions = [
+        s for s in data["sessions"]
+        if datetime.fromisoformat(s["date"]) >= week_start
+    ]
+    
+    # Group by day
+    daily = {}
+    for s in week_sessions:
+        day = s["date"][:10]
+        if day not in daily:
+            daily[day] = {"sessions": 0, "seconds": 0, "completed": 0}
+        daily[day]["sessions"] += 1
+        daily[day]["seconds"] += s["actual_seconds"]
+        if s["completed"]:
+            daily[day]["completed"] += 1
+    
+    print(f"\n📈 This Week's Focus Stats:")
+    print()
+    
+    if not week_sessions:
+        print("  No sessions this week yet.")
+        return
+    
+    # Daily breakdown
+    for day in sorted(daily.keys()):
+        stats = daily[day]
+        duration = format_duration(stats["seconds"])
+        completion = f"{stats['completed']}/{stats['sessions']}"
+        print(f"  {day}: {duration} ({completion} completed)")
+    
+    # Totals
+    total_sessions = len(week_sessions)
+    total_time = sum(s["actual_seconds"] for s in week_sessions)
+    completed = sum(1 for s in week_sessions if s["completed"])
+    
+    print()
+    print(f"  Total: {format_duration(total_time)} across {total_sessions} sessions")
+    print(f"  Completion rate: {completed}/{total_sessions} ({completed/total_sessions*100:.0f}%)")
+
+def cmd_timer(args):
+    """Start a focus timer"""
+    if not args:
+        print("Usage: nixtimer <minutes> [task description]")
+        print("Example: nixtimer 25 'Write blog post'")
+        sys.exit(1)
+    
+    try:
+        minutes = int(args[0])
+    except ValueError:
+        print(f"Invalid minutes: {args[0]}")
+        sys.exit(1)
+    
+    task = " ".join(args[1:]) if len(args) > 1 else None
+    
+    # Run timer
+    completed, elapsed = countdown(minutes, "Focus")
+    
+    # Log it
+    session = log_session(minutes, task, completed, elapsed)
+    
+    # Notify
+    if completed:
+        print(f"\n📝 Logged: {task or 'Focus session'} ({format_duration(elapsed)})")
+        print(f"   View: nixtimer log")
+    
+    # Play a bell sound if available
+    try:
+        print('\a')  # Terminal bell
+    except:
+        pass
+
+def cmd_break(args):
+    """Take a break timer"""
+    if not args:
+        minutes = 5
+    else:
+        try:
+            minutes = int(args[0])
+        except ValueError:
+            print(f"Invalid minutes: {args[0]}")
+            sys.exit(1)
+    
+    countdown(minutes, "Break")
+    print("\n☕ Break over! Back to work.")
+    print('\a')
+
+def show_help():
+    print("nixtimer - Focus session tracker")
+    print()
+    print("Usage:")
+    print("  nixtimer <minutes> [task]    Start a focus session")
+    print("  nixtimer log                 Show today's sessions")
+    print("  nixtimer stats               Show weekly statistics")
+    print("  nixtimer break [minutes]     Take a break (default: 5m)")
+    print()
+    print("Examples:")
+    print("  nixtimer 25 'Write blog post'")
+    print("  nixtimer 50 'Deep work session'")
+    print("  nixtimer break 10")
+
+def main():
+    args = sys.argv[1:]
+    
+    if not args:
+        show_help()
+        return
+    
+    cmd = args[0]
+    
+    if cmd in ('help', '-h', '--help'):
+        show_help()
+    elif cmd == 'log':
+        show_log()
+    elif cmd == 'stats':
+        show_stats()
+    elif cmd == 'break':
+        cmd_break(args[1:])
+    elif cmd.isdigit():
+        cmd_timer(args)
+    else:
+        print(f"Unknown command: {cmd}")
+        show_help()
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()

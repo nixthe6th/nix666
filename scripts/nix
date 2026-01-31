@@ -1,0 +1,121 @@
+#!/bin/bash
+#
+# nix - Unified CLI for all Nix tools
+# Usage: nix <command> [args]
+#
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+show_help() {
+    cat << 'EOF'
+⚡ nix - Unified CLI toolkit
+
+Usage: nix <command> [args]
+
+Commands:
+  timer <min> [task]      Focus timer (nixtimer wrapper)
+  do <task> [priority]    Add a task (nixdo wrapper)
+  note <idea>             Capture an idea (nixnote wrapper)
+  dump                    Brain dump mode (nixdump wrapper)
+  track <cmd> [args]      Income tracking (nixtrack wrapper)
+  init [project]          Scaffold new project (nixinit wrapper)
+  log                     Create daily log entry (dailylog.sh)
+  status                  System status check
+  sprint "msg"            Git commit & push
+  count <file> [goal]     Word count (wcc wrapper)
+  
+  tools                   List all available tools
+  help                    Show this help
+
+Examples:
+  nix do "fix login bug" high
+  nix note "AI automation idea"
+  nix track income 150 "Blog post"
+  nix sprint "Add new feature"
+
+EOF
+}
+
+list_tools() {
+    echo "⚡ Available nix tools:"
+    echo ""
+    ls -1 "$SCRIPT_DIR"/nix* 2>/dev/null | while read -r tool; do
+        name=$(basename "$tool")
+        desc=""
+        case "$name" in
+            nixdo) desc="Task tracker with priorities" ;;
+            nixnote) desc="Structured idea capture" ;;
+            nixdump) desc="Raw brain dump mode" ;;
+            nixtrack) desc="Income/order tracking" ;;
+            nixinit) desc="Project scaffolding" ;;
+        esac
+        printf "  %-10s %s\n" "$name" "$desc"
+    done
+    echo ""
+    echo "Run 'nix help' for usage"
+}
+
+main() {
+    local cmd="${1:-help}"
+    shift || true
+
+    case "$cmd" in
+        timer)
+            "$SCRIPT_DIR/nixtimer" "$@"
+            ;;
+        do)
+            "$SCRIPT_DIR/nixdo" add "$@"
+            ;;
+        note)
+            if [ $# -eq 0 ]; then
+                "$SCRIPT_DIR/nixnote"
+            else
+                "$SCRIPT_DIR/nixnote" "$@"
+            fi
+            ;;
+        dump)
+            "$SCRIPT_DIR/nixdump"
+            ;;
+        track)
+            "$SCRIPT_DIR/nixtrack" "$@"
+            ;;
+        init)
+            "$SCRIPT_DIR/nixinit" "$@"
+            ;;
+        log)
+            "$SCRIPT_DIR/dailylog.sh"
+            ;;
+        status)
+            "$SCRIPT_DIR/status.sh"
+            ;;
+        sprint)
+            if [ $# -eq 0 ]; then
+                echo "Usage: nix sprint \"commit message\""
+                exit 1
+            fi
+            "$SCRIPT_DIR/sprint.sh" "$@"
+            ;;
+        count)
+            if [ $# -eq 2 ]; then
+                "$SCRIPT_DIR/wcc" "$@"
+            else
+                "$SCRIPT_DIR/wordcount" "$@"
+            fi
+            ;;
+        tools)
+            list_tools
+            ;;
+        help|--help|-h)
+            show_help
+            ;;
+        *)
+            echo "Unknown command: $cmd"
+            echo "Run 'nix help' for usage"
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

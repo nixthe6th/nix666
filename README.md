@@ -69,6 +69,14 @@ nix clip copy a3f7b2                                    # Copy to clipboard
 nix clip tags                                           # View tag cloud
 ```
 
+`nix summarize` — Text/article summarizer:
+```bash
+nix summarize article.txt              # Summarize to 20% of sentences
+nix summarize report.md -n 5           # Get top 5 sentences
+nix summarize --text "long text..."    # Summarize inline text
+cat blog.md | nix summarize            # Pipe from stdin
+```
+
 `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

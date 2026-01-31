@@ -61,6 +61,7 @@ Commands:
   flashcard [cmd]         Flashcard system for memorization
   clip [cmd]              Code snippet manager (add/list/search/copy)
   roll [dice|coin|n]      Dice roller (2d6, coin, 100)
+  summarize <file>        Summarize text/articles (-n 5 for 5 sentences)
   
   tools                   List all available tools
   help                    Show this help
@@ -121,6 +122,7 @@ list_tools() {
     printf "  %-10s %s\n" "standup.js" "Daily standup report"
     printf "  %-10s %s\n" "later.js" "Read/watch later queue"
     printf "  %-10s %s\n" "learn.js" "Learning tracker with SRS"
+    printf "  %-10s %s\n" "summarize.js" "Text summarizer"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -280,6 +282,9 @@ main() {
             ;;
         flashcard)
             node "$SCRIPT_DIR/../flashcard.js" "$@"
+            ;;
+        summarize)
+            node "$SCRIPT_DIR/../summarize.js" "$@"
             ;;
         tools)
             list_tools

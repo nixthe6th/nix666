@@ -4,6 +4,19 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #35d — Text Summarizer)
+### Added
+- `summarize.js` — Extractive text summarizer for articles and long text
+  - Summarize files: `nix summarize article.txt`
+  - Limit sentences: `nix summarize -n 5 report.md`
+  - Percent mode: `nix summarize -p 15` for top 15%
+  - Inline text: `nix summarize --text "long content..."`
+  - Pipe support: `cat blog.md | nix summarize`
+  - Smart sentence scoring based on word frequency
+  - Stop word filtering for better results
+  - Compression stats showing reduction percentage
+  - Maintains original sentence order for coherence
+
 ## 2026-01-31 (GitHub Sprint #35c — Code Snippet Manager)
 ### Added
 - `clip.js` — Code snippet manager for saving and organizing code

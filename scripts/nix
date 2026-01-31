@@ -35,6 +35,7 @@ Commands:
   bm [cmd]                Bookmark manager (list/search/open/add)
   ideas [cmd]             Idea backlog management
   todo [cmd]              Task tracker (add/list/done/priority)
+  log [cmd]               Daily logger (add/show/search)
   
   tools                   List all available tools
   help                    Show this help
@@ -77,6 +78,7 @@ list_tools() {
     printf "  %-10s %s\n" "bm.js" "Bookmark manager"
     printf "  %-10s %s\n" "ideas.js" "Idea backlog"
     printf "  %-10s %s\n" "todo.js" "Task tracker"
+    printf "  %-10s %s\n" "log.js" "Daily logger"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -154,6 +156,9 @@ main() {
             ;;
         ideas)
             node "$SCRIPT_DIR/../ideas.js" "$@"
+            ;;
+        log)
+            node "$SCRIPT_DIR/../log.js" "$@"
             ;;
         todo)
             node "$SCRIPT_DIR/../todo.js" "$@"

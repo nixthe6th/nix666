@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #7 — Fast Builds)
+### Added
+- `done.js` — Sprint completion tracker
+  - Logs timestamped accomplishments to daily log files
+  - Shows git stats (commits, files changed, lines +/-)
+  - Displays random completion-themed quote
+  - Usage: `done.js "shipped the feature"` or just `done.js` for stats
+  - Creates `logs/YYYY-MM-DD.md` files automatically
+- 5 new quotes (29 total)
+  - Sprint finishers: "Ship it. The perfect moment doesn't exist"
+  - Momentum: "Today's commits are tomorrow's foundation"
+  - Habits: "Celebrate the small wins. They stack"
+  - Streak mindset: "Another one shipped. Keep the streak alive"
+
 ## 2026-01-31 (GitHub Sprint #6 — Sprint Mode)
 ### Added
 - `scripts/sprint.sh` — Git sprint automation tool

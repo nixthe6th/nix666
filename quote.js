@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * quote - Terminal motivation from NIX
- * Usage: quote [context|all]
+ * Usage: quote [context|all|search <term>|list]
  */
 
 const fs = require('fs');
@@ -61,12 +61,57 @@ function formatQuote(q) {
   console.log('');
 }
 
+function listContexts(quotes) {
+  const contexts = [...new Set(quotes.map(q => q.context))];
+  console.log('\n' + COLORS.bold + 'Available contexts:' + COLORS.reset);
+  contexts.forEach(c => {
+    const count = quotes.filter(q => q.context === c).length;
+    console.log(`  ${COLORS.cyan}${c}${COLORS.reset} (${count} quotes)`);
+  });
+  console.log(`\nTotal: ${COLORS.yellow}${quotes.length}${COLORS.reset} quotes\n`);
+}
+
+function searchQuotes(quotes, term) {
+  const lower = term.toLowerCase();
+  return quotes.filter(q => 
+    q.text.toLowerCase().includes(lower) ||
+    q.author.toLowerCase().includes(lower) ||
+    q.context.toLowerCase().includes(lower)
+  );
+}
+
 function main() {
   const args = process.argv.slice(2);
-  const context = args[0] || null;
+  const command = args[0] || null;
   
   try {
     const quotes = loadQuotes();
+    
+    // List contexts
+    if (command === 'list' || command === 'ls') {
+      listContexts(quotes);
+      return;
+    }
+    
+    // Search quotes
+    if (command === 'search' || command === 'find') {
+      const term = args[1];
+      if (!term) {
+        console.error('Usage: quote search <term>');
+        process.exit(1);
+      }
+      const results = searchQuotes(quotes, term);
+      if (results.length === 0) {
+        console.log(COLORS.gray + 'No quotes found matching: ' + term + COLORS.reset);
+        return;
+      }
+      console.log(`\n${COLORS.bold}Found ${results.length} quote(s) for "${term}":${COLORS.reset}\n`);
+      results.forEach(q => formatQuote(q));
+      return;
+    }
+    
+    // Random quote (default behavior)
+    const context = (command === 'all') ? null : command;
     const q = randomQuote(quotes, context);
     
     if (!q) {

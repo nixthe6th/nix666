@@ -12,6 +12,10 @@ All notable changes to the NIX project hub.
   - Contact card QRs: `nix qr contact "John Doe" +1234567890`
   - Uses free qrserver API (no key required)
   - Clean terminal output with scan instructions
+- GitHub Actions CI workflow for automated testing
+  - Validates CLI scripts exist
+  - Tests Node.js tool syntax
+  - Checks JSON data file validity
 ### Fixed
 - Resolved merge conflict in README.md
 - Added missing `nix today` command to CLI (was documented but not implemented)

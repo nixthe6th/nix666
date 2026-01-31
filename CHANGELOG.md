@@ -4,6 +4,14 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (Sprint Mode)
+### Added
+- `manifest.json` — PWA support, installable as app
+- `robots.txt` — Search engine friendly
+- `sitemap.xml` — SEO optimization
+- `/now.html` — Dedicated "now" page with current focus
+- Meta tags, theme-color, and favicon for better UX
+
 ## 2026-01-31
 ### Added
 - `projects.json` — Structured project data file

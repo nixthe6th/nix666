@@ -39,6 +39,7 @@ Commands:
   habits [cmd]            Daily habit tracker (check/list/stats)
   mood [cmd]              Daily mood tracker (log/show/stats)
   session [cmd]           Work session tracker (start/stop/log/stats)
+  calc <expr>             Quick calculator (math, time, finance)
   
   tools                   List all available tools
   help                    Show this help
@@ -85,6 +86,7 @@ list_tools() {
     printf "  %-10s %s\n" "habits.js" "Habit tracker"
     printf "  %-10s %s\n" "mood.js" "Mood tracker"
     printf "  %-10s %s\n" "session.js" "Work session tracker"
+    printf "  %-10s %s\n" "calc.js" "Quick calculator"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -159,6 +161,9 @@ main() {
             ;;
         bm)
             node "$SCRIPT_DIR/../bm.js" "$@"
+            ;;
+        calc)
+            node "$SCRIPT_DIR/../calc.js" "$@"
             ;;
         ideas)
             node "$SCRIPT_DIR/../ideas.js" "$@"

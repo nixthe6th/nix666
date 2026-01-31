@@ -1,0 +1,56 @@
+name: Project Stats
+
+on:
+  push:
+    branches: [master, main]
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate stats
+        id: stats
+        run: |
+          # Commit count
+          COMMITS=$(git rev-list --count HEAD)
+          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+          
+          # Files count
+          FILES=$(find . -type f -not -path './.git/*' | wc -l)
+          echo "files=$FILES" >> $GITHUB_OUTPUT
+          
+          # Scripts count
+          SCRIPTS=$(ls scripts/ 2>/dev/null | wc -l)
+          echo "scripts=$SCRIPTS" >> $GITHUB_OUTPUT
+          
+          # Lines of code (approximate)
+          LOC=$(find scripts/ -type f -exec cat {} \; 2>/dev/null | wc -l)
+          echo "loc=$LOC" >> $GITHUB_OUTPUT
+          
+          # Last commit date
+          LAST_COMMIT=$(git log -1 --format=%cd --date=short)
+          echo "last_commit=$LAST_COMMIT" >> $GITHUB_OUTPUT
+          
+          echo "✅ Stats generated"
+
+      - name: Summary
+        run: |
+          echo "## ⚡ nix666 Project Stats" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 📊 Commits | ${{ steps.stats.outputs.commits }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📁 Total Files | ${{ steps.stats.outputs.files }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔧 Scripts | ${{ steps.stats.outputs.scripts }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📝 Lines (scripts) | ${{ steps.stats.outputs.loc }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🕐 Last Commit | ${{ steps.stats.outputs.last_commit }} |" >> $GITHUB_STEP_SUMMARY

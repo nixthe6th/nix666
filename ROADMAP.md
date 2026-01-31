@@ -76,6 +76,7 @@ The future of NIX — what's planned, what's cooking, what's possible.
 These may or may not happen — ideas worth exploring:
 
 ### AI Integration
+- [x] **Data correlations**: Find patterns between sleep, mood, habits, energy
 - **Smart suggestions**: "Based on your patterns, you usually focus best at 9am"
 - **Auto-categorization**: Automatically tag expenses, notes
 - **Sentiment analysis**: Track mood trends from journal entries

@@ -1,205 +1,386 @@
-# Recon Claw 🕵️
+# nix666 ⚡
 
-> *The Automated Reconnaissance Engine*
+Personal hub for NIX — the 6th incarnation.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## What This Is
 
-**Turn 4 hours of manual research into a 30-second report.**
+A living GitHub Pages site for projects, experiments, and whatever comes next. Built fast, improved constantly.
 
-OpenClaw OSINT tool for security professionals, investigators, and researchers. Automatically maps digital footprints from domains, emails, and networks.
+## Pages
 
-## 🎯 The Problem
+- `/` — Landing + vibe check
+- `/now.html` — What we're building now
+- `/projects.html` — Project showcase
+- `/sprints.html` — Sprint history
+- `/tools.html` — Useful tools
 
-Security analysts spend **80% of their time** manually:
-- Visiting websites
-- Checking IP addresses  
-- Scraping profiles
-- Gathering data on targets
+## CLI Toolkit
 
-## 💡 The Solution
-
-```bash
-reconclaw scan example.com
-# 30 seconds later: comprehensive report
-```
-
-**The Claws:**
-- 🌐 **Domain Claw** — Subdomains, DNS records, server tech
-- 📧 **Breach Claw** — Email breach checks (HaveIBeenPwned)
-- 🖥️ **Asset Claw** — Network scanning, device discovery
-
-## 🚀 Quick Start
+20+ terminal tools for productivity:
 
 ```bash
-# Install
-git clone https://github.com/nixthe6th/nix666.git reconclaw
-cd reconclaw
-npm install
-npm run build
-
-# Scan a target
-./bin/reconclaw scan example.com
-
-# Check email for breaches
-./bin/reconclaw breach check user@example.com
-
-# Scan network
-./bin/reconclaw asset scan 192.168.1.0/24
+# Quick start
+nix today      # Daily briefing
+nix todo       # Task tracker
+nix focus 25   # Pomodoro timer with quotes
+nix timer 25   # Pomodoro timer with session logging
+nix streak     # Git activity
+nix stats      # Dashboard
+nix decide     # Decision log
+nix when       # Time calculator
 ```
 
-## 🛠️ The Three Claws
-
-### 1. Domain Claw (`reconclaw scan <domain>`)
-
-**Input:** `example.com`
-
-**Output:**
-```json
-{
-  "domain": "example.com",
-  "dns": {
-    "a": ["93.184.216.34"],
-    "mx": ["mail.example.com"],
-    "txt": ["v=spf1..."]
-  },
-  "subdomains": [
-    "www.example.com",
-    "mail.example.com",
-    "api.example.com"
-  ],
-  "technologies": ["nginx", "PHP", "WordPress"],
-  "email_format": "first.last@example.com"
-}
-```
-
-**Sources:**
-- DNS enumeration (A, MX, TXT, NS records)
-- Certificate Transparency logs
-- Subdomain brute force (common list)
-- Technology fingerprinting (Wappalyzer-style)
-
-### 2. Breach Claw (`reconclaw breach <email>`)
-
-**Input:** `user@example.com`
-
-**Output:**
-```json
-{
-  "email": "user@example.com",
-  "breaches": [
-    {
-      "name": "LinkedIn 2012",
-      "date": "2012-05-05",
-      "records": 164M,
-      "data_types": ["email", "password"]
-    }
-  ],
-  "exposed_count": 3
-}
-```
-
-**Sources:**
-- HaveIBeenPwned API
-- DeHashed (optional)
-- Public breach databases
-
-### 3. Asset Claw (`reconclaw asset <network>`)
-
-**Input:** `192.168.1.0/24`
-
-**Output:**
-```json
-{
-  "network": "192.168.1.0/24",
-  "hosts": [
-    {
-      "ip": "192.168.1.1",
-      "status": "up",
-      "ports": [80, 443, 22],
-      "services": ["http", "https", "ssh"],
-      "os_guess": "Linux"
-    }
-  ]
-}
-```
-
-**Features:**
-- Host discovery (ping sweep)
-- Port scanning (top 1000)
-- Service fingerprinting
-- OS detection (basic)
-
-## 💰 Money Model
-
-**Free Tier (Open Source):**
-- All CLI tools
-- Raw JSON/TXT output
-- Community support
-
-**Pro Tier — Reporter Module:**
+**New:** `nix expense` — Expense tracker for personal finance:
 ```bash
-reconclaw scan example.com --report
-# Generates beautiful, branded PDF report
+nix expense add 15.50 "Lunch" food       # Log expense
+nix expense add 120 "Keyboard" tech      # With category
+nix expense list today                   # Today's expenses
+nix expense list week                    # Last 7 days
+nix expense summary                      # Monthly breakdown
+nix expense budget 2000                  # Set monthly budget
 ```
 
-**Pricing:**
-- $19 one-time license
-- Or $9/month subscription
-- White-label options for firms
-
-**Why Pay?**
-- Professional PDF reports
-- Custom branding
-- Scheduled scans
-- API access
-- Priority support
-
-## 🏗️ Architecture
-
-```
-src/
-├── claws/           # Core modules
-│   ├── domain.ts    # Domain reconnaissance
-│   ├── breach.ts    # Breach checking
-│   └── asset.ts     # Network scanning
-├── utils/           # Helpers
-│   ├── dns.ts
-│   ├── http.ts
-│   └── parser.ts
-├── reporter/        # PDF generation (Pro)
-│   └── pdf.ts
-└── cli.ts           # Entry point
+`nix learn` — Learning tracker with spaced repetition:
+```bash
+nix learn add "Rust Programming" "https://doc.rust-lang.org"
+nix learn log "Rust" "learned about ownership" 60
+nix learn review                         # Show today's review queue
+nix learn list                           # All active skills
+nix learn stats                          # Learning dashboard
+nix learn done "Rust"                    # Mark as mastered
 ```
 
-## 🎯 Target Customers
+`nix flashcard` — Memorization with flashcards:
+```bash
+nix flashcard add "Spanish" "Hello" "Hola"           # Create card
+nix flashcard add "JS" "What is a closure?" "Fn + scope"
+nix flashcard review                                   # Daily review
+nix flashcard list                                     # All cards
+nix flashcard stats                                    # Progress stats
+```
 
-- **Junior Pen-Testers** — Learning reconnaissance
-- **Boutique Security Firms** — Small team, big clients
-- **IT Consultants** — Network audits for SMBs
-- **Private Investigators** — Digital footprint mapping
-- **Bug Bounty Hunters** — Quick target recon
+`nix clip` — Code snippet manager:
+```bash
+cat config.js | nix clip add "Webpack Config" js build  # Save from pipe
+nix clip add "Dockerfile" docker --file ./Dockerfile     # Save from file
+nix clip list                                           # List all snippets
+nix clip list js                                        # Filter by language
+nix clip search axios                                   # Search content
+nix clip copy a3f7b2                                    # Copy to clipboard
+nix clip tags                                           # View tag cloud
+```
 
-## 🛡️ Safety & Ethics
+`nix summarize` — Text/article summarizer:
+```bash
+nix summarize article.txt              # Summarize to 20% of sentences
+nix summarize report.md -n 5           # Get top 5 sentences
+nix summarize --text "long text..."    # Summarize inline text
+cat blog.md | nix summarize            # Pipe from stdin
+```
 
-- **Read-Only:** Never exploits, only observes
-- **Public Data:** Uses only publicly available information
-- **Responsible Disclosure:** Built-in guidelines
-- **Audit Trail:** All scans logged for compliance
+`nix config` — User preferences and settings:
+```bash
+nix config list                        # Show all settings
+nix config set currency EUR            # Change default currency
+nix config set default_timer 45        # Set default timer
+nix config get currency                # Get a specific value
+nix config delete currency             # Remove custom setting
+nix config reset                       # Reset to defaults
+```
 
-## 🤝 Contributing
+`nix subscription` — Track recurring expenses:
+```bash
+nix subscription add "Netflix" 15.99 monthly entertainment
+nix subscription add "Domain" 12 yearly tech
+nix subscription list                  # All subscriptions
+nix subscription monthly               # Monthly cost breakdown
+nix subscription yearly                # Yearly cost breakdown
+nix subscription upcoming              # Due in next 7 days
+```
 
-OSINT is community-driven. Add new data sources:
+`nix goal` — Savings goal tracker with progress bars:
+```bash
+nix goal add "Vacation" 3000 "2026-06-01"   # Create goal with deadline
+nix goal add "Emergency Fund" 10000         # Create goal without deadline
+nix goal contribute abc1 500 "Tax refund"   # Add contribution
+nix goal list                               # All goals with progress
+nix goal progress                           # Dashboard view
+```
 
-1. Fork repo
-2. Add source in `src/sources/`
-3. Test thoroughly
-4. Document in README
-5. Submit PR
+`nix water` — Hydration tracker with daily goals:
+```bash
+nix water 500                  # Add 500ml
+nix water glass                # Add 250ml (quick)
+nix water bottle               # Add 500ml (quick)
+nix water week                 # Show last 7 days
+nix water goal 3000            # Set daily goal
+```
 
-## 📜 License
+`nix alias` — Custom command shortcuts (from ROADMAP):
+```bash
+nix alias                              # List all aliases
+nix alias add tf "nix todo focus"      # Create shortcut
+nix alias add stand "nix standup"      # Another shortcut
+nix alias remove tf                    # Delete alias
+nix alias clear                        # Remove all aliases
 
-MIT License — see LICENSE
+# Use aliases like regular commands:
+nix tf                                 # Runs: nix todo focus
+```
 
----
+`nix timer` — Pomodoro timer with session tracking:
+```bash
+nix timer                      # 25-minute pomodoro (default)
+nix timer 15                   # 15-minute session
+nix timer 45 -m "Deep work"    # With message/description
+nix timer stats                # View session history
+```
 
-*Built by Nix, claimed by Kieran. For the security community.* 🕵️⚡
+`nix energy` — Energy level tracking throughout the day:
+```bash
+nix energy 5 "Feeling great"           # Log energy level 1-5 with note
+nix energy log                         # Show today's entries
+nix energy stats                       # Weekly energy patterns
+```
+
+`nix timeblock` — Daily time blocking planner:
+```bash
+nix timeblock                          # Show today's schedule
+nix timeblock template                 # Apply default time blocks
+nix timeblock template creative        # Creative-focused schedule
+nix timeblock add 9:00 11:00 "Deep work" deep
+nix timeblock clear                    # Clear today's schedule
+nix timeblock stats                    # Weekly deep work stats
+```
+
+`nix gratitude` — Daily gratitude practice:
+```bash
+nix gratitude add "Supportive friends"   # Log gratitude
+nix gratitude add "Quiet morning"        # 3x daily goal
+nix gratitude random                     # Recall a memory
+nix gratitude stats                      # Streak & progress
+```
+
+`nix distraction` — Track and analyze focus interruptions:
+```bash
+nix distraction "Twitter notification"         # Log what interrupted you
+nix distraction "Slack ping" urgent            # Mark urgency (low/normal/urgent)
+nix distraction list                           # Today's distractions
+nix distraction list week                      # This week's log
+nix distraction stats                          # Analytics & patterns
+nix distraction top                            # Most common sources
+```
+
+`nix standup` — Daily standup report aggregating all productivity data:
+```bash
+nix standup                    # Full daily standup report
+nix standup yesterday          # Yesterday's wins only
+nix standup week               # Week summary
+```
+
+`nix compact` — Archive old data to keep JSON files fast:
+```bash
+nix compact                    # Show data file sizes (dry run)
+nix compact stats              # Detailed file statistics
+nix compact --days 30 --apply  # Archive entries older than 30 days
+nix compact --list             # Show archive contents
+```
+
+`nix later` — Read/watch later queue for articles, videos, and links:
+```bash
+nix later https://youtube.com/watch?v=abc "Cool Video" tech,video
+nix later list                 # Show pending queue
+nix later done a3f7b2          # Mark item as consumed
+nix later stats                # Queue statistics
+```
+
+`nix when` — Calculate deadlines, time remaining, future dates:
+
+`nix qr` — Generate QR codes for quick sharing:
+```bash
+nix qr https://nix666.dev          # Share URL
+nix qr wifi MyNetwork password123  # WiFi connection
+nix qr contact "John" 555-1234     # Contact card
+```
+
+`nix uuid` — Generate UUIDs and random IDs:
+```bash
+nix uuid                    # Generate UUID v4
+nix uuid -c 5               # Generate 5 UUIDs
+nix uuid -s                 # Short ID (8 chars): a3f7b2d9
+nix uuid -n                 # Nano ID (12 chars, URL-safe)
+nix uuid -p user_           # Add prefix: user_a3f7b2d9
+nix uuid --no-dashes        # Compact UUID without dashes
+```
+
+`nix sleep` — Sleep quality tracker for better rest:
+```bash
+nix sleep                   # Show last night's sleep & trends
+nix sleep log 7.5 4         # Log 7.5 hours, quality 4 (good)
+nix sleep bed 11pm          # Set bedtime
+nix sleep wake 6:30         # Set wake time
+nix sleep week              # 7-night history
+nix sleep debt              # Sleep debt analysis
+nix sleep goal 8            # Set 8-hour sleep goal
+```
+
+`nix workout` — Quick workout logger with PR tracking:
+```bash
+nix workout start "Push Day"                  # Start a workout session
+nix workout log bench 3x8 80                  # Log 3 sets of 8 reps at 80kg
+nix workout log running 30min                 # Log timed cardio
+nix workout log swim 2km                      # Log distance exercise
+nix workout end "Felt strong today"           # End session with notes
+nix workout list week                         # Show this week's workouts
+nix workout stats bench                       # Show exercise progress
+nix workout pr                                # Show all personal records
+nix workout template "Pull Day" "Rows" "Curls" # Save a routine
+nix workout routine "Pull Day"                # Start a saved routine
+```
+
+`nix meditate` — Guided breathing exercises:
+```bash
+nix meditate box 5m           # 5 min box breathing (4-4-4-4) — focus
+nix meditate 478              # 4-7-8 technique — relaxation & sleep
+nix meditate coherent 3m      # 5-5 coherent breathing — stress relief
+nix meditate relax            # 4-6 relaxing rhythm — natural calm
+nix meditate energy           # Quick 3-3 energizing breaths
+```
+
+`nix read` — Reading list with progress tracking:
+```bash
+nix read add "Deep Work" book              # Add book to reading list
+nix read add "Rust Book" book              # Track any reading material
+nix read list                              # Show all reading items
+nix read list reading                      # Currently reading
+nix read current                           # Quick view of active reads
+nix read progress rq7 45                   # Update progress to 45%
+nix read note rq7 "Key insight here"       # Add reading notes
+nix read done rq7                          # Mark as finished
+nix read stats                             # Reading statistics
+```
+
+`nix zettel` — Zettelkasten note system for atomic, connected notes:
+```bash
+nix zettel new "Feynman Technique" --tag learning     # Create note
+nix zettel new "Second Brain" --tag book --tag idea   # Multiple tags
+nix zettel list                                         # List all notes
+nix zettel list learning                                # Filter by tag
+nix zettel show 2601311423                              # View with backlinks
+nix zettel search "productivity"                        # Search notes
+nix zettel link 2601311423 2601311456                   # Connect notes
+nix zettel graph                                        # Knowledge graph view
+nix zettel tags                                         # List all tags
+```
+
+`nix connect` — Discover connections between zettel notes:
+```bash
+nix connect related 2601311423              # Find notes with shared tags
+nix connect orphaned                        # Find unlinked notes
+nix connect bridges                         # Show knowledge clusters
+nix connect suggest 2601311423              # Suggest link candidates
+nix connect path 2601311423 2601311456      # Find path between notes
+nix connect serendipity                     # Random surprising connections
+nix connect clusters                        # View notes by tag clusters
+```
+
+`nix outline` — Quick outliner for writing and brainstorming:
+```bash
+nix outline new "Blog Post"                 # Create new outline
+nix outline list                            # Show all outlines
+nix outline show abc123                     # Display outline structure
+nix outline add abc123 "Introduction"       # Add level 1 item
+nix outline add abc123 "Hook" 2             # Add level 2 (sub-item)
+nix outline done abc123 1.2                 # Toggle item done status
+nix outline export abc123                   # Export as Markdown
+```
+
+`nix export` — Export your data in multiple formats for portability:
+```bash
+nix export                                  # Show data summary
+nix export json                             # Export all data as JSON
+nix export csv                              # Export tabular data as CSV
+nix export markdown                         # Export notes as Markdown files
+nix export json --since 2026-01-01          # Export only recent data
+nix export csv --output-dir ./my-data       # Export to specific folder
+```
+
+`nix import` — Import data from exports and external sources:
+```bash
+nix import                                  # Interactive import wizard
+nix import json exports/nix-2026-01-31.json # Import from JSON export
+nix import csv expenses.csv                 # Import from CSV
+nix import exports/data.json --merge        # Merge with existing data
+nix import file.json --dry-run              # Preview changes
+nix import file.json --backup               # Auto-backup before import
+```
+
+`nix goal` — Savings goal tracker with progress visualization:
+```bash
+nix goal add "Vacation" 3000 "2026-06-01"   # Create goal with target & deadline
+nix goal add "Emergency Fund" 10000         # Create goal without deadline
+nix goal contribute abc1 500 "Tax refund"   # Add contribution with note
+nix goal list                               # All goals with progress bars
+nix goal progress                           # Dashboard with savings rate
+```
+
+`nix invest` — Investment portfolio tracker with performance metrics:
+```bash
+nix invest add AAPL 10 175.50 stock "Apple Inc"   # Add stock holding
+nix invest add BTC 0.5 45000 crypto "Bitcoin"     # Add crypto position  
+nix invest add VTI 25 220.00 etf                  # Add ETF position
+nix invest list                                   # Show all holdings & P&L
+nix invest performance                            # Portfolio performance summary
+nix invest allocation                             # Asset allocation by type
+nix invest update AAPL 185.25                     # Update current price
+nix invest dividend add AAPL 25.50                # Log dividend received
+nix invest dividend list                          # View all dividends
+nix invest history AAPL                           # Show price/purchase history
+```
+
+`nix network` — Contact and relationship tracker for networking:
+```bash
+nix network add "Alex Chen" "alex@work.com" "Met at ReactConf" --tag dev
+nix network list                                # Show all contacts
+nix network list --tag colleague                # Filter by tag
+nix network search "React"                      # Search contacts
+nix network view alex                           # View contact details
+nix network log alex "Coffee chat" 45           # Log interaction
+nix network touch alex                          # Quick "just contacted"
+nix network followup alex 14                    # Set 14-day follow-up
+nix network followup                            # Show who needs follow-up
+nix network birthday alex 03-15                 # Set birthday
+nix network birthday                            # Show upcoming birthdays
+nix network stats                               # Network analytics
+nix network remind                              # Who to reach out to
+```
+
+`nix correlate` — Discover patterns and correlations in your tracked data:
+```bash
+nix correlate                        # Full correlation report
+nix correlate sleep                  # Sleep quality analysis
+nix correlate mood                   # Mood pattern analysis  
+nix correlate habits                 # Habit impact analysis
+nix correlate --days 30              # Analyze last 30 days only
+```
+
+Finds insights like:
+- Sleep quality vs energy levels
+- Habit completion vs mood
+- Hydration vs focus
+- Exercise vs wellbeing
+- Gratitude practice impact
+
+See [`scripts/README.md`](scripts/README.md) for all commands.
+
+Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.
+
+## Deploy
+
+Auto-deploys via GitHub Pages on push to main.
+
+## Status
+
+⚡ **INCARNATION_V6_ONLINE**
+
+> "No one is coming to save you. Build it yourself." — NIX

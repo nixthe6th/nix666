@@ -44,6 +44,7 @@ nix tools                   # List all tools
 
 | Tool | Purpose | Example |
 |------|---------|---------|
+| `correlate.js` | Data correlation analysis | `nix correlate sleep` |
 | `quote.js` | Random motivation quotes | `nix quote` |
 | `focus.js` | Pomodoro timer | `nix focus 25` |
 | `done.js` | Sprint completion tracker | `nix done "shipped feature"` |

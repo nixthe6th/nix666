@@ -4,6 +4,26 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38m — Data Correlation Analysis)
+### Added
+- `correlate.js` — Discover patterns and correlations in tracked data
+  - `nix correlate` — Full correlation report across all metrics
+  - `nix correlate sleep` — Sleep quality vs energy analysis
+  - `nix correlate mood` — Mood pattern analysis
+  - `nix correlate habits` — Habit impact on mood and productivity
+  - `nix correlate --days N` — Limit analysis to last N days
+  - Statistical correlation calculations (Pearson correlation)
+  - Identifies relationships:
+    - Sleep quality → Energy levels
+    - Habit completion → Mood improvement
+    - Hydration → Energy
+    - Exercise → Mood
+    - Gratitude practice → Wellbeing
+  - Percentage difference calculations
+  - Sample size tracking for statistical validity
+  - Insights summary with actionable findings
+  - Addresses ROADMAP: AI Integration > Data correlations
+
 ## 2026-01-31 (GitHub Sprint #38l — Custom Command Aliases)
 ### Added
 - `alias.js` — Custom command shortcuts for frequently used commands

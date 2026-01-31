@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38b — Configuration)
+### Added
+- `config.js` — User configuration manager for nix
+  - `nix config get <key>` — Retrieve configuration values
+  - `nix config set <key> <value>` — Set configuration values with type coercion
+  - `nix config list` — Display all settings with defaults highlighted
+  - `nix config delete <key>` — Remove custom settings (revert to default)
+  - `nix config reset` — Reset all settings to defaults
+  - `nix config path` — Show config file location
+  - Automatic type coercion (boolean, number, string)
+  - Sensible defaults for timer, currency, date/time formats
+  - Stores config in `~/.nix666/config.json`
+  - Addresses ROADMAP: Core CLI Enhancement - config command
+
 ## 2026-01-31 (GitHub Sprint #38 — Data Export)
 ### Added
 - `export.js` — Export nix data in multiple formats for portability

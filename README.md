@@ -78,6 +78,16 @@ nix summarize --text "long text..."    # Summarize inline text
 cat blog.md | nix summarize            # Pipe from stdin
 ```
 
+`nix config` — User preferences and settings:
+```bash
+nix config list                        # Show all settings
+nix config set currency EUR            # Change default currency
+nix config set default_timer 45        # Set default timer
+nix config get currency                # Get a specific value
+nix config delete currency             # Remove custom setting
+nix config reset                       # Reset to defaults
+```
+
 `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

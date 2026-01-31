@@ -4,6 +4,15 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #6 — Sprint Mode)
+### Added
+- `scripts/sprint.sh` — Git sprint automation tool
+  - Auto-stages, commits, and pushes in one command
+  - Smart commit message generation if none provided
+  - Works with `nix sprint "message"` CLI command
+  - Color-coded output for quick status checks
+- New sprint-mode quote: "The code you don't write can't ship"
+
 ## 2026-01-31 (GitHub Sprint #5 — Momentum)
 ### Added
 - 5 fresh quotes to `quotes.json` (24 total)

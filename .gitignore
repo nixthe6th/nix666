@@ -24,3 +24,7 @@ Thumbs.db
 
 # Data files (personal tracking data)
 .data/
+credentials/
+*.env
+.env
+openclaw.json

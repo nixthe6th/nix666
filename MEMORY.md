@@ -27,6 +27,7 @@ Goal: Make Nix as independent and capable as possible
 - ✅ Kimi configured AND WORKING (kimi-k2.5 works!)
 - ✅ Image generation wired (waiting on quota)
 - ✅ Discord connected
+- ✅ nixtrack CLI tool - Income/order tracker for Fiverr business
 
 ### In Progress:
 - Fiverr writing business (@thebignix) - gig is live, waiting for orders

@@ -4,6 +4,21 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #37 — Reading List)
+### Added
+- `read.js` — Reading list with progress tracking
+  - Track books, articles, papers, blogs, docs
+  - Add items: `nix read add "Deep Work" book`
+  - Progress tracking: `nix read progress <id> 45` (percent)
+  - Visual progress bars with completion percentages
+  - Reading notes: `nix read note <id> "insight here"`
+  - Status workflow: later → reading → done
+  - Currently reading view: `nix read current`
+  - Statistics dashboard: completion rates, by type breakdown
+  - Short ID system (3 chars) for quick reference
+  - Type icons: 📚 book, 📄 article, 📑 paper, 📝 blog, 📋 doc
+  - Data stored in `data/reading.json`
+
 ## 2026-01-31 (GitHub Sprint #36c — Meditation Timer)
 ### Added
 - `meditate.js` — Guided breathing timer with multiple patterns

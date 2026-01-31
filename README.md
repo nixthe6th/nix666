@@ -154,6 +154,19 @@ nix meditate relax            # 4-6 relaxing rhythm — natural calm
 nix meditate energy           # Quick 3-3 energizing breaths
 ```
 
+`nix read` — Reading list with progress tracking:
+```bash
+nix read add "Deep Work" book              # Add book to reading list
+nix read add "Rust Book" book              # Track any reading material
+nix read list                              # Show all reading items
+nix read list reading                      # Currently reading
+nix read current                           # Quick view of active reads
+nix read progress rq7 45                   # Update progress to 45%
+nix read note rq7 "Key insight here"       # Add reading notes
+nix read done rq7                          # Mark as finished
+nix read stats                             # Reading statistics
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

@@ -19,6 +19,11 @@ The future of NIX — what's planned, what's cooking, what's possible.
 - [x] `nix workout` — Quick workout logger
 - [x] `nix meditate` — Guided breathing timer
 
+### Sprint #37 — Knowledge Capture
+- [x] `nix read` — Reading list with progress tracking (books, articles, papers)
+- [ ] `nix zettel` — Zettelkasten note system
+- [ ] `nix connect` — Find connections between notes
+
 ---
 
 ## 📋 Planned Features
@@ -41,8 +46,8 @@ The future of NIX — what's planned, what's cooking, what's possible.
 - `nix energy` — Energy level tracking throughout day
 
 #### Knowledge Management
-- `nix read` — Reading list with progress tracking
-- `nix zettel` — Zettelkasten note system
+- [x] `nix read` — Reading list with progress tracking
+- [ ] `nix zettel` — Zettelkasten note system
 - `nix connect` — Find connections between notes
 - `nix outline` — Quick outlining for writing
 

@@ -20,6 +20,7 @@
 - [pass](#pass) — pass.js - Quick password generator
 - [projstats](#projstats) — projstats - Quick project dashboard stats
 - [quote](#quote) — quote - Terminal motivation from NIX
+- [review](#review) — review.js - Daily/weekly progress review
 - [server](#server) — server.js - Quick HTTP server for static files
 - [session](#session) — session.js - Work session tracker
 - [sprint](#sprint) — sprint.js — Quick sprint management CLI
@@ -40,19 +41,19 @@ backup.js - Data backup and export for NIX
 ```bash
 nix backup [command] [options]
 ```
-```bash
-${C.reset}
-```
 
 ### Commands
 
-- `nix`
+- `nix backup` — Create backup
+- `nix backup list` — List backups
+- `nix backup restore <file>` — Restore from backup
+- `nix backup clean` — Remove old backups
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -68,29 +69,24 @@ bm.js - Bookmark CLI for quick access to saved links
 
 ```bash
 bm [list|search|open|add] [args]
-```
-```bash
 bm <command> [args]
-```
-```bash
-bm search <query>' + COLORS.reset);
-```
-```bash
-bm open <title/term>' + COLORS.reset);
-```
-```bash
-bm add <title> <url> [category] [description] [tags]' + COLORS.reset);
+bm search <query>
+bm open <title/term>
+bm add <title> <url> [category] [description] [tags]
 ```
 
 ### Commands
 
-- `bm`
+- `bm list` — List all bookmarks
+- `bm search <query>` — Search bookmarks
+- `bm open <term>` — Open bookmark in browser
+- `bm add <title> <url>` — Add new bookmark
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -105,14 +101,22 @@ calc.js - Quick calculation utility
 ### Usage
 
 ```bash
-${COLORS.reset} nix calc <expression>
+nix calc <expression>
+```
+
+### Examples
+
+```bash
+nix calc "25 * 4"
+nix calc "sqrt(16)"
+nix calc "2^10"
 ```
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -129,19 +133,28 @@ convert.js — Swiss Army knife converter utility
 ```bash
 nix convert <command> [input]
 ```
-```bash
-${C.reset} nix convert <command> [input]`);
-```
 
 ### Commands
 
-- `nix`
+| Command | Description |
+|---------|-------------|
+| `b64e` | Base64 encode |
+| `b64d` | Base64 decode |
+| `urle` | URL encode |
+| `urld` | URL decode |
+| `j2y` | JSON to YAML |
+| `y2j` | YAML to JSON |
+| `lower` | Lowercase |
+| `upper` | Uppercase |
+| `uuid` | Generate UUID |
+| `epoch` | Current timestamp |
+| `date` | Format timestamp |
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -157,26 +170,25 @@ done.js - Sprint completion tracker
 
 ```bash
 done ["what you accomplished"] or just "done" for stats + motivation
-```
-```bash
-done ["accomplishment text"] [--stats]');
+done ["accomplishment text"] [--stats]
 ```
 
 ### Commands
 
-- `done`
+- `done` — Show stats
+- `done "message"` — Log completion
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--oneline` | — |
-| `--since` | — |
-| `--until` | — |
-| `--shortstat` | — |
-| `--format` | — |
-| `--stats` | — |
-| `--help` | — |
+| `--oneline` | One line output |
+| `--since` | Since date |
+| `--until` | Until date |
+| `--shortstat` | Short stats |
+| `--format` | Output format |
+| `--stats` | Show statistics |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -193,25 +205,22 @@ find.js - Universal search across all NIX data
 ```bash
 find [query] [options]
 ```
-```bash
-${COLORS.reset}
-```
 
 ### Commands
 
-- `find`
+- `find <query>` — Search all data
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--todos` | — |
-| `--ideas` | — |
-| `--quotes` | — |
-| `--help` | — |
-| `--projects` | — |
-| `--sprints` | — |
-| `--bookmarks` | — |
+| `--todos` | Search todos only |
+| `--ideas` | Search ideas only |
+| `--quotes` | Search quotes only |
+| `--help` | Show help |
+| `--projects` | Search projects only |
+| `--sprints` | Search sprints only |
+| `--bookmarks` | Search bookmarks only |
 
 > 💡 Run with `--help` for full usage information
 
@@ -228,26 +237,26 @@ focus.js - Pomodoro focus timer with motivation
 ```bash
 focus [minutes] [--quote]
 ```
-```bash
-');
-```
 
 ### Commands
 
-- `focus`
+- `focus` — Start 25min timer
+- `focus 15` — Start 15min timer
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--quote` | — |
-| `--help` | — |
+| `--quote` | Show quote after |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
 ---
 
 ## habits
+
+habits.js — Habit tracking with streaks
 
 **File:** `habits.js`
 
@@ -256,19 +265,21 @@ focus [minutes] [--quote]
 ```bash
 habits.js [check|uncheck|list|add|remove|stats] [habit-id]
 ```
-```bash
-');
-```
 
 ### Commands
 
-- `habits`
+- `habits list` — List all habits
+- `habits check <id>` — Check off habit
+- `habits uncheck <id>` — Uncheck habit
+- `habits add <name>` — Add new habit
+- `habits remove <id>` — Remove habit
+- `habits stats` — Show stats
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -285,20 +296,19 @@ ideas.js - Idea backlog and project pipeline tracker
 ```bash
 ideas [command] [args]
 ```
-```bash
-${COLORS.reset}
-```
 
 ### Commands
 
-- `ideas`
-- `nixsprint`
+- `ideas` — List ideas
+- `ideas add "idea" [priority]` — Add idea
+- `ideas promote <id>` — Move to project
+- `nixsprint` — Sprint mode
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -313,18 +323,16 @@ log.js — Quick daily logger
 ### Usage
 
 ```bash
-nix log add <text>');
-```
-```bash
-nix log search <query>');
-```
-```bash
+nix log add <text>
+nix log search <query>
 nix log add <text>     Add entry
 ```
 
 ### Commands
 
-- `nix`
+- `nix log add <text>` — Add log entry
+- `nix log search <query>` — Search logs
+- `nix log list` — List recent entries
 
 ---
 
@@ -338,24 +346,22 @@ mood.js — Daily mood & emotion tracker
 
 ```bash
 mood.js [command] [options]
-```
-```bash
-mood.js log <1-5> [note]\n');
-```
-```bash
-mood.js log <1-5> [note]');
+mood.js log <1-5> [note]
+mood.js log <1-5> [note]
 ```
 
 ### Commands
 
-- `mood`
-- `log`
+- `mood log <1-5> [note]` — Log mood
+- `mood today` — Show today's mood
+- `mood week` — Weekly summary
+- `mood streak` — Streak info
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -372,23 +378,23 @@ note.js - Quick capture for thoughts, ideas, and tasks
 ```bash
 note [text] [--list|--today|--grep pattern]
 ```
-```bash
-${COLORS.reset}
-```
 
 ### Commands
 
-- `note`
+- `note <text>` — Add note
+- `note --list` — List all notes
+- `note --today` — Today's notes
+- `note --grep <pattern>` — Search notes
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--list` | — |
-| `--today` | — |
-| `--grep` | — |
-| `--stats` | — |
-| `--help` | — |
+| `--list` | List all notes |
+| `--today` | Today's notes |
+| `--grep` | Search pattern |
+| `--stats` | Show stats |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -405,22 +411,22 @@ pass.js - Quick password generator
 ```bash
 nix pass [length] [--strong|--pin|--phrase]
 ```
-```bash
-${COLORS.reset}`);
-```
 
 ### Commands
 
-- `nix`
+- `nix pass` — Generate 16-char password
+- `nix pass 20` — Generate 20-char password
+- `nix pass --pin` — Generate PIN
+- `nix pass --phrase` — Generate passphrase
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--strong` | — |
-| `--pin` | — |
-| `--phrase` | — |
-| `--help` | — |
+| `--strong` | Stronger password |
+| `--pin` | Generate PIN |
+| `--phrase` | Generate passphrase |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -440,7 +446,7 @@ projstats
 
 ### Commands
 
-- `projstats`
+- `projstats` — Show dashboard
 
 ---
 
@@ -454,14 +460,43 @@ quote - Terminal motivation from NIX
 
 ```bash
 quote [context|all|search <term>|list]
-```
-```bash
-quote search <term>');
+quote search <term>
 ```
 
 ### Commands
 
-- `quote`
+- `quote` — Random quote
+- `quote all` — List all quotes
+- `quote search <term>` — Search quotes
+- `quote context <ctx>` — By context
+
+---
+
+## review
+
+review.js - Daily/weekly progress review
+
+**File:** `review.js`
+
+### Usage
+
+```bash
+review [today|week]
+```
+
+### Commands
+
+- `review` — Today's review (default)
+- `review today` — Daily progress summary
+- `review week` — Weekly retrospective
+
+### Summary
+
+Shows progress across:
+- Tasks completed/pending
+- Habits checked
+- Mood tracking
+- Weekly completion chart
 
 ---
 
@@ -476,21 +511,19 @@ server.js - Quick HTTP server for static files
 ```bash
 nix server [port] [--dir <path>] [--open]
 ```
-```bash
-${COLORS.reset}`);
-```
 
 ### Commands
 
-- `nix`
+- `nix server` — Start on port 8080
+- `nix server 3000` — Start on port 3000
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--dir <path>` | — |
-| `--open` | — |
-| `--help` | — |
+| `--dir <path>` | Serve different directory |
+| `--open` | Open browser |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -506,24 +539,22 @@ session.js - Work session tracker
 
 ```bash
 session.js <command> [args]
-```
-```bash
-session.js start <project> [tag]${C.reset}`);
-```
-```bash
-session.js <command> [args]\n');
+session.js start <project> [tag]
+session.js <command> [args]
 ```
 
 ### Commands
 
-- `session`
-- `start`
+- `session start <project> [tag]` — Start session
+- `session stop` — Stop session
+- `session status` — Current status
+- `session log` — Show history
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -538,17 +569,24 @@ sprint.js — Quick sprint management CLI
 ### Usage
 
 ```bash
-*   sprint                    Show current sprint status
+sprint                    Show current sprint status
+sprint start "goal"       Start a new sprint
+sprint complete           Mark current sprint done
+sprint list [n]           Show last n sprints (default 10)
 ```
-```bash
-${C.reset}`);
-```
+
+### Commands
+
+- `sprint` — Show status
+- `sprint start "goal"` — Start sprint
+- `sprint complete` — Complete sprint
+- `sprint list` — List sprints
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -563,25 +601,25 @@ stats.js — Productivity Stats Dashboard
 ### Usage
 
 ```bash
-nix stats [options]');
+nix stats [options]
 ```
 
 ### Commands
 
-- `nix`
+- `nix stats` — Show dashboard
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--since` | — |
-| `--format` | — |
-| `--date` | — |
-| `--help` | — |
-| `--sprints` | — |
-| `--tasks` | — |
-| `--projects` | — |
-| `--json` | — |
+| `--since` | Since date |
+| `--format` | Output format |
+| `--date` | Specific date |
+| `--help` | Show help |
+| `--sprints` | Sprint stats only |
+| `--tasks` | Task stats only |
+| `--projects` | Project stats only |
+| `--json` | JSON output |
 
 > 💡 Run with `--help` for full usage information
 
@@ -601,18 +639,18 @@ streak [options]
 
 ### Commands
 
-- `streak`
+- `streak` — Show streak
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--pretty` | — |
-| `--date` | — |
-| `--all` | — |
-| `--oneline` | — |
-| `--since` | — |
-| `--calendar` | — |
+| `--pretty` | Pretty output |
+| `--date` | Specific date |
+| `--all` | All history |
+| `--oneline` | One line |
+| `--since` | Since date |
+| `--calendar` | Calendar view |
 
 ---
 
@@ -630,18 +668,20 @@ today [--minimal | --json]
 
 ### Commands
 
-- `today`
+- `today` — Full briefing
+- `today --minimal` — Brief output
+- `today --json` — JSON output
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--minimal` | — |
-| `--json` | — |
-| `--oneline` | — |
-| `--since` | — |
-| `--all` | — |
-| `--until` | — |
+| `--minimal` | Minimal output |
+| `--json` | JSON format |
+| `--oneline` | One line |
+| `--since` | Since date |
+| `--all` | All data |
+| `--until` | Until date |
 
 ---
 
@@ -656,19 +696,20 @@ todo.js - Sprint-mode task tracker
 ```bash
 todo [add|list|done|remove|priority] [args]
 ```
-```bash
-${COLORS.reset}
-```
 
 ### Commands
 
-- `todo`
+- `todo` — List todos
+- `todo add <task>` — Add task
+- `todo done <id>` — Mark done
+- `todo remove <id>` — Remove task
+- `todo priority <id> <level>` — Set priority
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--help` | — |
+| `--help` | Show help |
 
 > 💡 Run with `--help` for full usage information
 
@@ -688,19 +729,21 @@ week [--commits|--sprints|--json]
 
 ### Commands
 
-- `week`
+- `week` — Full retrospective
+- `week --commits` — Commits only
+- `week --sprints` — Sprints only
 
 ### Flags
 
 | Flag | Description |
 |------|-------------|
-| `--commits` | — |
-| `--sprints` | — |
-| `--json` | — |
-| `--oneline` | — |
-| `--since` | — |
-| `--all` | — |
-| `--until` | — |
+| `--commits` | Show commits |
+| `--sprints` | Show sprints |
+| `--json` | JSON output |
+| `--oneline` | One line |
+| `--since` | Since date |
+| `--all` | All data |
+| `--until` | Until date |
 
 ---
 
@@ -708,29 +751,30 @@ week [--commits|--sprints|--json]
 
 | Tool | Purpose |
 |------|---------|
-| [backup](#backup) | backup.js - Data backup and export for NIX |
-| [bm](#bm) | bm.js - Bookmark CLI for quick access to saved links |
-| [calc](#calc) | calc.js - Quick calculation utility |
-| [convert](#convert) | convert.js — Swiss Army knife converter utility |
-| [done](#done) | done.js - Sprint completion tracker |
-| [find](#find) | find.js - Universal search across all NIX data |
-| [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
-| [habits](#habits) | — |
-| [ideas](#ideas) | ideas.js - Idea backlog and project pipeline tracker |
-| [log](#log) | log.js — Quick daily logger |
-| [mood](#mood) | mood.js — Daily mood & emotion tracker |
-| [note](#note) | note.js - Quick capture for thoughts, ideas, and tasks |
-| [pass](#pass) | pass.js - Quick password generator |
-| [projstats](#projstats) | projstats - Quick project dashboard stats |
-| [quote](#quote) | quote - Terminal motivation from NIX |
-| [server](#server) | server.js - Quick HTTP server for static files |
-| [session](#session) | session.js - Work session tracker |
-| [sprint](#sprint) | sprint.js — Quick sprint management CLI |
-| [stats](#stats) | stats.js — Productivity Stats Dashboard |
-| [streak](#streak) | streak.js - Git activity streak tracker |
-| [today](#today) | today.js - Daily briefing: date, quote, streak, sprint status |
-| [todo](#todo) | todo.js - Sprint-mode task tracker |
-| [week](#week) | week.js - Weekly retrospective: commits, sprints, stats, progress |
+| [backup](#backup) | Data backup and export for NIX |
+| [bm](#bm) | Bookmark CLI for quick access to saved links |
+| [calc](#calc) | Quick calculation utility |
+| [convert](#convert) | Swiss Army knife converter utility |
+| [done](#done) | Sprint completion tracker |
+| [find](#find) | Universal search across all NIX data |
+| [focus](#focus) | Pomodoro focus timer with motivation |
+| [habits](#habits) | Habit tracking with streaks |
+| [ideas](#ideas) | Idea backlog and project pipeline tracker |
+| [log](#log) | Quick daily logger |
+| [mood](#mood) | Daily mood & emotion tracker |
+| [note](#note) | Quick capture for thoughts, ideas, and tasks |
+| [pass](#pass) | Quick password generator |
+| [projstats](#projstats) | Quick project dashboard stats |
+| [quote](#quote) | Terminal motivation from NIX |
+| [review](#review) | Daily/weekly progress review |
+| [server](#server) | Quick HTTP server for static files |
+| [session](#session) | Work session tracker |
+| [sprint](#sprint) | Quick sprint management CLI |
+| [stats](#stats) | Productivity Stats Dashboard |
+| [streak](#streak) | Git activity streak tracker |
+| [today](#today) | Daily briefing: date, quote, streak, sprint status |
+| [todo](#todo) | Sprint-mode task tracker |
+| [week](#week) | Weekly retrospective: commits, sprints, stats, progress |
 
 ---
 *Generated by docs.js — Part of [nix666](https://github.com/nix666/nix666)*

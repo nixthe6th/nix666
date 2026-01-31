@@ -4,6 +4,15 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #27 — API Documentation Fixes)
+### Fixed
+- Fixed formatting issues in `API.md` — removed unreplaced template strings (`${C.reset}`, `${COLORS.reset}`)
+- Added complete documentation for `review.js` command (was missing from docs)
+- Improved command descriptions and examples throughout API docs
+- Added proper command tables with descriptions for `convert`, `calc`, `bm` tools
+
+## 2026-01-31 (GitHub Sprint #26 — Data Backup Tool)
+
 ## 2026-01-31 (GitHub Sprint #26 — Data Backup Tool)
 ### Added
 - `backup.js` — Data backup and export tool

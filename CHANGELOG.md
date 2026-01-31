@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #10 — CLI Polish)
+### Added
+- `.gitignore` — Ignore OpenClog agent files + node/OS/editor noise
+- 10 new quotes to `quotes.json` (41 total)
+  - Action-oriented: "Action produces information"
+  - Iteration mindset: "1000 tiny iterations"
+  - Productivity: "You don't need more time, you need focus"
+  - Systems thinking: "Build systems, not just products"
+  - Work visibility: "Work with the garage door open"
+- Enhanced `quote.js` with search & list features
+  - `quote list` — Shows all contexts with quote counts
+  - `quote search <term>` — Search text/author/context
+  - Updated help text with new commands
+
 ## 2026-01-31 (GitHub Sprint #9 — Streak Mode)
 ### Added
 - `streak.js` — Git activity streak tracker

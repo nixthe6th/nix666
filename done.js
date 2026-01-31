@@ -46,6 +46,16 @@ function getGitStats() {
   }
 }
 
+function getWeeklyStats() {
+  try {
+    const commits = execSync('git log --oneline --since="7 days ago" 2>/dev/null | wc -l', { encoding: 'utf8' }).trim();
+    const authors = execSync('git log --since="7 days ago" --format="%an" 2>/dev/null | sort -u | wc -l', { encoding: 'utf8' }).trim();
+    return { commits: parseInt(commits) || 0, authors: parseInt(authors) || 0 };
+  } catch {
+    return { commits: 0, authors: 0 };
+  }
+}
+
 function loadQuotes() {
   const file = path.join(__dirname, 'quotes.json');
   return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -75,7 +85,7 @@ function showBanner() {
   console.log('');
 }
 
-function showStats() {
+function showStats(detailed = false) {
   const stats = getGitStats();
   
   console.log(COLORS.yellow + '📊 Today\'s Sprint Stats:' + COLORS.reset);
@@ -89,6 +99,16 @@ function showStats() {
       console.log(`   Lines:       ${COLORS.green}+${match[2]}${COLORS.reset} / ${COLORS.magenta}-${match[3]}${COLORS.reset}`);
     }
   }
+  
+  if (detailed) {
+    const weekly = getWeeklyStats();
+    console.log('');
+    console.log(COLORS.yellow + '📈 Weekly Stats (7 days):' + COLORS.reset);
+    console.log(COLORS.gray + '   ─────────────────────' + COLORS.reset);
+    console.log(`   Commits:     ${COLORS.cyan}${weekly.commits}${COLORS.reset}`);
+    console.log(`   Avg/day:     ${COLORS.cyan}${(weekly.commits / 7).toFixed(1)}${COLORS.reset}`);
+  }
+  
   console.log('');
 }
 
@@ -117,9 +137,27 @@ function logAccomplishment(text) {
   console.log('');
 }
 
+function showHelp() {
+  console.log('Usage: done ["accomplishment text"] [--stats]');
+  console.log('');
+  console.log('Examples:');
+  console.log('  done "shipped the new feature"    Log an accomplishment');
+  console.log('  done                              Show today\'s stats + quote');
+  console.log('  done --stats                      Show detailed weekly stats');
+  console.log('');
+}
+
 function main() {
   const args = process.argv.slice(2);
-  const accomplishment = args.join(' ');
+  
+  if (args.includes('--help') || args.includes('-h')) {
+    showHelp();
+    return;
+  }
+  
+  const showDetailed = args.includes('--stats');
+  const filteredArgs = args.filter(a => a !== '--stats');
+  const accomplishment = filteredArgs.join(' ');
   
   showBanner();
   
@@ -127,7 +165,7 @@ function main() {
     logAccomplishment(accomplishment);
   }
   
-  showStats();
+  showStats(showDetailed);
   showQuote();
   
   console.log(COLORS.cyan + '🚀 Volume creates luck. See you tomorrow.' + COLORS.reset);

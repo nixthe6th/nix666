@@ -10,7 +10,7 @@ The future of NIX — what's planned, what's cooking, what's possible.
 
 ### Sprint #35 — Knowledge System
 - [x] `learn.js` — Learning tracker with spaced repetition
-- [ ] `nix flashcard` — CLI flashcard system for memorization
+- [x] `nix flashcard` — CLI flashcard system for memorization
 - [ ] `nix summarize` — Auto-summarize long text/articles
 - [ ] `nix clip` — Save and tag code snippets
 

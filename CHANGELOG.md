@@ -4,6 +4,21 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #35b — Flashcard System)
+### Added
+- `flashcard.js` — CLI flashcard system for memorization
+  - Create cards: `nix flashcard add "Spanish" "Hello" "Hola"`
+  - Interactive review with SM-2 spaced repetition algorithm
+  - 4 difficulty levels: Again/Hard/Good/Easy
+  - Automatic scheduling: 1, 3, 7, 14, 30, 60, 90, 180 day intervals
+  - Review queue: `nix flashcard review` for daily practice
+  - Deck organization: Group cards by topic/subject
+  - Progress tracking: Level indicators (0-7) and streak counting
+  - List cards: `nix flashcard list [deck]` with due status
+  - Statistics: `nix flashcard stats` with mastery percentage
+  - Delete cards: `nix flashcard delete <id>`
+- Perfect companion to `learn.js` for skill retention
+
 ## 2026-01-31 (GitHub Sprint #35 — Learning Tracker)
 ### Added
 - `learn.js` — Learning tracker with spaced repetition

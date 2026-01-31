@@ -49,6 +49,15 @@ nix learn stats                          # Learning dashboard
 nix learn done "Rust"                    # Mark as mastered
 ```
 
+`nix flashcard` — Memorization with flashcards:
+```bash
+nix flashcard add "Spanish" "Hello" "Hola"           # Create card
+nix flashcard add "JS" "What is a closure?" "Fn + scope"
+nix flashcard review                                   # Daily review
+nix flashcard list                                     # All cards
+nix flashcard stats                                    # Progress stats
+```
+
 `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

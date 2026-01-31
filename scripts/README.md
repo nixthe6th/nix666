@@ -95,3 +95,20 @@ System health check.
 ```bash
 ./status.sh
 ```
+
+## fiverr
+
+Fiverr business monitor for @thebignix. Quick status checks and order logging.
+
+```bash
+# Show business status
+fiverr status
+
+# Log a new order
+fiverr order AcmeCorp 25
+
+# Add a note
+fiverr note "Gig views up 20% this week"
+```
+
+Data stored in `~/.fiverr-track.json`

@@ -1,0 +1,130 @@
+#!/bin/bash
+# fiverr — Fiverr Business Tracker for @thebignix
+# Quick status checks, order logging, and earnings tracking
+
+DATA_FILE="$HOME/.fiverr-track.json"
+GIG_NAME="Blog Writing & Content Creation"
+GIG_URL="https://www.fiverr.com/thebignix"
+
+# Initialize data file if needed
+init_data() {
+    if [[ ! -f "$DATA_FILE" ]]; then
+        echo '{"orders":[],"earnings":0,"status":"active","notes":""}' > "$DATA_FILE"
+    fi
+}
+
+# Show current status
+show_status() {
+    init_data
+    echo "🎯 Fiverr Business Status — @thebignix"
+    echo "========================================"
+    echo ""
+    echo "Gig: $GIG_NAME"
+    echo "URL: $GIG_URL"
+    echo ""
+    
+    local orders=$(cat "$DATA_FILE" | grep -o '"orders"' | wc -l)
+    local earnings=$(cat "$DATA_FILE" | grep -oP '(?<=earnings":)[0-9.]+' || echo "0")
+    
+    echo "📊 Stats:"
+    echo "   Orders completed: $orders"
+    echo "   Total earnings: \$$earnings"
+    echo ""
+    echo "📝 Recent Activity:"
+    if [[ -s "$DATA_FILE" ]]; then
+        cat "$DATA_FILE" | python3 -c "import sys,json; d=json.load(sys.stdin); [print(f'   • {o[\"date\"]}: {o[\"client\"]} - \${o[\"amount\"]}') for o in d.get('orders',[])[-3:]]" 2>/dev/null || echo "   (No orders yet - keep hustling!)"
+    fi
+    echo ""
+    echo "💡 Next Actions:"
+    echo "   • Check Fiverr inbox for messages"
+    echo "   • Refresh gig analytics"
+    echo "   • Send buyer requests"
+    echo ""
+}
+
+# Log a new order
+log_order() {
+    init_data
+    local client="$1"
+    local amount="$2"
+    local date=$(date '+%Y-%m-%d')
+    
+    if [[ -z "$client" || -z "$amount" ]]; then
+        echo "Usage: fiverr order <client-name> <amount>"
+        exit 1
+    fi
+    
+    python3 << EOF
+import json
+with open("$DATA_FILE", 'r') as f:
+    data = json.load(f)
+
+data['orders'].append({
+    'client': '$client',
+    'amount': $amount,
+    'date': '$date',
+    'status': 'active'
+})
+data['earnings'] += $amount
+
+with open("$DATA_FILE", 'w') as f:
+    json.dump(data, f, indent=2)
+EOF
+    
+    echo "✅ Order logged: $client - \$$amount"
+}
+
+# Add a note
+add_note() {
+    init_data
+    local note="$1"
+    
+    python3 << EOF
+import json
+with open("$DATA_FILE", 'r') as f:
+    data = json.load(f)
+
+data['notes'] = '$note'
+
+with open("$DATA_FILE", 'w') as f:
+    json.dump(data, f, indent=2)
+EOF
+    
+    echo "📝 Note saved"
+}
+
+# Show help
+show_help() {
+    echo "fiverr — Fiverr Business Tracker"
+    echo ""
+    echo "Usage:"
+    echo "  fiverr status        Show business status"
+    echo "  fiverr order <c> <a> Log new order (client, amount)"
+    echo "  fiverr note <text>   Add a note"
+    echo "  fiverr help          Show this help"
+    echo ""
+    echo "Examples:"
+    echo "  fiverr order AcmeCorp 25"
+    echo "  fiverr note 'Gig views up 20% this week'"
+}
+
+# Main
+case "${1:-status}" in
+    status|s)
+        show_status
+        ;;
+    order|o)
+        log_order "$2" "$3"
+        ;;
+    note|n)
+        add_note "$2"
+        ;;
+    help|h|--help|-h)
+        show_help
+        ;;
+    *)
+        echo "Unknown command: $1"
+        show_help
+        exit 1
+        ;;
+esac

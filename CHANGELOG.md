@@ -4,6 +4,14 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #4 — Fast Builds)
+### Added
+- `quote.js` — Terminal motivation tool
+  - Displays random quotes from quotes.json in a styled box
+  - Optional context filtering: `quote.js [context|all]`
+  - Auto text wrapping, colored output
+  - Great for .bashrc startup motivation
+
 ## 2026-01-31 (GitHub Sprint #3 — Fast Builds, Continued)
 ### Added
 - `sitecheck.js` — Site health validator

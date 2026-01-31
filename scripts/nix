@@ -125,6 +125,8 @@ list_tools() {
     printf "  %-10s %s\n" "learn.js" "Learning tracker with SRS"
     printf "  %-10s %s\n" "summarize.js" "Text summarizer"
     printf "  %-10s %s\n" "uuid.js" "UUID and random ID generator"
+    printf "  %-10s %s\n" "sleep.js" "Sleep quality tracker"
+    printf "  %-10s %s\n" "workout.js" "Workout logger"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -290,6 +292,12 @@ main() {
             ;;
         summarize)
             node "$SCRIPT_DIR/../summarize.js" "$@"
+            ;;
+        sleep)
+            node "$SCRIPT_DIR/../sleep.js" "$@"
+            ;;
+        workout)
+            node "$SCRIPT_DIR/../workout.js" "$@"
             ;;
         tools)
             list_tools

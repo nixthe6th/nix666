@@ -4,6 +4,23 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #36b — Workout Logger)
+### Added
+- `workout.js` — Quick workout logger with PR tracking
+  - Session-based logging: `nix workout start "Push Day"`
+  - Strength exercises: `nix workout log bench 3x8 80` (sets x reps @ kg)
+  - Timed cardio: `nix workout log running 30min`
+  - Distance tracking: `nix workout log swim 2km`
+  - Auto PR detection for volume-based records
+  - Personal record tracking: `nix workout pr` or `nix workout pr bench`
+  - Workout history: `nix workout list [today|week|month]`
+  - Exercise stats: `nix workout stats [exercise]` shows progression
+  - Routine templates: `nix workout template "Upper" "Bench" "Press"`
+  - Quick routine start: `nix workout routine "Upper"`
+  - Total volume calculation and time tracking
+- Integrated into `nix` CLI dispatcher
+- Completes Sprint #36 core workout functionality
+
 ## 2026-01-31 (GitHub Sprint #36a — Sleep Tracker)
 ### Added
 - `sleep.js` — Sleep quality tracker for better rest and recovery

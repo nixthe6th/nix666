@@ -131,6 +131,20 @@ nix sleep debt              # Sleep debt analysis
 nix sleep goal 8            # Set 8-hour sleep goal
 ```
 
+`nix workout` — Quick workout logger with PR tracking:
+```bash
+nix workout start "Push Day"                  # Start a workout session
+nix workout log bench 3x8 80                  # Log 3 sets of 8 reps at 80kg
+nix workout log running 30min                 # Log timed cardio
+nix workout log swim 2km                      # Log distance exercise
+nix workout end "Felt strong today"           # End session with notes
+nix workout list week                         # Show this week's workouts
+nix workout stats bench                       # Show exercise progress
+nix workout pr                                # Show all personal records
+nix workout template "Pull Day" "Rows" "Curls" # Save a routine
+nix workout routine "Pull Day"                # Start a saved routine
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

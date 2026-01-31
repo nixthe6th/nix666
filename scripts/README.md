@@ -56,6 +56,7 @@ nix tools                   # List all tools
 | `find.js` | Universal search | `nix find "query"` |
 | `convert.js` | Data format converter | `nix convert b64e "text"` |
 | `backup.js` | Data backup and export | `nix backup` |
+| `tag.js` | Universal tag manager | `nix tag work` |
 
 ## Quick Start
 

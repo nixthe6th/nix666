@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #28 — Universal Tag Manager)
+### Added
+- `tag.js` — Universal tag manager for all NIX data
+  - List all tags across todos, ideas, bookmarks, projects, quotes
+  - View items by tag: `nix tag work`
+  - Search tags: `nix tag search dev`
+  - Visual tag cloud: `nix tag cloud`
+  - Extracts tags from: explicit "tags" arrays, "category" fields, #hashtags in text
+  - Color-coded output grouped alphabetically
+  - Smart suggestions for similar tags when not found
+  - Integrated into `nix` CLI as `nix tag`
+- Updated API documentation (25 tools now documented)
+- Updated scripts/README.md with new tool reference
+
 ## 2026-01-31 (GitHub Sprint #27 — API Documentation Fixes)
 ### Fixed
 - Fixed formatting issues in `API.md` — removed unreplaced template strings (`${C.reset}`, `${COLORS.reset}`)

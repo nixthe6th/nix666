@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kieranix.github.io/nix666/sitemap.xml

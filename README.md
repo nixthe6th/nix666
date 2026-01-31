@@ -166,6 +166,14 @@ nix standup yesterday          # Yesterday's wins only
 nix standup week               # Week summary
 ```
 
+`nix compact` — Archive old data to keep JSON files fast:
+```bash
+nix compact                    # Show data file sizes (dry run)
+nix compact stats              # Detailed file statistics
+nix compact --days 30 --apply  # Archive entries older than 30 days
+nix compact --list             # Show archive contents
+```
+
 `nix later` — Read/watch later queue for articles, videos, and links:
 ```bash
 nix later https://youtube.com/watch?v=abc "Cool Video" tech,video

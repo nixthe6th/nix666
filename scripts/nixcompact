@@ -1,0 +1,3 @@
+#!/bin/bash
+# nixcompact - Wrapper for compact.js
+node "$(dirname "$0")/../compact.js" "$@"

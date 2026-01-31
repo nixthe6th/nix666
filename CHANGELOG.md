@@ -4,6 +4,19 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38k — Data Compaction Tool)
+### Added
+- `compact.js` — Archive old data to address "Large JSON files" known issue
+  - `nix compact` — Show data file statistics (default dry run)
+  - `nix compact stats` — Detailed file sizes and entry counts
+  - `nix compact --days N` — Set archive threshold (default: 90 days)
+  - `nix compact --apply` — Actually archive old entries to data/archive/
+  - `nix compact --list` — View archive contents
+  - Archives entries older than N days while keeping recent data fast
+  - Supports: distractions, expenses, todos, habits, moods, sleep, workouts, learn, network, gratitude, energy
+  - No data loss — moves entries to archive files, fully reversible
+  - Wrapper script: `scripts/nixcompact`
+
 ## 2026-01-31 (GitHub Sprint #38j — Network & Relationship Tracker)
 ### Added
 - `network.js` — Contact and relationship tracker for networking

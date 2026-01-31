@@ -1,0 +1,9 @@
+[
+  {
+    "id": "ml2g2kz66xhd",
+    "timestamp": "2026-01-31T15:06:05.874Z",
+    "note": "Test notification from cron",
+    "urgency": "normal",
+    "category": "notification"
+  }
+]

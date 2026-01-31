@@ -29,7 +29,14 @@ nix decide     # Decision log
 nix when       # Time calculator
 ```
 
-**New:** `nix when` — Calculate deadlines, time remaining, future dates:
+**New:** `nix standup` — Daily standup report aggregating all productivity data:
+```bash
+nix standup                    # Full daily standup report
+nix standup yesterday          # Yesterday's wins only
+nix standup week               # Week summary
+```
+
+`nix when` — Calculate deadlines, time remaining, future dates:
 ```bash
 nix when in 2h30m              # What time will it be?
 nix when until 2026-02-15      # Days until deadline

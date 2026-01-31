@@ -49,6 +49,7 @@ Commands:
   backup [cmd]            Backup/export data (list/export/clean)
   decide [cmd]            Decision log (add/list/review/stats)
   commit [msg]            Quick git commit helper (--sprint for rapid mode)
+  standup [period]        Daily standup report (today/yesterday/week)
   
   tools                   List all available tools
   help                    Show this help
@@ -104,6 +105,7 @@ list_tools() {
     printf "  %-10s %s\n" "find.js" "Universal search"
     printf "  %-10s %s\n" "convert.js" "Data format converter"
     printf "  %-10s %s\n" "backup.js" "Data backup and export"
+    printf "  %-10s %s\n" "standup.js" "Daily standup report"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -218,6 +220,9 @@ main() {
             ;;
         convert)
             node "$SCRIPT_DIR/../convert.js" "$@"
+            ;;
+        standup)
+            node "$SCRIPT_DIR/../standup.js" "$@"
             ;;
         backup)
             node "$SCRIPT_DIR/../backup.js" "$@"

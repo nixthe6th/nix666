@@ -4,6 +4,21 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #30 — Daily Standup Report)
+### Added
+- `standup.js` — Daily standup report aggregator
+  - Shows yesterday's wins (sprints, sessions, completed todos)
+  - Today's priorities (active session, high/medium todos, active sprint)
+  - Habit streaks status with today's completion check
+  - Mood check with 7-day trend average
+  - Week summary view with aggregate stats
+  - Commands: `nix standup`, `nix standup yesterday`, `nix standup week`
+  - Integrates with all NIX data sources for unified daily view
+  - Color-coded output for quick scanning
+  - Perfect for morning standups or end-of-day reflection
+- Updated `scripts/nix` CLI with `standup` command
+- Updated API documentation (now 26 tools documented)
+
 ## 2026-01-31 (GitHub Sprint #29 — Time Calculator)
 ### Added
 - `when.js` — Time calculator & deadline tracker

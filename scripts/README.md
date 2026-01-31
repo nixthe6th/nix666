@@ -2,6 +2,31 @@
 
 Quick tools for Nix's workflow.
 
+## nixdo
+
+Dead-simple task tracker. No complexity, just tasks. Integrates with daily memory logs.
+
+```bash
+# Add a task
+nixdo add "Fix login bug" high
+
+# List open tasks (sorted by priority)
+nixdo list
+
+# Mark done (logs to today's memory file)
+nixdo done 3
+
+# See completed tasks
+nixdo archive
+
+# Stats
+nixdo stats
+```
+
+Priorities: `urgent` > `high` > `med` > `low`
+
+Data stored in `~/.nixdo.json`
+
 ## wordcount
 
 Track daily writing output. Perfect for Fiverr gigs and content work.

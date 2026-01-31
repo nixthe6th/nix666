@@ -1,0 +1,228 @@
+#!/usr/bin/env python3
+"""
+nixdo - Dead-simple task tracker for Nix
+No complexity, just tasks. Integrates with daily logs.
+"""
+
+import json
+import os
+import sys
+from datetime import datetime, timedelta
+from pathlib import Path
+
+DATA_FILE = Path.home() / ".nixdo.json"
+MEMORY_DIR = Path("/home/ec2-user/.openclaw/workspace/memory")
+
+def load_tasks():
+    if DATA_FILE.exists():
+        with open(DATA_FILE) as f:
+            return json.load(f)
+    return {"tasks": [], "archived": []}
+
+def save_tasks(data):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+def get_next_id(tasks):
+    if not tasks:
+        return 1
+    return max(t.get('id', 0) for t in tasks) + 1
+
+def cmd_add(args):
+    """Add a task: nixdo add <description> [priority]"""
+    if not args:
+        print("Usage: nixdo add <description> [low|med|high]")
+        return
+    
+    # Check if last arg is priority
+    priority = "med"
+    desc_parts = args[:]
+    if args[-1].lower() in ("low", "med", "high", "urgent"):
+        priority = args[-1].lower()
+        desc_parts = args[:-1]
+    
+    desc = " ".join(desc_parts)
+    
+    data = load_tasks()
+    task = {
+        "id": get_next_id(data["tasks"]),
+        "description": desc,
+        "priority": priority,
+        "created": datetime.now().isoformat(),
+        "status": "open"
+    }
+    data["tasks"].append(task)
+    save_tasks(data)
+    
+    priority_emoji = {"low": "🟢", "med": "🟡", "high": "🔴", "urgent": "⚡"}
+    print(f"{priority_emoji.get(priority, '🟡')} Added task #{task['id']}: {desc}")
+
+def cmd_list(args):
+    """List open tasks"""
+    data = load_tasks()
+    tasks = [t for t in data["tasks"] if t["status"] == "open"]
+    
+    if not tasks:
+        print("No open tasks! 🎉")
+        print("Add one: nixdo add <description>")
+        return
+    
+    # Sort by priority
+    priority_order = {"urgent": 0, "high": 1, "med": 2, "low": 3}
+    tasks.sort(key=lambda x: priority_order.get(x.get("priority", "med"), 2))
+    
+    priority_emoji = {"low": "🟢", "med": "🟡", "high": "🔴", "urgent": "⚡"}
+    
+    print("⚡ NIXDO - Open Tasks")
+    print("=" * 50)
+    for t in tasks:
+        p = t.get("priority", "med")
+        age = days_old(t.get("created", datetime.now().isoformat()))
+        age_str = f" ({age}d)" if age > 0 else ""
+        print(f"{priority_emoji.get(p, '🟡')} #{t['id']:<4} {t['description']}{age_str}")
+    
+    print(f"\nTotal: {len(tasks)} tasks")
+
+def days_old(iso_date):
+    try:
+        created = datetime.fromisoformat(iso_date)
+        return (datetime.now() - created).days
+    except:
+        return 0
+
+def cmd_done(args):
+    """Mark task as done: nixdo done <id>"""
+    if not args:
+        print("Usage: nixdo done <id>")
+        return
+    
+    try:
+        task_id = int(args[0])
+    except ValueError:
+        print("Task ID must be a number")
+        return
+    
+    data = load_tasks()
+    
+    for t in data["tasks"]:
+        if t["id"] == task_id and t["status"] == "open":
+            t["status"] = "completed"
+            t["completed"] = datetime.now().isoformat()
+            data["archived"].append(t)
+            data["tasks"] = [x for x in data["tasks"] if x["id"] != task_id]
+            save_tasks(data)
+            
+            # Also log to today's memory file
+            log_to_memory(f"Completed task #{task_id}: {t['description']}")
+            
+            print(f"✅ Completed task #{task_id}: {t['description']}")
+            return
+    
+    print(f"❌ Task #{task_id} not found or already done")
+
+def log_to_memory(text):
+    """Log completion to today's memory file"""
+    today = datetime.now().strftime("%Y-%m-%d")
+    memory_file = MEMORY_DIR / f"{today}.md"
+    
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%H:%M")
+    line = f"\n- [{timestamp}] ✅ {text}\n"
+    
+    with open(memory_file, 'a') as f:
+        f.write(line)
+
+def cmd_clear(args):
+    """Clear completed tasks from archive"""
+    data = load_tasks()
+    old_count = len(data["archived"])
+    data["archived"] = []
+    save_tasks(data)
+    print(f"🗑️  Cleared {old_count} archived tasks")
+
+def cmd_archive(args):
+    """Show recently completed tasks"""
+    data = load_tasks()
+    archived = data["archived"][-10:]  # Last 10
+    
+    if not archived:
+        print("No completed tasks yet")
+        return
+    
+    print("🗄️  Recently Completed")
+    print("=" * 40)
+    for t in reversed(archived):
+        completed = t.get("completed", "")[:10]
+        print(f"✅ #{t['id']}: {t['description']}")
+
+def cmd_stats(args):
+    """Show task stats"""
+    data = load_tasks()
+    open_tasks = len([t for t in data["tasks"] if t["status"] == "open"])
+    completed_total = len(data["archived"])
+    
+    # This week
+    week_ago = datetime.now() - timedelta(days=7)
+    this_week = len([t for t in data["archived"] 
+                     if datetime.fromisoformat(t.get("completed", "1970-01-01")) > week_ago])
+    
+    print("⚡ NIXDO STATS")
+    print("=" * 30)
+    print(f"Open tasks:      {open_tasks}")
+    print(f"Completed:       {completed_total}")
+    print(f"This week:       {this_week}")
+    
+    if open_tasks > 0:
+        by_priority = {"urgent": 0, "high": 0, "med": 0, "low": 0}
+        for t in data["tasks"]:
+            if t["status"] == "open":
+                by_priority[t.get("priority", "med")] += 1
+        
+        print(f"\nBy priority:")
+        print(f"  ⚡ Urgent: {by_priority['urgent']}")
+        print(f"  🔴 High:   {by_priority['high']}")
+        print(f"  🟡 Medium: {by_priority['med']}")
+        print(f"  🟢 Low:    {by_priority['low']}")
+
+def cmd_help():
+    print("⚡ nixdo - Dead-simple task tracker")
+    print()
+    print("Commands:")
+    print("  add <desc> [priority]  Add a task (priority: low/med/high/urgent)")
+    print("  list                   List open tasks")
+    print("  done <id>              Mark task as completed")
+    print("  archive                Show recently completed tasks")
+    print("  clear                  Clear archived tasks")
+    print("  stats                  Show task statistics")
+    print("  help                   Show this help")
+    print()
+    print("Examples:")
+    print('  nixdo add "Fix login bug" high')
+    print('  nixdo add "Buy groceries" low')
+    print('  nixdo list')
+    print('  nixdo done 3')
+
+def main():
+    args = sys.argv[1:]
+    
+    if not args or args[0] in ("help", "-h", "--help"):
+        cmd_help()
+    elif args[0] == "add":
+        cmd_add(args[1:])
+    elif args[0] == "list":
+        cmd_list(args[1:])
+    elif args[0] == "done":
+        cmd_done(args[1:])
+    elif args[0] == "archive":
+        cmd_archive(args[1:])
+    elif args[0] == "clear":
+        cmd_clear(args[1:])
+    elif args[0] == "stats":
+        cmd_stats(args[1:])
+    else:
+        print(f"Unknown command: {args[0]}")
+        cmd_help()
+
+if __name__ == "__main__":
+    main()

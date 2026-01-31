@@ -1,0 +1,42 @@
+{
+  "ideas": [
+    {
+      "id": 1,
+      "text": "Create API documentation generator",
+      "priority": "high",
+      "status": "backlog",
+      "tags": [
+        "automation",
+        "docs"
+      ],
+      "created": "2026-01-31",
+      "updated": "2026-01-31"
+    },
+    {
+      "id": 2,
+      "text": "Add dark mode toggle to website",
+      "priority": "medium",
+      "status": "backlog",
+      "tags": [
+        "ui",
+        "feature"
+      ],
+      "created": "2026-01-31",
+      "updated": "2026-01-31"
+    },
+    {
+      "id": 3,
+      "text": "Research WebAssembly for CLI tools",
+      "priority": "low",
+      "status": "backlog",
+      "tags": [
+        "research",
+        "experiment"
+      ],
+      "created": "2026-01-31",
+      "updated": "2026-01-31"
+    }
+  ],
+  "lastId": 3,
+  "archived": []
+}

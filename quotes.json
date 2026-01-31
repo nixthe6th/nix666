@@ -58,5 +58,35 @@
     "text": "You don't have to be great to start, but you have to start to be great.",
     "author": "Zig Ziglar",
     "context": "start"
+  },
+  {
+    "text": "Motion beats meditation.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "The obstacle is the way.",
+    "author": "Marcus Aurelius",
+    "context": "stoicism"
+  },
+  {
+    "text": "First make it work, then make it right, then make it fast.",
+    "author": "Kent Beck",
+    "context": "engineering"
+  },
+  {
+    "text": "Your time is limited, don't waste it living someone else's life.",
+    "author": "Steve Jobs",
+    "context": "life"
+  },
+  {
+    "text": "The code you write today is the legacy you leave tomorrow.",
+    "author": "NIX",
+    "context": "legacy"
+  },
+  {
+    "text": "6th time's the charm.",
+    "author": "Kieran",
+    "context": "incarnation-6"
   }
 ]

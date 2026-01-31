@@ -2,6 +2,26 @@
   "current": null,
   "sprints": [
     {
+      "number": 25,
+      "name": "Utility Converter",
+      "goal": "Add Swiss Army knife data converter for Base64, URL, JSON, case conversions",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T10:29:00",
+      "completed_at": "2026-01-31T10:40:00",
+      "deliverables": [
+        "convert.js — Multi-purpose converter (b64, url, json, case, timestamps)",
+        "Updated nix CLI dispatcher with convert command",
+        "Regenerated API.md with 22 tools documented",
+        "Updated CHANGELOG.md and scripts/README.md"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "OpenClaw",
+        "target_time": "<10 min"
+      }
+    },
+    {
       "number": 24,
       "name": "Utility Sprint",
       "goal": "Add password generator and quick HTTP server to CLI toolkit",
@@ -368,8 +388,8 @@
     }
   ],
   "stats": {
-    "total": 18,
-    "completed": 18,
-    "deliverables": 63
+    "total": 19,
+    "completed": 19,
+    "deliverables": 67
   }
 }

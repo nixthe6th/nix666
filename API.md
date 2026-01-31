@@ -7,7 +7,9 @@
 
 - [bm](#bm) — bm.js - Bookmark CLI for quick access to saved links
 - [calc](#calc) — calc.js - Quick calculation utility
+- [convert](#convert) — convert.js — Swiss Army knife converter utility
 - [done](#done) — done.js - Sprint completion tracker
+- [find](#find) — find.js - Universal search across all NIX data
 - [focus](#focus) — focus.js - Pomodoro focus timer with motivation
 - [habits](#habits) — CLI tool
 - [ideas](#ideas) — ideas.js - Idea backlog and project pipeline tracker
@@ -19,6 +21,7 @@
 - [quote](#quote) — quote - Terminal motivation from NIX
 - [server](#server) — server.js - Quick HTTP server for static files
 - [session](#session) — session.js - Work session tracker
+- [sprint](#sprint) — sprint.js — Quick sprint management CLI
 - [stats](#stats) — stats.js — Productivity Stats Dashboard
 - [streak](#streak) — streak.js - Git activity streak tracker
 - [today](#today) — today.js - Daily briefing: date, quote, streak, sprint status
@@ -85,6 +88,35 @@ ${COLORS.reset} nix calc <expression>
 
 ---
 
+## convert
+
+convert.js — Swiss Army knife converter utility
+
+**File:** `convert.js`
+
+### Usage
+
+```bash
+nix convert <command> [input]
+```
+```bash
+${C.reset} nix convert <command> [input]`);
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## done
 
 done.js - Sprint completion tracker
@@ -115,6 +147,41 @@ done ["accomplishment text"] [--stats]');
 | `--format` | — |
 | `--stats` | — |
 | `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## find
+
+find.js - Universal search across all NIX data
+
+**File:** `find.js`
+
+### Usage
+
+```bash
+find [query] [options]
+```
+```bash
+${COLORS.reset}
+```
+
+### Commands
+
+- `find`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--todos` | — |
+| `--ideas` | — |
+| `--quotes` | — |
+| `--help` | — |
+| `--projects` | — |
+| `--sprints` | — |
+| `--bookmarks` | — |
 
 > 💡 Run with `--help` for full usage information
 
@@ -432,6 +499,31 @@ session.js <command> [args]\n');
 
 ---
 
+## sprint
+
+sprint.js — Quick sprint management CLI
+
+**File:** `sprint.js`
+
+### Usage
+
+```bash
+*   sprint                    Show current sprint status
+```
+```bash
+${C.reset}`);
+```
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## stats
 
 stats.js — Productivity Stats Dashboard
@@ -588,7 +680,9 @@ week [--commits|--sprints|--json]
 |------|---------|
 | [bm](#bm) | bm.js - Bookmark CLI for quick access to saved links |
 | [calc](#calc) | calc.js - Quick calculation utility |
+| [convert](#convert) | convert.js — Swiss Army knife converter utility |
 | [done](#done) | done.js - Sprint completion tracker |
+| [find](#find) | find.js - Universal search across all NIX data |
 | [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
 | [habits](#habits) | — |
 | [ideas](#ideas) | ideas.js - Idea backlog and project pipeline tracker |
@@ -600,6 +694,7 @@ week [--commits|--sprints|--json]
 | [quote](#quote) | quote - Terminal motivation from NIX |
 | [server](#server) | server.js - Quick HTTP server for static files |
 | [session](#session) | session.js - Work session tracker |
+| [sprint](#sprint) | sprint.js — Quick sprint management CLI |
 | [stats](#stats) | stats.js — Productivity Stats Dashboard |
 | [streak](#streak) | streak.js - Git activity streak tracker |
 | [today](#today) | today.js - Daily briefing: date, quote, streak, sprint status |

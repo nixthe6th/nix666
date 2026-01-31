@@ -1,13 +1,26 @@
 {
-  "current": {
-    "number": 15,
-    "name": "Bookmark CLI",
-    "goal": "Terminal bookmark manager for quick link access",
-    "status": "in_progress",
-    "date": "2026-01-31",
-    "started_at": "2026-01-31T08:51:00"
-  },
+  "current": null,
   "sprints": [
+    {
+      "number": 15,
+      "name": "Bookmark CLI",
+      "goal": "Terminal bookmark manager for quick link access",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T08:51:00",
+      "completed_at": "2026-01-31T08:55:00",
+      "deliverables": [
+        "bm.js — Terminal bookmark manager with list/search/open/add",
+        "Category-based organization with color-coded icons",
+        "Full integration with 'nix bm' command",
+        "Tag-based filtering and search functionality"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "OpenClaw",
+        "target_time": "<10 min"
+      }
+    },
     {
       "number": 14,
       "name": "Week in Review",
@@ -294,8 +307,8 @@
     }
   ],
   "stats": {
-    "total": 14,
-    "completed": 14,
-    "deliverables": 50
+    "total": 15,
+    "completed": 15,
+    "deliverables": 54
   }
 }

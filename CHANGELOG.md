@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38c — Subscription Tracking)
+### Added
+- `subscription.js` — Recurring expense and subscription tracker
+  - `nix subscription add <name> <amount> <freq> [category]` — Add subscription
+  - `nix subscription list` — Show all with next due dates and monthly equivalents
+  - `nix subscription monthly` — Monthly cost breakdown by category
+  - `nix subscription yearly` — Yearly cost projection
+  - `nix subscription upcoming` — Payments due in next 7 days
+  - `nix subscription delete <id>` — Cancel/remove subscription
+  - `nix subscription edit <id> <field> <value>` — Modify existing entry
+  - Supports: weekly, monthly, quarterly, yearly frequencies
+  - Automatic next due date calculation
+  - Color-coded urgency for upcoming payments
+  - Stores data in `data/subscriptions.json`
+  - Addresses ROADMAP: Finance - subscription tracker
+
 ## 2026-01-31 (GitHub Sprint #38b — Configuration)
 ### Added
 - `config.js` — User configuration manager for nix

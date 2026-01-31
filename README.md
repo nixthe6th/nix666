@@ -88,6 +88,16 @@ nix config delete currency             # Remove custom setting
 nix config reset                       # Reset to defaults
 ```
 
+`nix subscription` — Track recurring expenses:
+```bash
+nix subscription add "Netflix" 15.99 monthly entertainment
+nix subscription add "Domain" 12 yearly tech
+nix subscription list                  # All subscriptions
+nix subscription monthly               # Monthly cost breakdown
+nix subscription yearly                # Yearly cost breakdown
+nix subscription upcoming              # Due in next 7 days
+```
+
 `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

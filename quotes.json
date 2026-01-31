@@ -208,5 +208,20 @@
     "text": "Don't break the chain.",
     "author": "Jerry Seinfeld",
     "context": "habits"
+  },
+  {
+    "text": "Start each day with clarity. End each day with progress.",
+    "author": "NIX",
+    "context": "daily"
+  },
+  {
+    "text": "The briefing is over. Time to build.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "One tool at a time. One sprint at a time. One day at a time.",
+    "author": "NIX",
+    "context": "daily"
   }
 ]

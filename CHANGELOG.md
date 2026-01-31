@@ -4,6 +4,17 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #12 — Daily Briefing)
+### Added
+- `today.js` — Daily briefing CLI tool
+  - Shows date, random quote, git streak, and sprint status
+  - `--minimal` flag for one-line summary
+  - `--json` flag for programmatic output
+  - Beautiful boxed display with color coding
+  - Integrates with existing quotes.json and sprints.json
+- 3 new quotes (47 total) — daily/sprint-mode themed
+- Added `focus` and `today` to projects.json
+
 ## 2026-01-31 (GitHub Sprint #11 — Focus Tools)
 ### Added
 - `focus.js` — Pomodoro focus timer with motivation

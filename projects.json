@@ -62,5 +62,21 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "dashboard"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "focus",
+    "description": "Pomodoro timer with motivational quotes",
+    "url": "./focus.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "productivity"],
+    "updated": "2026-01-31"
+  },
+  {
+    "name": "today",
+    "description": "Daily briefing - date, quote, streak, sprint status in one view",
+    "url": "./today.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "daily"],
+    "updated": "2026-01-31"
   }
 ]

@@ -4,6 +4,18 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #26 — Data Backup Tool)
+### Added
+- `backup.js` — Data backup and export tool
+  - Create timestamped backups: `nix backup`
+  - List backup history: `nix backup list`
+  - Export data to Markdown: `nix backup export`
+  - Clean old backups: `nix backup clean [N]`
+  - Backs up all JSON data files (bookmarks, ideas, projects, quotes, sprints)
+  - Generates exportable Markdown files for portability
+  - Integrated into `nix` CLI as `nix backup [command]`
+- Updated `scripts/README.md` with new tool reference
+
 ## 2026-01-31 (GitHub Sprint #25 — Utility Converter)
 ### Added
 - `convert.js` — Swiss Army knife data converter

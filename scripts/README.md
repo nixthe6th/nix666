@@ -55,6 +55,7 @@ nix tools                   # List all tools
 | `server.js` | Quick HTTP server | `nix server 8080` |
 | `find.js` | Universal search | `nix find "query"` |
 | `convert.js` | Data format converter | `nix convert b64e "text"` |
+| `backup.js` | Data backup and export | `nix backup` |
 
 ## Quick Start
 

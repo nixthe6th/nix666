@@ -46,6 +46,7 @@ Commands:
   server [port]           Quick HTTP server
   find <query>            Search across all data
   convert <cmd> [input]   Data converter (b64, url, json, case)
+  backup [cmd]            Backup/export data (list/export/clean)
   
   tools                   List all available tools
   help                    Show this help
@@ -98,6 +99,7 @@ list_tools() {
     printf "  %-10s %s\n" "server.js" "Quick HTTP server"
     printf "  %-10s %s\n" "find.js" "Universal search"
     printf "  %-10s %s\n" "convert.js" "Data format converter"
+    printf "  %-10s %s\n" "backup.js" "Data backup and export"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -212,6 +214,9 @@ main() {
             ;;
         convert)
             node "$SCRIPT_DIR/../convert.js" "$@"
+            ;;
+        backup)
+            node "$SCRIPT_DIR/../backup.js" "$@"
             ;;
         tools)
             list_tools

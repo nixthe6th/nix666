@@ -5,6 +5,7 @@
 
 ## Table of Contents
 
+- [backup](#backup) — backup.js - Data backup and export for NIX
 - [bm](#bm) — bm.js - Bookmark CLI for quick access to saved links
 - [calc](#calc) — calc.js - Quick calculation utility
 - [convert](#convert) — convert.js — Swiss Army knife converter utility
@@ -27,6 +28,35 @@
 - [today](#today) — today.js - Daily briefing: date, quote, streak, sprint status
 - [todo](#todo) — todo.js - Sprint-mode task tracker
 - [week](#week) — week.js - Weekly retrospective: commits, sprints, stats, progress
+
+## backup
+
+backup.js - Data backup and export for NIX
+
+**File:** `backup.js`
+
+### Usage
+
+```bash
+nix backup [command] [options]
+```
+```bash
+${C.reset}
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
 
 ## bm
 
@@ -678,6 +708,7 @@ week [--commits|--sprints|--json]
 
 | Tool | Purpose |
 |------|---------|
+| [backup](#backup) | backup.js - Data backup and export for NIX |
 | [bm](#bm) | bm.js - Bookmark CLI for quick access to saved links |
 | [calc](#calc) | calc.js - Quick calculation utility |
 | [convert](#convert) | convert.js — Swiss Army knife converter utility |

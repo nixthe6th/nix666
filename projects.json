@@ -54,5 +54,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "habits"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "projstats",
+    "description": "Quick dashboard stats - projects, quotes, sprints overview",
+    "url": "./projstats.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "dashboard"],
+    "updated": "2026-01-31"
   }
 ]

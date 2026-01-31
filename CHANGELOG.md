@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #18 — API Documentation Generator)
+### Added
+- `docs.js` — Auto-generate API documentation for CLI tools
+  - Scans all `.js` CLI files and extracts usage, flags, commands
+  - Generates `API.md` with full markdown documentation
+  - Generates `api.html` with dark-themed HTML documentation (use `--html` flag)
+  - Table of contents with quick reference table
+  - Documents 12 tools with 44+ flags automatically
+  - Identifies undocumented tools for coverage tracking
+  - Usage: `docs.js [--html] [--output <path>]`
+  - Added to `projects.json` as active documentation tool
+- `API.md` — Complete API reference for all CLI tools
+- `api.html` — Web-friendly API documentation page
+
 ## 2026-01-31 (GitHub Sprint #17 — Productivity Dashboard)
 ### Added
 - `stats.js` — Comprehensive productivity analytics dashboard

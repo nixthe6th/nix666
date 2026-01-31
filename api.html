@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIX CLI API Documentation</title>
+  <style>
+    :root { --bg: #0a0a0f; --surface: #12121a; --text: #e0e0e0; --muted: #888; --accent: #ffd700; --border: #222; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 2rem; }
+    h1 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; }
+    h2 { color: var(--accent); margin-top: 2rem; }
+    h3 { color: var(--text); margin-top: 1.5rem; }
+    h3 code { color: var(--muted); font-size: 0.7em; font-weight: normal; }
+    section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; }
+    .section { margin-top: 1rem; }
+    .section h4 { color: var(--accent); margin-bottom: 0.5rem; }
+    pre { background: var(--bg); padding: 1rem; border-radius: 4px; overflow-x: auto; }
+    code { font-family: 'SF Mono', Monaco, monospace; font-size: 0.9em; }
+    pre code { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; }
+    td, th { padding: 0.5rem; border-bottom: 1px solid var(--border); text-align: left; }
+    th { color: var(--accent); }
+    .badge { background: var(--accent); color: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; }
+    .meta { color: var(--muted); font-size: 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>⚡ NIX CLI API Documentation</h1>
+  <p class="meta">Auto-generated on 2026-01-31</p>
+  
+  <h2>Quick Reference</h2>
+  <table>
+    <tr><th>Tool</th><th>Description</th></tr>
+    <tr><td><a href="#bm">bm</a></td><td>bm.js - Bookmark CLI for quick access to saved links</td></tr><tr><td><a href="#done">done</a></td><td>done.js - Sprint completion tracker</td></tr><tr><td><a href="#focus">focus</a></td><td>focus.js - Pomodoro focus timer with motivation</td></tr><tr><td><a href="#ideas">ideas</a></td><td>ideas.js - Idea backlog and project pipeline tracker</td></tr><tr><td><a href="#note">note</a></td><td>note.js - Quick capture for thoughts, ideas, and tasks</td></tr><tr><td><a href="#projstats">projstats</a></td><td>projstats - Quick project dashboard stats</td></tr><tr><td><a href="#quote">quote</a></td><td>quote - Terminal motivation from NIX</td></tr><tr><td><a href="#stats">stats</a></td><td>stats.js — Productivity Stats Dashboard</td></tr><tr><td><a href="#streak">streak</a></td><td>streak.js - Git activity streak tracker</td></tr><tr><td><a href="#today">today</a></td><td>today.js - Daily briefing: date, quote, streak, sprint status</td></tr><tr><td><a href="#todo">todo</a></td><td>todo.js - Sprint-mode task tracker</td></tr><tr><td><a href="#week">week</a></td><td>week.js - Weekly retrospective: commits, sprints, stats, progress</td></tr>
+  </table>
+  
+  <h2>Tools</h2>
+  
+      <section id="bm">
+        <h3>bm <code>bm.js</code></h3>
+        <p>bm.js - Bookmark CLI for quick access to saved links</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>bm [list|search|open|add] [args]</code></pre><pre><code>bm <command> [args]</code></pre><pre><code>bm search <query>' + COLORS.reset);</code></pre><pre><code>bm open <title/term>' + COLORS.reset);</code></pre><pre><code>bm add <title> <url> [category] [description] [tags]' + COLORS.reset);</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="done">
+        <h3>done <code>done.js</code></h3>
+        <p>done.js - Sprint completion tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>done ["what you accomplished"] or just "done" for stats + motivation</code></pre><pre><code>done ["accomplishment text"] [--stats]');</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--oneline</code></td><td>—</td></tr><tr><td><code>--since</code></td><td>—</td></tr><tr><td><code>--until</code></td><td>—</td></tr><tr><td><code>--shortstat</code></td><td>—</td></tr><tr><td><code>--format</code></td><td>—</td></tr><tr><td><code>--stats</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="focus">
+        <h3>focus <code>focus.js</code></h3>
+        <p>focus.js - Pomodoro focus timer with motivation</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>focus [minutes] [--quote]</code></pre><pre><code>');</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--quote</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="ideas">
+        <h3>ideas <code>ideas.js</code></h3>
+        <p>ideas.js - Idea backlog and project pipeline tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>ideas [command] [args]</code></pre><pre><code>${COLORS.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="note">
+        <h3>note <code>note.js</code></h3>
+        <p>note.js - Quick capture for thoughts, ideas, and tasks</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>note [text] [--list|--today|--grep pattern]</code></pre><pre><code>${COLORS.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--list</code></td><td>—</td></tr><tr><td><code>--today</code></td><td>—</td></tr><tr><td><code>--grep</code></td><td>—</td></tr><tr><td><code>--stats</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="projstats">
+        <h3>projstats <code>projstats.js</code></h3>
+        <p>projstats - Quick project dashboard stats</p>
+        
+        <div class="section"><h4>Usage</h4><pre><code>projstats</code></pre></div>
+        
+        
+      </section>
+    
+      <section id="quote">
+        <h3>quote <code>quote.js</code></h3>
+        <p>quote - Terminal motivation from NIX</p>
+        
+        <div class="section"><h4>Usage</h4><pre><code>quote [context|all|search <term>|list]</code></pre><pre><code>quote search <term>');</code></pre></div>
+        
+        
+      </section>
+    
+      <section id="stats">
+        <h3>stats <code>stats.js</code></h3>
+        <p>stats.js — Productivity Stats Dashboard</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>nix stats [options]');</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--since</code></td><td>—</td></tr><tr><td><code>--format</code></td><td>—</td></tr><tr><td><code>--date</code></td><td>—</td></tr><tr><td><code>--help</code></td><td>—</td></tr><tr><td><code>--sprints</code></td><td>—</td></tr><tr><td><code>--tasks</code></td><td>—</td></tr><tr><td><code>--projects</code></td><td>—</td></tr><tr><td><code>--json</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="streak">
+        <h3>streak <code>streak.js</code></h3>
+        <p>streak.js - Git activity streak tracker</p>
+        
+        <div class="section"><h4>Usage</h4><pre><code>streak [options]</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--pretty</code></td><td>—</td></tr><tr><td><code>--date</code></td><td>—</td></tr><tr><td><code>--all</code></td><td>—</td></tr><tr><td><code>--oneline</code></td><td>—</td></tr><tr><td><code>--since</code></td><td>—</td></tr><tr><td><code>--calendar</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="today">
+        <h3>today <code>today.js</code></h3>
+        <p>today.js - Daily briefing: date, quote, streak, sprint status</p>
+        
+        <div class="section"><h4>Usage</h4><pre><code>today [--minimal | --json]</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--minimal</code></td><td>—</td></tr><tr><td><code>--json</code></td><td>—</td></tr><tr><td><code>--oneline</code></td><td>—</td></tr><tr><td><code>--since</code></td><td>—</td></tr><tr><td><code>--all</code></td><td>—</td></tr><tr><td><code>--until</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="todo">
+        <h3>todo <code>todo.js</code></h3>
+        <p>todo.js - Sprint-mode task tracker</p>
+        <span class="badge">--help available</span>
+        <div class="section"><h4>Usage</h4><pre><code>todo [add|list|done|remove|priority] [args]</code></pre><pre><code>${COLORS.reset}</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--help</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+      <section id="week">
+        <h3>week <code>week.js</code></h3>
+        <p>week.js - Weekly retrospective: commits, sprints, stats, progress</p>
+        
+        <div class="section"><h4>Usage</h4><pre><code>week [--commits|--sprints|--json]</code></pre></div>
+        <div class="section"><h4>Flags</h4><table><tr><td><code>--commits</code></td><td>—</td></tr><tr><td><code>--sprints</code></td><td>—</td></tr><tr><td><code>--json</code></td><td>—</td></tr><tr><td><code>--oneline</code></td><td>—</td></tr><tr><td><code>--since</code></td><td>—</td></tr><tr><td><code>--all</code></td><td>—</td></tr><tr><td><code>--until</code></td><td>—</td></tr></table></div>
+        
+      </section>
+    
+  
+  <footer>
+    Generated by <code>docs.js</code> — Part of <a href="https://github.com/nix666/nix666">nix666</a>
+  </footer>
+</body>
+</html>

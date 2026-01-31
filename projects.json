@@ -103,5 +103,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "tasks", "productivity"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "docs",
+    "description": "Auto-generate API documentation from CLI tool source code",
+    "url": "./docs.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "docs", "automation"],
+    "updated": "2026-01-31"
   }
 ]

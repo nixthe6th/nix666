@@ -4,7 +4,7 @@
       "id": 1,
       "text": "Create API documentation generator",
       "priority": "high",
-      "status": "backlog",
+      "status": "completed",
       "tags": [
         "automation",
         "docs"

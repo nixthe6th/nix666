@@ -14,8 +14,10 @@
 - [log](#log) — log.js — Quick daily logger
 - [mood](#mood) — mood.js — Daily mood & emotion tracker
 - [note](#note) — note.js - Quick capture for thoughts, ideas, and tasks
+- [pass](#pass) — pass.js - Quick password generator
 - [projstats](#projstats) — projstats - Quick project dashboard stats
 - [quote](#quote) — quote - Terminal motivation from NIX
+- [server](#server) — server.js - Quick HTTP server for static files
 - [session](#session) — session.js - Work session tracker
 - [stats](#stats) — stats.js — Productivity Stats Dashboard
 - [streak](#streak) — streak.js - Git activity streak tracker
@@ -295,6 +297,38 @@ ${COLORS.reset}
 
 ---
 
+## pass
+
+pass.js - Quick password generator
+
+**File:** `pass.js`
+
+### Usage
+
+```bash
+nix pass [length] [--strong|--pin|--phrase]
+```
+```bash
+${COLORS.reset}`);
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--strong` | — |
+| `--pin` | — |
+| `--phrase` | — |
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## projstats
 
 projstats - Quick project dashboard stats
@@ -331,6 +365,37 @@ quote search <term>');
 ### Commands
 
 - `quote`
+
+---
+
+## server
+
+server.js - Quick HTTP server for static files
+
+**File:** `server.js`
+
+### Usage
+
+```bash
+nix server [port] [--dir <path>] [--open]
+```
+```bash
+${COLORS.reset}`);
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--dir <path>` | — |
+| `--open` | — |
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
 
 ---
 
@@ -530,8 +595,10 @@ week [--commits|--sprints|--json]
 | [log](#log) | log.js — Quick daily logger |
 | [mood](#mood) | mood.js — Daily mood & emotion tracker |
 | [note](#note) | note.js - Quick capture for thoughts, ideas, and tasks |
+| [pass](#pass) | pass.js - Quick password generator |
 | [projstats](#projstats) | projstats - Quick project dashboard stats |
 | [quote](#quote) | quote - Terminal motivation from NIX |
+| [server](#server) | server.js - Quick HTTP server for static files |
 | [session](#session) | session.js - Work session tracker |
 | [stats](#stats) | stats.js — Productivity Stats Dashboard |
 | [streak](#streak) | streak.js - Git activity streak tracker |

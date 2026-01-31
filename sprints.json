@@ -1,5 +1,12 @@
 {
-  "current": null,
+  "current": {
+    "number": 24,
+    "name": "Utility Sprint",
+    "goal": "Add password generator and quick HTTP server to CLI toolkit",
+    "status": "active",
+    "date": "2026-01-31",
+    "started_at": "2026-01-31T10:08:00"
+  },
   "sprints": [
     {
       "number": 23,
@@ -348,8 +355,9 @@
     }
   ],
   "stats": {
-    "total": 17,
+    "total": 18,
     "completed": 17,
+    "in_progress": 1,
     "deliverables": 59
   }
 }

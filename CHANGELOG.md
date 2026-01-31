@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #5 — CLI Tools)
+### Added
+- `nixsprint` — Sprint management CLI tool
+  - `start`, `add`, `status`, `complete`, `list`, `report` commands
+  - Integrates with `sprints.json` for structured sprint tracking
+  - Auto-logs completed sprints to daily memory files
+  - Tracks stats: total sprints, deliverables count
+- `sprints.json` — Structured sprint history with full archive
+  - Migrated all 4 previous sprints into structured format
+  - 16 total deliverables tracked across 4 completed sprints
+
+### Changed
+- Updated `scripts/README.md` with `nixsprint` documentation
+
 ## 2026-01-31 (GitHub Sprint #4 — Fast Builds)
 ### Added
 - `quote.js` — Terminal motivation tool

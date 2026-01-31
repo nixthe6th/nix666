@@ -1,0 +1,108 @@
+{
+  "current": null,
+  "sprints": [
+    {
+      "number": 1,
+      "name": "Volume & Momentum",
+      "goal": "Build momentum. Small features, fast commits, immediate deploys.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T00:00:00",
+      "completed_at": "2026-01-31T04:00:00",
+      "deliverables": [
+        "/tools.html",
+        "quotes.json",
+        "manifest.json",
+        "PWA support",
+        "/now.html",
+        "SEO meta",
+        "/bookmarks.html",
+        "bookmarks.json"
+      ],
+      "meta": {
+        "trigger": "manual",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 2,
+      "name": "Fast Builds",
+      "goal": "Create something FAST. Small commits, rapid iteration.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T04:00:00",
+      "completed_at": "2026-01-31T06:00:00",
+      "deliverables": [
+        "/sprints.html",
+        "Sprint tracking page",
+        "Philosophy docs"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 3,
+      "name": "Fast Builds, Continued",
+      "goal": "More tools, better validation, keep the momentum going.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T06:00:00",
+      "completed_at": "2026-01-31T07:00:00",
+      "deliverables": [
+        "sitecheck.js",
+        "5 new quotes"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 4,
+      "name": "CLI Expansion",
+      "goal": "Terminal motivation and utility tools.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T07:00:00",
+      "completed_at": "2026-01-31T07:30:00",
+      "deliverables": [
+        "quote.js",
+        "Terminal motivation tool"
+      ],
+      "meta": {
+        "trigger": "manual",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 5,
+      "name": "CLI Expansion & Sprint Tracking",
+      "goal": "CLI Expansion & Sprint Tracking",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T07:50:13.026506",
+      "deliverables": [
+        "nixsprint CLI tool with full sprint lifecycle management",
+        "sprints.json with structured history of all 4 previous sprints",
+        "Updated scripts/README.md with nixsprint documentation"
+      ],
+      "meta": {
+        "trigger": "manual",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      },
+      "completed_at": "2026-01-31T07:50:21.464006"
+    }
+  ],
+  "stats": {
+    "total": 5,
+    "completed": 5,
+    "deliverables": 19
+  }
+}

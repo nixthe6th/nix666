@@ -1,0 +1,149 @@
+#!/usr/bin/env python3
+"""
+nixtrack - Simple income and order tracker for Nix
+Quickly log Fiverr orders, track income, and view stats.
+"""
+
+import json
+import os
+import sys
+from datetime import datetime
+from pathlib import Path
+
+DATA_FILE = Path.home() / ".nixtrack.json"
+
+def load_data():
+    if DATA_FILE.exists():
+        with open(DATA_FILE) as f:
+            return json.load(f)
+    return {"orders": [], "expenses": [], "goals": {"monthly": 500}}
+
+def save_data(data):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+def cmd_add(args):
+    """Add a new order: nixtrack add <amount> <description> [source]"""
+    if len(args) < 2:
+        print("Usage: nixtrack add <amount> <description> [source]")
+        print("Example: nixtrack add 25 'Blog post about AI' fiverr")
+        return
+    
+    amount = float(args[0])
+    desc = args[1]
+    source = args[2] if len(args) > 2 else "fiverr"
+    
+    data = load_data()
+    order = {
+        "id": len(data["orders"]) + 1,
+        "date": datetime.now().isoformat(),
+        "amount": amount,
+        "description": desc,
+        "source": source,
+        "status": "pending"
+    }
+    data["orders"].append(order)
+    save_data(data)
+    
+    print(f"✅ Added order #{order['id']}: ${amount:.2f} from {source}")
+    print(f"   {desc}")
+
+def cmd_list(args):
+    """List recent orders"""
+    data = load_data()
+    orders = data["orders"][-10:]  # Last 10
+    
+    if not orders:
+        print("No orders yet. Add one with: nixtrack add <amount> <desc>")
+        return
+    
+    print(f"{'ID':<4} {'Date':<12} {'Source':<10} {'Amount':>8} {'Status':<10} Description")
+    print("-" * 80)
+    
+    for o in orders:
+        date = o['date'][:10]
+        print(f"{o['id']:<4} {date:<12} {o['source']:<10} ${o['amount']:>6.2f} {o['status']:<10} {o['description'][:30]}")
+
+def cmd_stats(args):
+    """Show income statistics"""
+    data = load_data()
+    orders = data["orders"]
+    
+    if not orders:
+        print("No orders yet.")
+        return
+    
+    total = sum(o["amount"] for o in orders)
+    pending = sum(o["amount"] for o in orders if o["status"] == "pending")
+    completed = sum(o["amount"] for o in orders if o["status"] == "completed")
+    
+    # This month
+    this_month = datetime.now().strftime("%Y-%m")
+    month_total = sum(o["amount"] for o in orders if o["date"].startswith(this_month))
+    
+    print("⚡ NIXTRACK STATS")
+    print("=" * 40)
+    print(f"Total Orders:     {len(orders)}")
+    print(f"Total Revenue:    ${total:.2f}")
+    print(f"This Month:       ${month_total:.2f}")
+    print(f"Pending:          ${pending:.2f}")
+    print(f"Completed:        ${completed:.2f}")
+    
+    goal = data.get("goals", {}).get("monthly", 500)
+    progress = (month_total / goal) * 100
+    print(f"\nMonthly Goal:     ${goal:.0f} ({progress:.1f}% complete)")
+    bar = "█" * int(progress / 10) + "░" * (10 - int(progress / 10))
+    print(f"Progress:         [{bar}]")
+
+def cmd_done(args):
+    """Mark an order as completed: nixtrack done <id>"""
+    if not args:
+        print("Usage: nixtrack done <order_id>")
+        return
+    
+    order_id = int(args[0])
+    data = load_data()
+    
+    for o in data["orders"]:
+        if o["id"] == order_id:
+            o["status"] = "completed"
+            save_data(data)
+            print(f"✅ Order #{order_id} marked as completed!")
+            return
+    
+    print(f"❌ Order #{order_id} not found")
+
+def cmd_help():
+    print("⚡ nixtrack - Income tracker for Nix")
+    print()
+    print("Commands:")
+    print("  add <amount> <desc> [source]  Add a new order")
+    print("  list                          List recent orders")
+    print("  stats                         Show income statistics")
+    print("  done <id>                     Mark order as completed")
+    print("  help                          Show this help")
+    print()
+    print("Examples:")
+    print('  nixtrack add 25 "Blog post" fiverr')
+    print('  nixtrack add 50 "API script" custom')
+    print('  nixtrack stats')
+
+def main():
+    args = sys.argv[1:]
+    
+    if not args or args[0] in ("help", "-h", "--help"):
+        cmd_help()
+    elif args[0] == "add":
+        cmd_add(args[1:])
+    elif args[0] == "list":
+        cmd_list(args[1:])
+    elif args[0] == "stats":
+        cmd_stats(args[1:])
+    elif args[0] == "done":
+        cmd_done(args[1:])
+    else:
+        print(f"Unknown command: {args[0]}")
+        cmd_help()
+
+if __name__ == "__main__":
+    main()

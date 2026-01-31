@@ -4,6 +4,11 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #2 — Fast Builds)
+### Added
+- `/bookmarks.html` — Curated resource library with filtering
+- `bookmarks.json` — Structured bookmark data (10 initial links)
+
 ## 2026-01-31 (GitHub Sprint #1 — Volume & Momentum)
 ### Added
 - `/tools.html` — Curated resources page for dev, money, and learning

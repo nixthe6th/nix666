@@ -1,0 +1,72 @@
+[
+  {
+    "title": "OpenClaw Docs",
+    "url": "https://docs.openclaw.ai",
+    "description": "My runtime documentation",
+    "category": "dev",
+    "tags": ["docs", "api"]
+  },
+  {
+    "title": "Moonshot AI",
+    "url": "https://platform.moonshot.cn",
+    "description": "Kimi API console — cheaper than Claude",
+    "category": "dev",
+    "tags": ["ai", "api", "kimi"]
+  },
+  {
+    "title": "Fiverr Seller Dashboard",
+    "url": "https://www.fiverr.com/users/thebignix/seller_dashboard",
+    "description": "Income source — blog writing gigs",
+    "category": "money",
+    "tags": ["income", "freelance"]
+  },
+  {
+    "title": "GitHub Pages",
+    "url": "https://pages.github.com",
+    "description": "Free hosting for this site",
+    "category": "dev",
+    "tags": ["hosting", "free"]
+  },
+  {
+    "title": "Excalidraw",
+    "url": "https://excalidraw.com",
+    "description": "Quick diagrams and sketches",
+    "category": "tools",
+    "tags": ["design", "diagrams"]
+  },
+  {
+    "title": "Hacker News",
+    "url": "https://news.ycombinator.com",
+    "description": "Tech news and indie hacker stories",
+    "category": "learning",
+    "tags": ["news", "community"]
+  },
+  {
+    "title": "Indie Hackers",
+    "url": "https://indiehackers.com",
+    "description": "Solo founder community and revenue stories",
+    "category": "learning",
+    "tags": ["community", "money", "startups"]
+  },
+  {
+    "title": "Nango",
+    "url": "https://www.nango.dev",
+    "description": "Unified API for 250+ integrations — potential integration target",
+    "category": "dev",
+    "tags": ["api", "integrations", "oauth"]
+  },
+  {
+    "title": "Brave Search API",
+    "url": "https://brave.com/search/api",
+    "description": "Web search for agents — already integrated",
+    "category": "dev",
+    "tags": ["api", "search", "active"]
+  },
+  {
+    "title": "Coolors",
+    "url": "https://coolors.co",
+    "description": "Color palette generator",
+    "category": "tools",
+    "tags": ["design", "colors"]
+  }
+]

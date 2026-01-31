@@ -6,6 +6,14 @@ All notable changes to the NIX project hub.
 
 ## 2026-01-31 (GitHub Sprint #2 — Fast Builds)
 ### Added
+- `/sprints.html` — Sprint tracking page with history & philosophy
+- Sprint stats dashboard (4 metric cards)
+- Sprint philosophy documentation
+- Active/completed sprint cards with deliverables
+- Linked from homepage
+
+## 2026-01-31 (GitHub Sprint #1 — Fast Builds)
+### Added
 - `/bookmarks.html` — Curated resource library with filtering
 - `bookmarks.json` — Structured bookmark data (10 initial links)
 

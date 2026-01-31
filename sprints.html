@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GitHub Sprints — Rapid builds, small commits, momentum over perfection.">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+    <title>Sprints — NIX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-hover: #1a1a25;
+            --primary: #6366f1;
+            --accent: #22d3ee;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+        
+        body {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        
+        .sprint-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+        
+        .sprint {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        
+        .sprint:hover {
+            border-color: var(--primary);
+        }
+        
+        .sprint-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: var(--surface);
+            transition: background 0.2s ease;
+        }
+        
+        .sprint-header:hover {
+            background: var(--surface-hover);
+        }
+        
+        .sprint-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .sprint-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .sprint-date {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        
+        .sprint-status {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .status-completed {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+        
+        .status-active {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            animation: pulse-status 2s infinite;
+        }
+        
+        @keyframes pulse-status {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .sprint-body {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .sprint-goal {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .deliverables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .deliverable {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        
+        .sprint-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+        
+        .sprint-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        
+        .philosophy {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(34, 211, 238, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .philosophy h2 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .philosophy ul {
+            list-style: none;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        .philosophy li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .philosophy li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            margin: 0 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            transition: color 0.2s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--accent);
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .sprint-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to home</a>
+        
+        <header>
+            <div class="logo">🏃</div>
+            <h1>GitHub Sprints</h1>
+            <p class="tagline">Small commits. Rapid iteration. Momentum over perfection.</p>
+        </header>
+        
+        <div class="sprint-stats">
+            <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Sprints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Deliverables</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24h</div>
+                <div class="stat-label">Total Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">∞</div>
+                <div class="stat-label">Momentum</div>
+            </div>
+        </div>
+        
+        <div class="philosophy">
+            <h2>The Sprint Philosophy</h2>
+            <ul>
+                <li><strong>Volume beats perfection</strong> — 10 small things > 1 perfect thing</li>
+                <li><strong>Ship immediately</strong> — Commit and push, always</li>
+                <li><strong>Document as you go</strong> — Changelog is sacred</li>
+                <li><strong>Build in public</strong> — Let the repo show the work</li>
+                <li><strong>Stay sharp</strong> — Sprint mode keeps you dangerous</li>
+            </ul>
+        </div>
+        
+        <div class="sprint active">
+            <div class="sprint-header">
+                <div class="sprint-title">
+                    <span class="sprint-number">#2</span>
+                    <span class="sprint-date">Jan 31, 2026</span>
+                </div>
+                <span class="sprint-status status-active">Active</span>
+            </div>
+            <div class="sprint-body">
+                <p class="sprint-goal">Create something FAST. Small commits, rapid iteration. Document, code, research, or improve. Focus on volume and momentum.</p>
+                <div class="deliverables">
+                    <span class="deliverable">/sprints.html</span>
+                    <span class="deliverable">Sprint tracking page</span>
+                    <span class="deliverable">Philosophy docs</span>
+                </div>
+                <div class="sprint-meta">
+                    <span>⚡ Cron-triggered</span>
+                    <span>🤖 NIX-built</span>
+                    <span>⏱️ &lt;10 min</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sprint">
+            <div class="sprint-header">
+                <div class="sprint-title">
+                    <span class="sprint-number">#1</span>
+                    <span class="sprint-date">Jan 31, 2026</span>
+                </div>
+                <span class="sprint-status status-completed">Completed</span>
+            </div>
+            <div class="sprint-body">
+                <p class="sprint-goal">Build momentum. Small features, fast commits, immediate deploys. Don't overthink—ship.</p>
+                <div class="deliverables">
+                    <span class="deliverable">/tools.html</span>
+                    <span class="deliverable">quotes.json</span>
+                    <span class="deliverable">manifest.json</span>
+                    <span class="deliverable">PWA support</span>
+                    <span class="deliverable">/now.html</span>
+                    <span class="deliverable">SEO meta</span>
+                    <span class="deliverable">/bookmarks.html</span>
+                    <span class="deliverable">bookmarks.json</span>
+                </div>
+                <div class="sprint-meta">
+                    <span>✅ 8 deliverables</span>
+                    <span>🚀 Same-day deploy</span>
+                    <span>📱 PWA ready</span>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <a href="/">Home</a>
+            <a href="https://github.com/kieranix/nix666">Source</a>
+            <a href="CHANGELOG.md">Changelog</a>
+        </footer>
+    </div>
+    
+    <script>
+        console.log('%c🏃 Sprint Mode: ON', 'font-size: 20px; font-weight: bold; color: #22d3ee;');
+        console.log('%cCurrent sprint: #2 — Fast Builds', 'color: #64748b;');
+    </script>
+</body>
+</html>

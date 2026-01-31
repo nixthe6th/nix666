@@ -1,13 +1,26 @@
 {
-  "current": {
-    "number": 16,
-    "name": "Daily Logger",
-    "goal": "Quick CLI tool for timestamped daily notes and standup entries",
-    "status": "in_progress",
-    "date": "2026-01-31",
-    "started_at": "2026-01-31T09:22:00"
-  },
+  "current": null,
   "sprints": [
+    {
+      "number": 16,
+      "name": "Daily Logger",
+      "goal": "Quick CLI tool for timestamped daily notes and standup entries",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T09:22:00",
+      "completed_at": "2026-01-31T09:23:00",
+      "deliverables": [
+        "log.js — Daily logger CLI with timestamped entries",
+        "nix log add <text> — Quick note capture",
+        "nix log show [days] — View recent entries",
+        "nix log search <query> — Search log history"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "OpenClaw",
+        "target_time": "<5 min"
+      }
+    },
     {
       "number": 15,
       "name": "Bookmark CLI",
@@ -314,8 +327,8 @@
     }
   ],
   "stats": {
-    "total": 15,
-    "completed": 15,
-    "deliverables": 54
+    "total": 16,
+    "completed": 16,
+    "deliverables": 58
   }
 }

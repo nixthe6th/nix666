@@ -63,6 +63,7 @@ Commands:
   roll [dice|coin|n]      Dice roller (2d6, coin, 100)
   summarize <file>        Summarize text/articles (-n 5 for 5 sentences)
   uuid [options]          Generate UUIDs and random IDs (-s short, -n nano)
+  zettel [cmd]            Zettelkasten note system (new/list/search/link)
   
   tools                   List all available tools
   help                    Show this help
@@ -127,6 +128,7 @@ list_tools() {
     printf "  %-10s %s\n" "uuid.js" "UUID and random ID generator"
     printf "  %-10s %s\n" "sleep.js" "Sleep quality tracker"
     printf "  %-10s %s\n" "workout.js" "Workout logger"
+    printf "  %-10s %s\n" "zettel.js" "Zettelkasten notes"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -298,6 +300,9 @@ main() {
             ;;
         workout)
             node "$SCRIPT_DIR/../workout.js" "$@"
+            ;;
+        zettel)
+            node "$SCRIPT_DIR/../zettel.js" "$@"
             ;;
         tools)
             list_tools

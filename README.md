@@ -167,6 +167,19 @@ nix read done rq7                          # Mark as finished
 nix read stats                             # Reading statistics
 ```
 
+`nix zettel` — Zettelkasten note system for atomic, connected notes:
+```bash
+nix zettel new "Feynman Technique" --tag learning     # Create note
+nix zettel new "Second Brain" --tag book --tag idea   # Multiple tags
+nix zettel list                                         # List all notes
+nix zettel list learning                                # Filter by tag
+nix zettel show 2601311423                              # View with backlinks
+nix zettel search "productivity"                        # Search notes
+nix zettel link 2601311423 2601311456                   # Connect notes
+nix zettel graph                                        # Knowledge graph view
+nix zettel tags                                         # List all tags
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

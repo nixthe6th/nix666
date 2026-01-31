@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #37b — Zettelkasten Notes)
+### Added
+- `zettel.js` — Zettelkasten note system for atomic, connected notes
+  - Create atomic notes: `nix zettel new "Title" --tag concept`
+  - Timestamp-based IDs (YYMMDDHHMM format)
+  - Tag support with filtering: `nix zettel list learning`
+  - Bi-directional linking: `nix zettel link ID1 ID2`
+  - Backlinks shown when viewing notes
+  - Full-text search: `nix zettel search "keyword"`
+  - Knowledge graph view: `nix zettel graph`
+  - Tag cloud and hub note detection
+  - Orphaned notes identification
+  - Data stored in `~/.nix/data/zettel.json`
+  - Links stored separately in `~/.nix/data/zettel-links.json`
+- Integrated into `nix` CLI dispatcher with full help
+
 ## 2026-01-31 (GitHub Sprint #37 — Reading List)
 ### Added
 - `read.js` — Reading list with progress tracking

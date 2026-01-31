@@ -17,7 +17,15 @@ echo "💾 Committing: '$MSG'"
 git commit -m "$MSG"
 
 echo "🚀 Pushing..."
-git push origin $(git branch --show-current)
+BRANCH=$(git branch --show-current)
+REMOTE_BRANCH=$(git rev-parse --abbrev-ref --symbolic-full-name @{upstream} 2>/dev/null | sed 's/origin\///' || echo "main")
+
+if [ "$BRANCH" != "$REMOTE_BRANCH" ]; then
+    echo "   (branch: $BRANCH → remote: $REMOTE_BRANCH)"
+    git push origin "$BRANCH:$REMOTE_BRANCH"
+else
+    git push origin "$BRANCH"
+fi
 
 echo ""
 echo "✅ Done! Keep the momentum."

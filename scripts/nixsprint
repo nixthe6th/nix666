@@ -1,0 +1,296 @@
+#!/usr/bin/env python3
+"""
+nixsprint - Sprint tracker for GitHub Sprints
+Manages sprint lifecycle: start, add deliverables, complete, archive.
+Integrates with sprints.html structure.
+
+Usage:
+  nixsprint start "Sprint Name"     - Start a new sprint
+  nixsprint add "deliverable"       - Add deliverable to current sprint
+  nixsprint status                  - Show current sprint status
+  nixsprint complete                - Mark current sprint complete
+  nixsprint list                    - List all sprints
+  nixsprint report                  - Generate markdown report
+"""
+
+import json
+import os
+import sys
+from datetime import datetime
+from pathlib import Path
+
+SPRINTS_FILE = Path("/home/ec2-user/.openclaw/workspace/sprints.json")
+MEMORY_DIR = Path("/home/ec2-user/.openclaw/workspace/memory")
+
+# Ensure sprints.json exists
+def init_sprints():
+    if not SPRINTS_FILE.exists():
+        default_data = {
+            "current": None,
+            "sprints": [],
+            "stats": {
+                "total": 0,
+                "completed": 0,
+                "deliverables": 0
+            }
+        }
+        save_sprints(default_data)
+        return default_data
+    return load_sprints()
+
+def load_sprints():
+    with open(SPRINTS_FILE) as f:
+        return json.load(f)
+
+def save_sprints(data):
+    with open(SPRINTS_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+def get_next_sprint_number(data):
+    if not data["sprints"]:
+        return 1
+    numbers = [s.get("number", 0) for s in data["sprints"]]
+    return max(numbers) + 1
+
+def cmd_start(args):
+    if not args:
+        print("Usage: nixsprint start 'Sprint Name'")
+        print("Example: nixsprint start 'Fast Builds Sprint'")
+        sys.exit(1)
+    
+    data = init_sprints()
+    
+    # Check if there's already an active sprint
+    if data["current"]:
+        print(f"⚠️  Sprint #{data['current']['number']} is already active!")
+        print(f"   Complete it first: nixsprint complete")
+        sys.exit(1)
+    
+    name = " ".join(args)
+    sprint_num = get_next_sprint_number(data)
+    
+    sprint = {
+        "number": sprint_num,
+        "name": name,
+        "goal": name,
+        "status": "active",
+        "date": datetime.now().strftime("%Y-%m-%d"),
+        "started_at": datetime.now().isoformat(),
+        "deliverables": [],
+        "meta": {
+            "trigger": "manual",
+            "builder": "NIX",
+            "target_time": "<10 min"
+        }
+    }
+    
+    data["current"] = sprint
+    save_sprints(data)
+    
+    print(f"🏃 Sprint #{sprint_num} started!")
+    print(f"   Goal: {name}")
+    print(f"   Date: {sprint['date']}")
+    print()
+    print("   Add deliverables: nixsprint add 'thing you built'")
+    print("   Check status: nixsprint status")
+
+def cmd_add(args):
+    if not args:
+        print("Usage: nixsprint add 'deliverable name'")
+        print("Example: nixsprint add 'New CLI tool'")
+        sys.exit(1)
+    
+    data = load_sprints()
+    
+    if not data["current"]:
+        print("❌ No active sprint! Start one with: nixsprint start 'name'")
+        sys.exit(1)
+    
+    deliverable = " ".join(args)
+    data["current"]["deliverables"].append(deliverable)
+    save_sprints(data)
+    
+    count = len(data["current"]["deliverables"])
+    print(f"✅ Added: {deliverable}")
+    print(f"   Total deliverables: {count}")
+
+def cmd_status(args=None):
+    data = load_sprints()
+    
+    if not data["current"]:
+        print("📭 No active sprint")
+        print()
+        if data["sprints"]:
+            last = data["sprints"][-1]
+            print(f"   Last completed: Sprint #{last['number']} — {last['goal']}")
+            print(f"   Completed: {last['completed_at'][:10] if 'completed_at' in last else 'N/A'}")
+        print()
+        print("   Start a new one: nixsprint start 'Sprint Name'")
+        return
+    
+    s = data["current"]
+    print(f"🏃 Sprint #{s['number']} — ACTIVE")
+    print()
+    print(f"   Goal: {s['goal']}")
+    print(f"   Started: {s['date']}")
+    print()
+    
+    if s["deliverables"]:
+        print(f"   Deliverables ({len(s['deliverables'])}):")
+        for d in s["deliverables"]:
+            print(f"      • {d}")
+    else:
+        print("   No deliverables yet")
+    
+    print()
+    print("   Commands:")
+    print("      nixsprint add 'thing'    Add deliverable")
+    print("      nixsprint complete       Finish sprint")
+
+def cmd_complete(args=None):
+    data = load_sprints()
+    
+    if not data["current"]:
+        print("❌ No active sprint to complete!")
+        sys.exit(1)
+    
+    sprint = data["current"]
+    sprint["status"] = "completed"
+    sprint["completed_at"] = datetime.now().isoformat()
+    
+    # Move to history
+    data["sprints"].append(sprint)
+    data["current"] = None
+    
+    # Update stats
+    data["stats"]["total"] += 1
+    data["stats"]["completed"] += 1
+    data["stats"]["deliverables"] += len(sprint["deliverables"])
+    
+    save_sprints(data)
+    
+    # Also log to today's memory file
+    today_file = MEMORY_DIR / f"{datetime.now().strftime('%Y-%m-%d')}.md"
+    if today_file.exists():
+        with open(today_file, 'a') as f:
+            f.write(f"\n### 🏃 Sprint #{sprint['number']} Completed\n\n")
+            f.write(f"**Goal:** {sprint['goal']}\n\n")
+            f.write(f"**Deliverables:**\n")
+            for d in sprint["deliverables"]:
+                f.write(f"- {d}\n")
+            f.write(f"\n")
+    
+    print(f"✅ Sprint #{sprint['number']} completed!")
+    print(f"   Deliverables: {len(sprint['deliverables'])}")
+    print(f"   Total sprints: {data['stats']['total']}")
+    print()
+    print("   Start another: nixsprint start 'Next Sprint'")
+
+def cmd_list(args=None):
+    data = load_sprints()
+    
+    print(f"📊 Sprint History")
+    print(f"   Total: {data['stats']['total']} | Deliverables: {data['stats']['deliverables']}")
+    print()
+    
+    if data["current"]:
+        s = data["current"]
+        print(f"   🏃 #{s['number']} [ACTIVE] — {s['goal']}")
+        print(f"         {len(s['deliverables'])} deliverables")
+        print()
+    
+    for s in reversed(data["sprints"]):
+        status = "✅" if s["status"] == "completed" else "⏸️"
+        deliv_count = len(s.get("deliverables", []))
+        print(f"   {status} #{s['number']} — {s['goal']}")
+        print(f"         {s['date']} | {deliv_count} deliverables")
+
+def cmd_report(args=None):
+    data = load_sprints()
+    
+    report_path = MEMORY_DIR / f"sprint-report-{datetime.now().strftime('%Y-%m-%d')}.md"
+    
+    with open(report_path, 'w') as f:
+        f.write("# Sprint Report\n\n")
+        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n")
+        f.write(f"## Stats\n\n")
+        f.write(f"- Total Sprints: {data['stats']['total']}\n")
+        f.write(f"- Completed: {data['stats']['completed']}\n")
+        f.write(f"- Total Deliverables: {data['stats']['deliverables']}\n\n")
+        
+        if data["current"]:
+            s = data["current"]
+            f.write(f"## Current Sprint (#{s['number']})\n\n")
+            f.write(f"**Goal:** {s['goal']}\n\n")
+            f.write(f"**Status:** {s['status']}\n\n")
+            if s["deliverables"]:
+                f.write(f"**Deliverables:**\n")
+                for d in s["deliverables"]:
+                    f.write(f"- {d}\n")
+            f.write("\n")
+        
+        if data["sprints"]:
+            f.write(f"## Recent Sprints\n\n")
+            for s in reversed(data["sprints"][-5:]):
+                f.write(f"### Sprint #{s['number']} — {s['date']}\n\n")
+                f.write(f"**Goal:** {s['goal']}\n\n")
+                if s.get("deliverables"):
+                    f.write(f"**Deliverables:**\n")
+                    for d in s["deliverables"]:
+                        f.write(f"- {d}\n")
+                f.write(f"\n**Status:** {s['status']}\n\n")
+                f.write("---\n\n")
+    
+    print(f"📝 Report saved: {report_path}")
+
+def show_help():
+    print("nixsprint - Sprint tracker for GitHub Sprints")
+    print()
+    print("Commands:")
+    print("  start 'name'     Start a new sprint")
+    print("  add 'thing'      Add deliverable to current sprint")
+    print("  status           Show current sprint status")
+    print("  complete         Finish current sprint")
+    print("  list             Show all sprints")
+    print("  report           Generate markdown report")
+    print()
+    print("Examples:")
+    print("  nixsprint start 'Fast Builds Sprint'")
+    print("  nixsprint add 'Created new tool'")
+    print("  nixsprint add 'Fixed bug in parser'")
+    print("  nixsprint complete")
+
+def main():
+    args = sys.argv[1:]
+    
+    if not args or args[0] in ('help', '-h', '--help'):
+        show_help()
+        return
+    
+    cmd = args[0]
+    cmd_args = args[1:]
+    
+    # Initialize if needed
+    if cmd == 'start':
+        init_sprints()
+    
+    commands = {
+        'start': cmd_start,
+        'add': cmd_add,
+        'status': cmd_status,
+        'complete': cmd_complete,
+        'list': cmd_list,
+        'report': cmd_report,
+        'ls': cmd_list,
+        'done': cmd_complete,
+    }
+    
+    if cmd in commands:
+        commands[cmd](cmd_args)
+    else:
+        print(f"Unknown command: {cmd}")
+        show_help()
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()

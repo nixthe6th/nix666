@@ -4,7 +4,7 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
-## 2026-01-31 (GitHub Sprint #8 — Streak Mode)
+## 2026-01-31 (GitHub Sprint #9 — Streak Mode)
 ### Added
 - `streak.js` — Git activity streak tracker
   - Shows current consecutive days with commits
@@ -14,6 +14,21 @@ All notable changes to the NIX project hub.
   - Context-aware messages based on streak length
   - Usage: `streak.js` or `streak.js --calendar`
 - Added streak to projects.json as active habit tool
+- 4 new habit/streak themed quotes
+
+## 2026-01-31 (GitHub Sprint #8 — Sprint Infrastructure)
+### Added
+- `nixsprint` — Sprint management CLI tool
+  - `start`, `add`, `status`, `complete`, `list`, `report` commands
+  - Integrates with `sprints.json` for structured sprint tracking
+  - Auto-logs completed sprints to daily memory files
+  - Tracks stats: total sprints, deliverables count
+- `sprints.json` — Structured sprint history with full archive
+  - Migrated all 7 previous sprints into structured format
+  - 22+ total deliverables tracked across completed sprints
+
+### Changed
+- Updated `scripts/README.md` with `nixsprint` documentation
 
 ## 2026-01-31 (GitHub Sprint #7 — Fast Builds)
 ### Added

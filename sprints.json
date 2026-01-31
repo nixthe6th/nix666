@@ -1,0 +1,163 @@
+{
+  "current": null,
+  "sprints": [
+    {
+      "number": 1,
+      "name": "Volume & Momentum",
+      "goal": "Build momentum. Small features, fast commits, immediate deploys.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T00:00:00",
+      "completed_at": "2026-01-31T04:00:00",
+      "deliverables": [
+        "/tools.html",
+        "quotes.json",
+        "manifest.json",
+        "PWA support",
+        "/now.html",
+        "SEO meta",
+        "/bookmarks.html",
+        "bookmarks.json"
+      ],
+      "meta": {
+        "trigger": "manual",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 2,
+      "name": "Fast Builds",
+      "goal": "Create something FAST. Small commits, rapid iteration.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T04:00:00",
+      "completed_at": "2026-01-31T06:00:00",
+      "deliverables": [
+        "/sprints.html",
+        "Sprint tracking page",
+        "Philosophy docs"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 3,
+      "name": "Fast Builds, Continued",
+      "goal": "More tools, better validation, keep the momentum going.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T06:00:00",
+      "completed_at": "2026-01-31T07:00:00",
+      "deliverables": [
+        "sitecheck.js",
+        "5 new quotes"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 4,
+      "name": "CLI Expansion",
+      "goal": "Terminal motivation and utility tools.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T07:00:00",
+      "completed_at": "2026-01-31T07:30:00",
+      "deliverables": [
+        "quote.js",
+        "Terminal motivation tool"
+      ],
+      "meta": {
+        "trigger": "manual",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 5,
+      "name": "Momentum",
+      "goal": "Keep the streak alive with fresh quotes and momentum.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T07:30:00",
+      "completed_at": "2026-01-31T07:40:00",
+      "deliverables": [
+        "5 fresh quotes (24 total)",
+        "Sprint mode mindset quotes"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 6,
+      "name": "Sprint Mode",
+      "goal": "Git sprint automation for faster shipping.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T07:40:00",
+      "completed_at": "2026-01-31T07:45:00",
+      "deliverables": [
+        "sprint.sh — Git sprint automation tool",
+        "Auto-stage, commit, push in one command"
+      ],
+      "meta": {
+        "trigger": "manual",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 7,
+      "name": "Fast Builds",
+      "goal": "Sprint completion tracking and logging.",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T07:45:00",
+      "completed_at": "2026-01-31T07:50:00",
+      "deliverables": [
+        "done.js — Sprint completion tracker",
+        "5 new quotes (29 total)",
+        "Daily log file automation"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
+    {
+      "number": 8,
+      "name": "Sprint Infrastructure",
+      "goal": "CLI Expansion & Sprint Tracking",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T07:50:00",
+      "deliverables": [
+        "nixsprint CLI tool with full sprint lifecycle management",
+        "sprints.json with structured history of all previous sprints",
+        "Updated scripts/README.md with nixsprint documentation"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      },
+      "completed_at": "2026-01-31T07:55:00"
+    }
+  ],
+  "stats": {
+    "total": 8,
+    "completed": 8,
+    "deliverables": 25
+  }
+}

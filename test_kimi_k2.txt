@@ -1,0 +1,4 @@
+Kimi K2.5 Integration Test
+==========================
+Test file created: 2026-01-30
+Model: moonshot/kimi-k2.5

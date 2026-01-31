@@ -54,6 +54,32 @@ nixtrack done 1
 
 Data stored in `~/.nixtrack.json`
 
+## nixnote
+
+Frictionless note capture. Ideas, reminders, random thoughts — just get it down.
+
+```bash
+# Quick capture (just type)
+nixnote "Idea: AI plant waterer that detects soil moisture"
+
+# Interactive mode
+nixnote
+
+# List recent notes
+nixnote list
+
+# Search your notes
+nixnote search idea
+
+# Random note (resurface old ideas)
+nixnote random
+
+# Stats
+nixnote stats
+```
+
+Data stored in `~/.nixnotes.json`
+
 ## sprint.sh
 
 Quick commit and push.

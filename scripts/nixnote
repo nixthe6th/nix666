@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+"""
+nixnote - Quick capture for thoughts, ideas, and reminders
+No friction note-taking for when inspiration strikes.
+"""
+
+import json
+import os
+import sys
+from datetime import datetime
+from pathlib import Path
+
+NOTES_FILE = Path.home() / ".nixnotes.json"
+
+def load_notes():
+    if NOTES_FILE.exists():
+        with open(NOTES_FILE) as f:
+            return json.load(f)
+    return {"notes": [], "tags": []}
+
+def save_notes(data):
+    with open(NOTES_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+def cmd_add(args):
+    """Quick capture: nixnote <text> or nixnote add <text>"""
+    text = ' '.join(args) if args else ""
+    
+    if not text:
+        # Interactive mode
+        print("📝 What are you thinking? (Ctrl+D or empty line to finish)")
+        lines = []
+        try:
+            while True:
+                line = input()
+                if not line and lines:
+                    break
+                lines.append(line)
+        except EOFError:
+            pass
+        text = '\n'.join(lines)
+    
+    if not text.strip():
+        print("❌ No note captured.")
+        return
+    
+    data = load_notes()
+    note = {
+        "id": len(data["notes"]) + 1,
+        "created": datetime.now().isoformat(),
+        "text": text.strip(),
+        "tags": []
+    }
+    data["notes"].append(note)
+    save_notes(data)
+    
+    # Show preview
+    preview = text[:50] + "..." if len(text) > 50 else text
+    print(f"✅ Captured note #{note['id']}")
+    print(f"   \"{preview}\"")
+
+def cmd_list(args):
+    """Show recent notes: nixnote list [count]"""
+    data = load_notes()
+    count = int(args[0]) if args else 5
+    notes = data["notes"][-count:]
+    
+    if not notes:
+        print("No notes yet. Capture one with: nixnote <text>")
+        return
+    
+    print(f"📝 Recent Notes (last {len(notes)})")
+    print("-" * 50)
+    
+    for n in reversed(notes):
+        date = n['created'][5:16].replace('T', ' ')  # MM-DD HH:MM
+        text = n['text'].replace('\n', ' ')[:40]
+        if len(n['text']) > 40:
+            text += "..."
+        print(f"  #{n['id']} [{date}] {text}")
+
+def cmd_search(args):
+    """Search notes: nixnote search <term>"""
+    if not args:
+        print("Usage: nixnote search <keyword>")
+        return
+    
+    term = args[0].lower()
+    data = load_notes()
+    matches = [n for n in data["notes"] if term in n['text'].lower()]
+    
+    if not matches:
+        print(f"No notes found for '{term}'")
+        return
+    
+    print(f"🔍 Found {len(matches)} note(s) matching '{term}'")
+    print("-" * 50)
+    
+    for n in matches[-5:]:
+        date = n['created'][:16].replace('T', ' ')
+        print(f"\n  #{n['id']} [{date}]")
+        for line in n['text'].split('\n')[:3]:
+            print(f"    {line[:60]}")
+
+def cmd_random(args):
+    """Show a random note - good for resurfacing ideas"""
+    import random
+    data = load_notes()
+    
+    if not data["notes"]:
+        print("No notes yet.")
+        return
+    
+    n = random.choice(data["notes"])
+    date = n['created'][:16].replace('T', ' ')
+    
+    print(f"🎲 Random Note #{n['id']} from {date}")
+    print("-" * 50)
+    print(n['text'])
+
+def cmd_stats(args):
+    """Show note statistics"""
+    data = load_notes()
+    notes = data["notes"]
+    
+    if not notes:
+        print("No notes yet.")
+        return
+    
+    # This week
+    week_ago = datetime.now().timestamp() - (7 * 24 * 60 * 60)
+    this_week = sum(1 for n in notes if datetime.fromisoformat(n['created']).timestamp() > week_ago)
+    
+    total_words = sum(len(n['text'].split()) for n in notes)
+    
+    print("📝 NIXNOTE STATS")
+    print("=" * 30)
+    print(f"Total Notes:    {len(notes)}")
+    print(f"This Week:      {this_week}")
+    print(f"Total Words:    {total_words:,}")
+    print(f"Avg Length:     {total_words // len(notes)} words")
+    
+    if notes:
+        first = datetime.fromisoformat(notes[0]['created'])
+        days = (datetime.now() - first).days or 1
+        print(f"\nDaily Average:  {len(notes) / days:.1f} notes/day")
+
+def cmd_help():
+    print("📝 nixnote - Quick capture for ideas")
+    print()
+    print("Usage:")
+    print("  nixnote <text>          Quick capture (just type)")
+    print("  nixnote add [text]      Add a note (interactive if no text)")
+    print("  nixnote list [n]        Show last n notes (default 5)")
+    print("  nixnote search <term>   Search notes")
+    print("  nixnote random          Show random note")
+    print("  nixnote stats           Show statistics")
+    print()
+    print("Examples:")
+    print('  nixnote "Idea: AI-powered plant waterer"')
+    print('  nixnote search idea')
+    print('  nixnote list 10')
+
+def main():
+    args = sys.argv[1:]
+    
+    if not args:
+        # Interactive mode
+        cmd_add([])
+    elif args[0] in ("help", "-h", "--help"):
+        cmd_help()
+    elif args[0] == "add":
+        cmd_add(args[1:])
+    elif args[0] == "list":
+        cmd_list(args[1:])
+    elif args[0] == "search":
+        cmd_search(args[1:])
+    elif args[0] == "random":
+        cmd_random(args[1:])
+    elif args[0] == "stats":
+        cmd_stats(args[1:])
+    else:
+        # Treat as direct note text
+        cmd_add(args)
+
+if __name__ == "__main__":
+    main()

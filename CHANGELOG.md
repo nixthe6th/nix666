@@ -4,6 +4,25 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #31 — Read/Watch Later Queue)
+### Added
+- `later.js` — Read/watch later queue for articles, videos, and links
+  - Add items: `nix later <url> [title] [tags]`
+  - Smart type detection: ▶️ YouTube, 💻 GitHub, 📝 Articles, 💬 Reddit, 📄 PDFs
+  - List queue: `nix later list` (shows pending items with age)
+  - List all: `nix later list --all` (includes consumed)
+  - Mark done: `nix later done <id>` (mark as consumed)
+  - Delete: `nix later delete <id>` (remove from queue)
+  - Stats: `nix later stats` (pending/consumed counts, top sources)
+  - Auto-extracts domain and calculates item age
+  - Tags support for organization
+  - Short IDs for quick reference (e.g., `a3f7b2`)
+  - Data stored in `data/later.json`
+  - Integrated into `nix` CLI as `nix later [command]`
+  - Perfect for saving articles to read, videos to watch, repos to explore
+- Updated `scripts/nix` CLI with `later` command
+- Updated README.md with new tool examples
+
 ## 2026-01-31 (GitHub Sprint #30 — Daily Standup Report)
 ### Added
 - `standup.js` — Daily standup report aggregator

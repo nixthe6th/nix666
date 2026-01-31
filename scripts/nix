@@ -50,6 +50,7 @@ Commands:
   decide [cmd]            Decision log (add/list/review/stats)
   commit [msg]            Quick git commit helper (--sprint for rapid mode)
   standup [period]        Daily standup report (today/yesterday/week)
+  later [url|cmd]         Read/watch later queue (add/list/done)
   
   tools                   List all available tools
   help                    Show this help
@@ -106,6 +107,7 @@ list_tools() {
     printf "  %-10s %s\n" "convert.js" "Data format converter"
     printf "  %-10s %s\n" "backup.js" "Data backup and export"
     printf "  %-10s %s\n" "standup.js" "Daily standup report"
+    printf "  %-10s %s\n" "later.js" "Read/watch later queue"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -232,6 +234,9 @@ main() {
             ;;
         commit)
             "$SCRIPT_DIR/nixcommit" "$@"
+            ;;
+        later)
+            node "$SCRIPT_DIR/../later.js" "$@"
             ;;
         tools)
             list_tools

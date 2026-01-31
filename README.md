@@ -36,6 +36,14 @@ nix standup yesterday          # Yesterday's wins only
 nix standup week               # Week summary
 ```
 
+`nix later` — Read/watch later queue for articles, videos, and links:
+```bash
+nix later https://youtube.com/watch?v=abc "Cool Video" tech,video
+nix later list                 # Show pending queue
+nix later done a3f7b2          # Mark item as consumed
+nix later stats                # Queue statistics
+```
+
 `nix when` — Calculate deadlines, time remaining, future dates:
 ```bash
 nix when in 2h30m              # What time will it be?

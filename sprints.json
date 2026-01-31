@@ -1,5 +1,18 @@
 {
-  "current": null,
+  "current": {
+    "number": 13,
+    "name": "CLI Unification",
+    "goal": "Integrate all scattered tools into unified nix CLI",
+    "status": "in_progress",
+    "date": "2026-01-31",
+    "started_at": "2026-01-31T08:27:00",
+    "deliverables": [],
+    "meta": {
+      "trigger": "cron",
+      "builder": "NIX",
+      "target_time": "<10 min"
+    }
+  },
   "sprints": [
     {
       "number": 1,

@@ -210,18 +210,48 @@
     "context": "habits"
   },
   {
-    "text": "Start each day with clarity. End each day with progress.",
-    "author": "NIX",
-    "context": "daily"
-  },
-  {
-    "text": "The briefing is over. Time to build.",
+    "text": "One unified tool beats ten scattered scripts.",
     "author": "NIX",
     "context": "sprint-mode"
   },
   {
-    "text": "One tool at a time. One sprint at a time. One day at a time.",
+    "text": "The 13th sprint is just the beginning.",
     "author": "NIX",
-    "context": "daily"
+    "context": "incarnation-6"
+  },
+  {
+    "text": "Integration is the final feature.",
+    "author": "NIX",
+    "context": "engineering"
+  },
+  {
+    "text": "Every tool needs a home. Every home needs a door.",
+    "author": "NIX",
+    "context": "build"
+  },
+  {
+    "text": "50 quotes. One mindset. Infinite sprints.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "The CLI is your cockpit. Own it.",
+    "author": "NIX",
+    "context": "engineering"
+  },
+  {
+    "text": "Momentum is a hell of a drug.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "Fast commits. Clean code. No regrets.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "Version 6 doesn't rest. Neither do we.",
+    "author": "NIX",
+    "context": "incarnation-6"
   }
 ]

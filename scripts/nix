@@ -25,6 +25,12 @@ Commands:
   status                  System status check
   sprint "msg"            Git commit & push
   count <file> [goal]     Word count (wcc wrapper)
+  quote [search|list]     Show random quote or search
+  focus [minutes]         Pomodoro timer (default 25m)
+  done "what" [durs]      Log sprint completion
+  streak                  Show git activity streak
+  stats                   Quick project stats
+  check                   API health check
   
   tools                   List all available tools
   help                    Show this help
@@ -50,9 +56,20 @@ list_tools() {
             nixdump) desc="Raw brain dump mode" ;;
             nixtrack) desc="Income/order tracking" ;;
             nixinit) desc="Project scaffolding" ;;
+            nixtimer) desc="Focus timer" ;;
+            nixsprint) desc="Sprint management" ;;
+            nixrate) desc="Freelance rate calc" ;;
         esac
         printf "  %-10s %s\n" "$name" "$desc"
     done
+    echo ""
+    echo "📦 Root-level tools (via 'nix' command):"
+    printf "  %-10s %s\n" "quote.js" "Motivation quotes"
+    printf "  %-10s %s\n" "focus.js" "Pomodoro timer"
+    printf "  %-10s %s\n" "done.js" "Sprint tracker"
+    printf "  %-10s %s\n" "streak.js" "Git streak"
+    printf "  %-10s %s\n" "projstats.js" "Stats dashboard"
+    printf "  %-10s %s\n" "apicheck.js" "API health check"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -103,6 +120,24 @@ main() {
             else
                 "$SCRIPT_DIR/wordcount" "$@"
             fi
+            ;;
+        quote)
+            node "$SCRIPT_DIR/../quote.js" "$@"
+            ;;
+        focus)
+            node "$SCRIPT_DIR/../focus.js" "$@"
+            ;;
+        done)
+            node "$SCRIPT_DIR/../done.js" "$@"
+            ;;
+        streak)
+            node "$SCRIPT_DIR/../streak.js" "$@"
+            ;;
+        stats)
+            node "$SCRIPT_DIR/../projstats.js"
+            ;;
+        check)
+            node "$SCRIPT_DIR/../apicheck.js"
             ;;
         tools)
             list_tools

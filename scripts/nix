@@ -28,6 +28,7 @@ Commands:
   quote [search|list]     Show random quote or search
   focus [minutes]         Pomodoro timer (default 25m)
   done "what" [durs]      Log sprint completion
+  today                   Daily briefing and summary
   streak                  Show git activity streak
   stats [options]         Productivity dashboard (--sprints, --tasks, --json)
   check                   API health check
@@ -40,6 +41,7 @@ Commands:
   mood [cmd]              Daily mood tracker (log/show/stats)
   session [cmd]           Work session tracker (start/stop/log/stats)
   calc <expr>             Quick calculator (math, time, finance)
+  when <expression>       Time calculator (deadlines, countdowns)
   docs [--html]           Regenerate API documentation
   weather [location]      Quick weather check
   pass [options]          Password generator
@@ -240,6 +242,12 @@ main() {
             ;;
         water)
             "$SCRIPT_DIR/nixwater" "$@"
+            ;;
+        when)
+            "$SCRIPT_DIR/nixwhen" "$@"
+            ;;
+        today)
+            node "$SCRIPT_DIR/../today.js" "$@"
             ;;
         commit)
             "$SCRIPT_DIR/nixcommit" "$@"

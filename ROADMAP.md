@@ -43,7 +43,7 @@ The future of NIX — what's planned, what's cooking, what's possible.
 - `nix pomodoro` — Enhanced focus with task integration
 - `nix timeblock` — Daily time blocking planner
 - `nix distraction` — Track and log distractions
-- `nix energy` — Energy level tracking throughout day
+- [x] `nix energy` — Energy level tracking throughout day
 
 #### Knowledge Management
 - [x] `nix read` — Reading list with progress tracking
@@ -59,7 +59,7 @@ The future of NIX — what's planned, what's cooking, what's possible.
 #### Social
 - `nix network` — Contact/relationship tracker
 - `nix birthday` — Birthday reminders
-- `nix gratitude` — Daily gratitude log
+- [x] `nix gratitude` — Daily gratitude log
 
 ### Web Interface
 - [ ] Interactive dashboard with charts

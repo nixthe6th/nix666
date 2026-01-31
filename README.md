@@ -95,6 +95,22 @@ nix timer 45 -m "Deep work"    # With message/description
 nix timer stats                # View session history
 ```
 
+`nix energy` — Energy level tracking throughout the day:
+```bash
+nix energy log 4               # Log energy level 1-5
+nix energy log 5 "Peak flow!"  # With note
+nix energy chart               # See energy by hour
+nix energy insights            # Find your peak hours
+```
+
+`nix gratitude` — Daily gratitude practice:
+```bash
+nix gratitude add "Supportive friends"   # Log gratitude
+nix gratitude add "Quiet morning"        # 3x daily goal
+nix gratitude random                     # Recall a memory
+nix gratitude stats                      # Streak & progress
+```
+
 `nix standup` — Daily standup report aggregating all productivity data:
 ```bash
 nix standup                    # Full daily standup report

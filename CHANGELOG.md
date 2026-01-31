@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #37d — Wellness Tracking)
+### Added
+- `energy.js` — Energy level tracking throughout the day
+  - Log energy 1-5 with timestamps: `nix energy log 4`
+  - Hourly chart to find peak performance times
+  - Week overview with visual trends
+  - Insights: streaks, averages, peak hours
+  - Multiple entries per day supported
+  
+- `gratitude.js` — Daily gratitude practice
+  - Log what you're grateful for: `nix gratitude add "..."`
+  - 3-entry daily goal with streak tracking
+  - Random memory recall: `nix gratitude random`
+  - Stats with weekly visualization
+  - Writing prompts when stuck
+
 ## 2026-01-31 (GitHub Sprint #37c — Note Connections)
 ### Added
 - `connect.js` — Discover connections between zettel notes

@@ -46,5 +46,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "sprint"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "streak",
+    "description": "Git activity streak tracker - motivates maintaining momentum",
+    "url": "./streak.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "habits"],
+    "updated": "2026-01-31"
   }
 ]

@@ -140,6 +140,16 @@ nix gratitude random                     # Recall a memory
 nix gratitude stats                      # Streak & progress
 ```
 
+`nix distraction` — Track and analyze focus interruptions:
+```bash
+nix distraction "Twitter notification"         # Log what interrupted you
+nix distraction "Slack ping" urgent            # Mark urgency (low/normal/urgent)
+nix distraction list                           # Today's distractions
+nix distraction list week                      # This week's log
+nix distraction stats                          # Analytics & patterns
+nix distraction top                            # Most common sources
+```
+
 `nix standup` — Daily standup report aggregating all productivity data:
 ```bash
 nix standup                    # Full daily standup report

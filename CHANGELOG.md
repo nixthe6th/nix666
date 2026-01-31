@@ -4,6 +4,19 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38g — Distraction Tracker)
+### Added
+- `distraction.js` — Track and analyze focus interruptions
+  - `nix distraction "note" [urgency]` — Log what interrupted your focus
+  - `nix distraction list [today|week|month]` — View distraction log
+  - `nix distraction stats` — Analytics with categories and urgency breakdown
+  - `nix distraction top` — Most common distraction sources
+  - Auto-categorizes: notification, social, message, email, news, app, other
+  - Urgency levels: low 💤, normal ⚡, urgent 🔥
+  - Daily/weekly/monthly filtering
+  - Tracks patterns to identify focus killers
+  - Addresses ROADMAP: Productivity > distraction tracking
+
 ## 2026-01-31 (GitHub Sprint #38f — Time Blocking)
 ### Added
 - `timeblock.js` — Daily time blocking planner for focused work

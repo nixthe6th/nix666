@@ -78,5 +78,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "daily"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "note",
+    "description": "Quick capture CLI - timestamped notes to daily markdown files",
+    "url": "./note.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "notes"],
+    "updated": "2026-01-31"
   }
 ]

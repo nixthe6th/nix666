@@ -4,6 +4,17 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #24 — Universal Search)
+### Added
+- `find.js` — Universal search across all NIX data
+  - Search across 6 data sources: todos, ideas, quotes, projects, sprints, bookmarks
+  - Smart filtering by source (`--todos`, `--ideas`, `--quotes`, etc.)
+  - Color-coded results grouped by type
+  - Highlighted matching terms in results
+  - Quick metadata preview (dates, priorities, tags)
+  - Added `nix find <query>` to unified CLI
+  - Added entry to projects.json
+
 ## 2026-01-31 (GitHub Sprint #23 — CLI Extension)
 ### Added
 - `nixweather` — Quick weather checker via wttr.in

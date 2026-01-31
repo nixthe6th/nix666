@@ -135,5 +135,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "productivity", "time-tracking"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "find",
+    "description": "Universal search - query across todos, ideas, quotes, projects, sprints, bookmarks",
+    "url": "./find.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "search", "productivity"],
+    "updated": "2026-01-31"
   }
 ]

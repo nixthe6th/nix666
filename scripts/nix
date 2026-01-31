@@ -58,6 +58,8 @@ Commands:
   standup [period]        Daily standup report (today/yesterday/week)
   later [url|cmd]         Read/watch later queue (add/list/done)
   learn [cmd]             Learning tracker with spaced repetition
+  flashcard [cmd]         Flashcard system for memorization
+  clip [cmd]              Code snippet manager (add/list/search/copy)
   roll [dice|coin|n]      Dice roller (2d6, coin, 100)
   
   tools                   List all available tools
@@ -272,6 +274,12 @@ main() {
             ;;
         roll)
             node "$SCRIPT_DIR/../roll.js" "$@"
+            ;;
+        clip)
+            node "$SCRIPT_DIR/../clip.js" "$@"
+            ;;
+        flashcard)
+            node "$SCRIPT_DIR/../flashcard.js" "$@"
             ;;
         tools)
             list_tools

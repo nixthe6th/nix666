@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #35c — Code Snippet Manager)
+### Added
+- `clip.js` — Code snippet manager for saving and organizing code
+  - Save snippets: `echo "code" | nix clip add "Title" js utils`
+  - File import: `nix clip add "Config" json --file ./config.json`
+  - Language detection with icons (js, py, rust, go, etc.)
+  - Tagging system for organization
+  - Search: `nix clip search axios` searches titles, content, tags
+  - List by language or tag: `nix clip list js`
+  - Copy to clipboard: `nix clip copy <id>` (macOS, Linux, Windows)
+  - View snippet: `nix clip show <id>` with syntax display
+  - Language overview: `nix clip lang`
+  - Tag cloud: `nix clip tags`
+  - Delete snippets: `nix clip delete <id>`
+- Integrated into `nix` CLI dispatcher
+
 ## 2026-01-31 (GitHub Sprint #35b — Flashcard System)
 ### Added
 - `flashcard.js` — CLI flashcard system for memorization

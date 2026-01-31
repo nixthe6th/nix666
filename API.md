@@ -8,14 +8,17 @@
 - [backup](#backup) — backup.js - Data backup and export for NIX
 - [bm](#bm) — bm.js - Bookmark CLI for quick access to saved links
 - [calc](#calc) — calc.js - Quick calculation utility
+- [clip](#clip) — clip.js - Code snippet manager
 - [convert](#convert) — convert.js — Swiss Army knife converter utility
 - [done](#done) — done.js - Sprint completion tracker
 - [expense](#expense) — expense.js - Personal expense tracker
 - [find](#find) — find.js - Universal search across all NIX data
+- [flashcard](#flashcard) — flashcard.js — CLI flashcard system for memorization
 - [focus](#focus) — focus.js - Pomodoro focus timer with motivation
 - [habits](#habits) — CLI tool
 - [ideas](#ideas) — ideas.js - Idea backlog and project pipeline tracker
 - [later](#later) — later.js - Read/Watch later queue
+- [learn](#learn) — learn.js — Learning tracker with spaced repetition
 - [log](#log) — log.js — Quick daily logger
 - [mood](#mood) — mood.js — Daily mood & emotion tracker
 - [note](#note) — note.js - Quick capture for thoughts, ideas, and tasks
@@ -24,9 +27,11 @@
 - [qr](#qr) — qr.js — Quick QR code generator for URLs, text, WiFi, contact info
 - [quote](#quote) — quote - Terminal motivation from NIX
 - [review](#review) — review.js - Daily/weekly progress review
+- [roll](#roll) — roll.js - Quick dice roller and random picker
 - [server](#server) — server.js - Quick HTTP server for static files
 - [session](#session) — session.js - Work session tracker
 - [sprint](#sprint) — sprint.js — Quick sprint management CLI
+- [sprintstats](#sprintstats) — sprintstats.js — Sprint performance analytics
 - [standup](#standup) — standup.js - Daily standup report aggregator
 - [stats](#stats) — stats.js — Productivity Stats Dashboard
 - [streak](#streak) — streak.js - Git activity streak tracker
@@ -120,6 +125,37 @@ ${COLORS.reset} nix calc <expression>
 
 | Flag | Description |
 |------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## clip
+
+clip.js - Code snippet manager
+
+**File:** `clip.js`
+
+### Usage
+
+```bash
+nix clip <command> [args]
+```
+```bash
+cat file.js | nix clip add "My Snippet" js utils array' + COLORS.reset);
+```
+
+### Commands
+
+- `nix`
+- `cat`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--file` | — |
 | `--help` | — |
 
 > 💡 Run with `--help` for full usage information
@@ -254,6 +290,38 @@ ${COLORS.reset}
 
 ---
 
+## flashcard
+
+flashcard.js — CLI flashcard system for memorization
+
+**File:** `flashcard.js`
+
+### Usage
+
+```bash
+nix flashcard [command] [args]
+```
+```bash
+nix flashcard add "deck" "front text" "back text"${C.reset}\n`);
+```
+```bash
+nix flashcard delete <id>${C.reset}\n`);
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## focus
 
 focus.js - Pomodoro focus timer with motivation
@@ -373,6 +441,41 @@ nix later delete <id>${COLORS.reset}`);
 | `--tags` | — |
 | `--help` | — |
 | `--all` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## learn
+
+learn.js — Learning tracker with spaced repetition
+
+**File:** `learn.js`
+
+### Usage
+
+```bash
+nix learn [command] [args]
+```
+```bash
+nix learn add "skill name" [resource-url]${C.reset}\n`);
+```
+```bash
+nix learn log "skill name" [note] [minutes]${C.reset}\n`);
+```
+```bash
+nix learn done "skill name"${C.reset}\n`);
+```
+
+### Commands
+
+- `nix`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
 
 > 💡 Run with `--help` for full usage information
 
@@ -593,6 +696,35 @@ review [today|week]
 
 ---
 
+## roll
+
+roll.js - Quick dice roller and random picker
+
+**File:** `roll.js`
+
+### Usage
+
+```bash
+roll [dice|coin|number|pick]
+```
+```bash
+${COLORS.reset}
+```
+
+### Commands
+
+- `roll`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
 ## server
 
 server.js - Quick HTTP server for static files
@@ -667,6 +799,31 @@ sprint.js — Quick sprint management CLI
 
 ```bash
 *   sprint                    Show current sprint status
+```
+```bash
+${C.reset}`);
+```
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## sprintstats
+
+sprintstats.js — Sprint performance analytics
+
+**File:** `sprintstats.js`
+
+### Usage
+
+```bash
+*   sprintstats           Show summary stats
 ```
 ```bash
 ${C.reset}`);
@@ -967,14 +1124,17 @@ when deadline <name> <date>')); process.exit(1); }
 | [backup](#backup) | backup.js - Data backup and export for NIX |
 | [bm](#bm) | bm.js - Bookmark CLI for quick access to saved links |
 | [calc](#calc) | calc.js - Quick calculation utility |
+| [clip](#clip) | clip.js - Code snippet manager |
 | [convert](#convert) | convert.js — Swiss Army knife converter utility |
 | [done](#done) | done.js - Sprint completion tracker |
 | [expense](#expense) | expense.js - Personal expense tracker |
 | [find](#find) | find.js - Universal search across all NIX data |
+| [flashcard](#flashcard) | flashcard.js — CLI flashcard system for memorization |
 | [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
 | [habits](#habits) | — |
 | [ideas](#ideas) | ideas.js - Idea backlog and project pipeline tracker |
 | [later](#later) | later.js - Read/Watch later queue |
+| [learn](#learn) | learn.js — Learning tracker with spaced repetition |
 | [log](#log) | log.js — Quick daily logger |
 | [mood](#mood) | mood.js — Daily mood & emotion tracker |
 | [note](#note) | note.js - Quick capture for thoughts, ideas, and tasks |
@@ -983,9 +1143,11 @@ when deadline <name> <date>')); process.exit(1); }
 | [qr](#qr) | qr.js — Quick QR code generator for URLs, text, WiFi, contact info |
 | [quote](#quote) | quote - Terminal motivation from NIX |
 | [review](#review) | review.js - Daily/weekly progress review |
+| [roll](#roll) | roll.js - Quick dice roller and random picker |
 | [server](#server) | server.js - Quick HTTP server for static files |
 | [session](#session) | session.js - Work session tracker |
 | [sprint](#sprint) | sprint.js — Quick sprint management CLI |
+| [sprintstats](#sprintstats) | sprintstats.js — Sprint performance analytics |
 | [standup](#standup) | standup.js - Daily standup report aggregator |
 | [stats](#stats) | stats.js — Productivity Stats Dashboard |
 | [streak](#streak) | streak.js - Git activity streak tracker |

@@ -11,8 +11,8 @@ The future of NIX — what's planned, what's cooking, what's possible.
 ### Sprint #35 — Knowledge System
 - [x] `learn.js` — Learning tracker with spaced repetition
 - [x] `nix flashcard` — CLI flashcard system for memorization
+- [x] `nix clip` — Save and tag code snippets
 - [ ] `nix summarize` — Auto-summarize long text/articles
-- [ ] `nix clip` — Save and tag code snippets
 
 ### Sprint #36 — Health & Wellness
 - [ ] `nix sleep` — Sleep quality tracker

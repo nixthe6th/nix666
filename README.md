@@ -58,6 +58,17 @@ nix flashcard list                                     # All cards
 nix flashcard stats                                    # Progress stats
 ```
 
+`nix clip` — Code snippet manager:
+```bash
+cat config.js | nix clip add "Webpack Config" js build  # Save from pipe
+nix clip add "Dockerfile" docker --file ./Dockerfile     # Save from file
+nix clip list                                           # List all snippets
+nix clip list js                                        # Filter by language
+nix clip search axios                                   # Search content
+nix clip copy a3f7b2                                    # Copy to clipboard
+nix clip tags                                           # View tag cloud
+```
+
 `nix water` — Hydration tracker with daily goals:
 ```bash
 nix water 500                  # Add 500ml

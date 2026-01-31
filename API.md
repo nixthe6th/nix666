@@ -6,6 +6,7 @@
 ## Table of Contents
 
 - [bm](#bm) — bm.js - Bookmark CLI for quick access to saved links
+- [calc](#calc) — calc.js - Quick calculation utility
 - [done](#done) — done.js - Sprint completion tracker
 - [focus](#focus) — focus.js - Pomodoro focus timer with motivation
 - [habits](#habits) — CLI tool
@@ -49,6 +50,28 @@ bm add <title> <url> [category] [description] [tags]' + COLORS.reset);
 ### Commands
 
 - `bm`
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--help` | — |
+
+> 💡 Run with `--help` for full usage information
+
+---
+
+## calc
+
+calc.js - Quick calculation utility
+
+**File:** `calc.js`
+
+### Usage
+
+```bash
+${COLORS.reset} nix calc <expression>
+```
 
 ### Flags
 
@@ -499,6 +522,7 @@ week [--commits|--sprints|--json]
 | Tool | Purpose |
 |------|---------|
 | [bm](#bm) | bm.js - Bookmark CLI for quick access to saved links |
+| [calc](#calc) | calc.js - Quick calculation utility |
 | [done](#done) | done.js - Sprint completion tracker |
 | [focus](#focus) | focus.js - Pomodoro focus timer with motivation |
 | [habits](#habits) | — |

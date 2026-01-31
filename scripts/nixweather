@@ -1,0 +1,80 @@
+#!/bin/bash
+#
+# nixweather — Quick weather checks via wttr.in
+# Usage: nixweather [location] [--full]
+#
+
+set -e
+
+# Default location (can be overridden)
+DEFAULT_LOC="${NIX_WEATHER_LOC:-}"
+SHOW_FULL=0
+LOCATION=""
+
+# Parse args
+for arg in "$@"; do
+    case "$arg" in
+        --full|-f)
+            SHOW_FULL=1
+            ;;
+        --help|-h)
+            echo "🌤️  nixweather — Quick weather checks"
+            echo ""
+            echo "Usage: nix weather [location] [--full]"
+            echo ""
+            echo "Options:"
+            echo "  [location]    City name, airport code (JFK), or leave blank for auto"
+            echo "  --full, -f    Show full forecast instead of compact"
+            echo "  --help, -h    Show this help"
+            echo ""
+            echo "Examples:"
+            echo "  nix weather                 # Auto-detect location"
+            echo "  nix weather London          # Specific city"
+            echo "  nix weather JFK             # Airport code"
+            echo "  nix weather Tokyo --full    # Full forecast"
+            echo ""
+            echo "Env: NIX_WEATHER_LOC=Paris   # Set default location"
+            exit 0
+            ;;
+        *)
+            if [ -z "$LOCATION" ]; then
+                LOCATION="$arg"
+            fi
+            ;;
+    esac
+done
+
+# Use default if no location provided
+if [ -z "$LOCATION" ] && [ -n "$DEFAULT_LOC" ]; then
+    LOCATION="$DEFAULT_LOC"
+fi
+
+# URL encode spaces
+LOCATION="${LOCATION// /+}"
+
+echo "🌤️  Checking weather..."
+
+if [ "$SHOW_FULL" -eq 1 ]; then
+    # Full forecast
+    if [ -n "$LOCATION" ]; then
+        curl -s "wttr.in/${LOCATION}?T" 2>/dev/null || echo "⚠️  Weather service unavailable"
+    else
+        curl -s "wttr.in/?T" 2>/dev/null || echo "⚠️  Weather service unavailable"
+    fi
+else
+    # Compact format
+    if [ -n "$LOCATION" ]; then
+        RESULT=$(curl -s "wttr.in/${LOCATION}?format=%l:+%c+%t+%h+%w" 2>/dev/null || echo "")
+    else
+        RESULT=$(curl -s "wttr.in/?format=%l:+%c+%t+%h+%w" 2>/dev/null || echo "")
+    fi
+    
+    if [ -n "$RESULT" ]; then
+        echo ""
+        echo "  $RESULT"
+        echo ""
+        echo "  💡 Use --full for forecast details"
+    else
+        echo "⚠️  Could not fetch weather. Try: nix weather London"
+    fi
+fi

@@ -34,6 +34,7 @@ nix tools                   # List all tools
 | `wordcount` | Count words in files | `wordcount <file>` |
 | `wcc` | Word count with goal check | `wcc <file> <goal>` |
 | `fiverr` | Fiverr business commands | `fiverr status` |
+| `nixweather` | Weather checker | `nixweather [location]` |
 
 ### Root-Level Tools (via `nix` command)
 

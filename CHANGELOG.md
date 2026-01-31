@@ -4,6 +4,21 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #23 — CLI Extension)
+### Added
+- `nixweather` — Quick weather checker via wttr.in
+  - Compact format: location, condition, temp, humidity, wind
+  - Full forecast mode with `--full` flag
+  - Auto-detects location or specify city/airport code
+  - Env var `NIX_WEATHER_LOC` for default location
+  - Integrated into `nix` CLI as `nix weather [location]`
+### Improved
+- `nix` CLI wrapper — added `docs` command
+  - `nix docs` regenerates API.md from source code
+  - `nix docs --html` also generates api.html
+  - Added to help text and tool listings
+- Updated `scripts/README.md` with new tool references
+
 ## 2026-01-31 (GitHub Sprint #22 — Documentation Sprint)
 ### Improved
 - Updated `CHANGELOG.md` with sprint continuity tracking

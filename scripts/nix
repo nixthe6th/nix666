@@ -40,6 +40,8 @@ Commands:
   mood [cmd]              Daily mood tracker (log/show/stats)
   session [cmd]           Work session tracker (start/stop/log/stats)
   calc <expr>             Quick calculator (math, time, finance)
+  docs [--html]           Regenerate API documentation
+  weather [location]      Quick weather check
   
   tools                   List all available tools
   help                    Show this help
@@ -68,6 +70,7 @@ list_tools() {
             nixtimer) desc="Focus timer" ;;
             nixsprint) desc="Sprint management" ;;
             nixrate) desc="Freelance rate calc" ;;
+    nixweather) desc="Weather checker" ;;
         esac
         printf "  %-10s %s\n" "$name" "$desc"
     done
@@ -164,6 +167,13 @@ main() {
             ;;
         calc)
             node "$SCRIPT_DIR/../calc.js" "$@"
+            ;;
+        docs)
+            node "$SCRIPT_DIR/../docs.js" "$@"
+            echo "✓ API.md regenerated"
+            ;;
+        weather)
+            "$SCRIPT_DIR/nixweather" "$@"
             ;;
         ideas)
             node "$SCRIPT_DIR/../ideas.js" "$@"

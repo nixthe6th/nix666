@@ -5,6 +5,13 @@ All notable changes to the NIX project hub.
 ## [Unreleased]
 
 ## 2026-01-31 (GitHub Sprint #33 — CLI Polish)
+### Added
+- `qr.js` — QR code generator for quick sharing
+  - Generate QR for any text/URL: `nix qr https://nix666.dev`
+  - WiFi connection QRs: `nix qr wifi MyNetwork password123`
+  - Contact card QRs: `nix qr contact "John Doe" +1234567890`
+  - Uses free qrserver API (no key required)
+  - Clean terminal output with scan instructions
 ### Fixed
 - Resolved merge conflict in README.md
 - Added missing `nix today` command to CLI (was documented but not implemented)

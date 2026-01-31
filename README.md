@@ -55,6 +55,13 @@ nix later stats                # Queue statistics
 
 `nix when` — Calculate deadlines, time remaining, future dates:
 
+`nix qr` — Generate QR codes for quick sharing:
+```bash
+nix qr https://nix666.dev          # Share URL
+nix qr wifi MyNetwork password123  # WiFi connection
+nix qr contact "John" 555-1234     # Contact card
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

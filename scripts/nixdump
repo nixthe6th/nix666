@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""
+nixdump - Instant brain dump. No structure, just capture.
+Opens editor, saves to daily memory with timestamp.
+"""
+
+import os
+import sys
+import tempfile
+import subprocess
+from datetime import datetime
+from pathlib import Path
+
+MEMORY_DIR = Path("/home/ec2-user/.openclaw/workspace/memory")
+EDITOR = os.environ.get('EDITOR', 'nano')
+
+def main():
+    today = datetime.now().strftime("%Y-%m-%d")
+    memory_file = MEMORY_DIR / f"{today}.md"
+    
+    # Create temp file
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+        f.write("# Brain Dump\n\n")
+        temp_path = f.name
+    
+    # Open editor
+    try:
+        subprocess.run([EDITOR, temp_path], check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ Editor closed without saving or error occurred")
+        os.unlink(temp_path)
+        return
+    
+    # Read what was written
+    with open(temp_path) as f:
+        content = f.read().strip()
+    
+    # Clean up temp
+    os.unlink(temp_path)
+    
+    # Skip if only the header or empty
+    lines = [l for l in content.split('\n') if l.strip() and not l.startswith('#')]
+    if not lines:
+        print("💨 Nothing to dump (empty).")
+        return
+    
+    # Ensure memory dir exists
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+    
+    # Append to daily memory
+    timestamp = datetime.now().strftime("%H:%M")
+    dump_entry = f"\n## 🧠 Dump @ {timestamp}\n\n{content}\n"
+    
+    with open(memory_file, 'a') as f:
+        f.write(dump_entry)
+    
+    print(f"✅ Dumped to {memory_file}")
+    print(f"   ({len(content)} chars captured)")
+
+if __name__ == "__main__":
+    main()

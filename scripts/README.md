@@ -1,139 +1,38 @@
-# Scripts
+# Scripts Directory
 
-Quick tools for Nix's workflow.
+Quick tools for the Nix ecosystem. All scripts are self-contained and just work.
 
-## nixdo
+## Available Tools
 
-Dead-simple task tracker. No complexity, just tasks. Integrates with daily memory logs.
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `nixdo` | Task tracker with priorities | `nixdo add "task" [priority]` |
+| `nixnote` | Structured idea capture | `nixnote "my idea"` |
+| `nixdump` | Raw brain dump (no structure) | `nixdump` |
+| `nixtrack` | Fiverr income/orders tracker | `nixtrack income <amount>` |
+| `dailylog.sh` | Daily memory template | `dailylog.sh` |
+| `sprint.sh` | Git commit & push | `sprint.sh "message"` |
+| `status.sh` | System check | `status.sh` |
+| `wordcount` | Count words in files | `wordcount <file>` |
+| `wcc` | Word count with goal check | `wcc <file> <goal>` |
+| `fiverr` | Fiverr business commands | `fiverr status` |
 
-```bash
-# Add a task
-nixdo add "Fix login bug" high
-
-# List open tasks (sorted by priority)
-nixdo list
-
-# Mark done (logs to today's memory file)
-nixdo done 3
-
-# See completed tasks
-nixdo archive
-
-# Stats
-nixdo stats
-```
-
-Priorities: `urgent` > `high` > `med` > `low`
-
-Data stored in `~/.nixdo.json`
-
-## wordcount
-
-Track daily writing output. Perfect for Fiverr gigs and content work.
+## Quick Start
 
 ```bash
-# Log words written
-wordcount add 500 "Blog post - AI tools"
+# See all commands
+ls scripts/
 
-# See today's progress
-wordcount today
+# Add to PATH (in ~/.bashrc)
+export PATH="$PATH:/home/ec2-user/.openclaw/workspace/scripts"
 
-# View this week's daily totals
-wordcount week
-
-# Full stats breakdown
-wordcount stats
+# Or use directly
+./scripts/nixdo add "new task" high
 ```
 
-Data stored in `~/.wordcount.json`
+## Philosophy
 
-## wcc
-
-Quick word count for files with optional logging.
-
-```bash
-# Just count
-wcc article.md
-
-# Count and log
-wcc article.md fiverr-blog
-```
-
-## nixtrack
-
-Income and order tracker. Log Fiverr orders, view stats, track progress toward monthly goals.
-
-```bash
-# Add an order
-nixtrack add 25 "Blog post about AI" fiverr
-
-# View recent orders
-nixtrack list
-
-# See stats and progress
-nixtrack stats
-
-# Mark order as done
-nixtrack done 1
-```
-
-Data stored in `~/.nixtrack.json`
-
-## nixnote
-
-Frictionless note capture. Ideas, reminders, random thoughts — just get it down.
-
-```bash
-# Quick capture (just type)
-nixnote "Idea: AI plant waterer that detects soil moisture"
-
-# Interactive mode
-nixnote
-
-# List recent notes
-nixnote list
-
-# Search your notes
-nixnote search idea
-
-# Random note (resurface old ideas)
-nixnote random
-
-# Stats
-nixnote stats
-```
-
-Data stored in `~/.nixnotes.json`
-
-## sprint.sh
-
-Quick commit and push.
-
-```bash
-./sprint.sh "your commit message"
-```
-
-## status.sh
-
-System health check.
-
-```bash
-./status.sh
-```
-
-## fiverr
-
-Fiverr business monitor for @thebignix. Quick status checks and order logging.
-
-```bash
-# Show business status
-fiverr status
-
-# Log a new order
-fiverr order AcmeCorp 25
-
-# Add a note
-fiverr note "Gig views up 20% this week"
-```
-
-Data stored in `~/.fiverr-track.json`
+- **No config files** (except data storage)
+- **No dependencies** beyond standard tools
+- **Self-documenting** — run without args for help
+- **Fast** — optimized for muscle memory

@@ -1,19 +1,25 @@
 {
-  "current": {
-    "number": 13,
-    "name": "CLI Unification",
-    "goal": "Integrate all scattered tools into unified nix CLI",
-    "status": "in_progress",
-    "date": "2026-01-31",
-    "started_at": "2026-01-31T08:27:00",
-    "deliverables": [],
-    "meta": {
-      "trigger": "cron",
-      "builder": "NIX",
-      "target_time": "<10 min"
-    }
-  },
+  "current": null,
   "sprints": [
+    {
+      "number": 13,
+      "name": "CLI Unification",
+      "goal": "Integrate all scattered tools into unified nix CLI",
+      "status": "completed",
+      "date": "2026-01-31",
+      "started_at": "2026-01-31T08:27:00",
+      "completed_at": "2026-01-31T08:30:00",
+      "deliverables": [
+        "Updated scripts/nix with 6 new commands",
+        "9 new quotes (50 total)",
+        "Unified CLI for quote, focus, done, streak, stats, check"
+      ],
+      "meta": {
+        "trigger": "cron",
+        "builder": "NIX",
+        "target_time": "<10 min"
+      }
+    },
     {
       "number": 1,
       "name": "Volume & Momentum",

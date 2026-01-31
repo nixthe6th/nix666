@@ -22,6 +22,7 @@ nix tools                   # List all tools
 | Script | Purpose | Usage |
 |--------|---------|-------|
 | `nixsprint` | Sprint tracker (integrates with sprints.json) | `nixsprint start "Sprint Name"` |
+| `nixwhen` | Time calculator & deadlines | `nixwhen in 2h` / `nixwhen until 02-15` |
 | `nixtimer` | Focus timer with session logging | `nixtimer 25 "deep work"` |
 | `nixdo` | Task tracker with priorities | `nixdo add "task" [priority]` |
 | `nixnote` | Structured idea capture | `nixnote "my idea"` |

@@ -26,6 +26,15 @@ nix focus 25   # Pomodoro timer
 nix streak     # Git activity
 nix stats      # Dashboard
 nix decide     # Decision log
+nix when       # Time calculator
+```
+
+**New:** `nix when` — Calculate deadlines, time remaining, future dates:
+```bash
+nix when in 2h30m              # What time will it be?
+nix when until 2026-02-15      # Days until deadline
+nix when deadline "Launch" 02-15   # Save & track deadlines
+nix when list                  # Show all deadlines
 ```
 
 See [`scripts/README.md`](scripts/README.md) for all commands.

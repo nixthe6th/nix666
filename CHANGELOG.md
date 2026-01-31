@@ -4,6 +4,24 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #29 — Time Calculator)
+### Added
+- `when.js` — Time calculator & deadline tracker
+  - Calculate future times: `nix when in 2h30m`
+  - Countdown to deadlines: `nix when until 2026-02-15`
+  - Time since dates: `nix when since 2026-01-01`
+  - Add durations to dates: `nix when add today 7d`
+  - Save & track deadlines: `nix when deadline "Launch" 02-15`
+  - List all deadlines with urgency colors
+  - Supports duration formats: 30m, 2h, 1d, 1w, 3mo, combined (2h30m)
+  - Smart date parsing: YYYY-MM-DD, MM-DD, relative dates
+  - Color-coded urgency (red < 3 days, yellow < 7 days, green > 7 days)
+  - Data stored in `data/deadlines.json`
+  - Wrapper script: `scripts/nixwhen` for direct access
+- Updated README.md with new tool examples
+- Updated API.md documentation
+- Updated scripts/README.md with tool reference
+
 ## 2026-01-31 (GitHub Sprint #28 — Universal Tag Manager)
 ### Added
 - `tag.js` — Universal tag manager for all NIX data

@@ -1,0 +1,3 @@
+#!/bin/bash
+# nixwhen - Time calculator wrapper
+exec node /home/ec2-user/nix666/when.js "$@"

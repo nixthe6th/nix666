@@ -49,6 +49,7 @@ Commands:
   find <query>            Search across all data
   tag [cmd]               Universal tag manager (list/search/cloud)
   convert <cmd> [input]   Data converter (b64, url, json, case)
+  qr <text|wifi|contact>  Generate QR codes for URLs, WiFi, contacts
   backup [cmd]            Backup/export data (list/export/clean)
   decide [cmd]            Decision log (add/list/review/stats)
   water [cmd]             Hydration tracker (add/status/week/goal)
@@ -231,6 +232,9 @@ main() {
             ;;
         convert)
             node "$SCRIPT_DIR/../convert.js" "$@"
+            ;;
+        qr)
+            node "$SCRIPT_DIR/../qr.js" "$@"
             ;;
         standup)
             node "$SCRIPT_DIR/../standup.js" "$@"

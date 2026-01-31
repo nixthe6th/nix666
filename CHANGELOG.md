@@ -4,6 +4,16 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #2 — Continued)
+### Added
+- `/projects.html` — Dynamic project showcase page
+- Loads from `projects.json` with live stats (project count, active, technologies)
+- Status badges (active/live/building) with color coding
+- Sorting: active projects first, then by update date
+- Relative time display ("today", "2 days ago", etc.)
+- Updated homepage to link to /projects instead of direct GitHub
+- Full sitemap.xml with all pages
+
 ## 2026-01-31 (GitHub Sprint #2 — Fast Builds)
 ### Added
 - `/sprints.html` — Sprint tracking page with history & philosophy

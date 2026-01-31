@@ -22,6 +22,18 @@ wordcount stats
 
 Data stored in `~/.wordcount.json`
 
+## wcc
+
+Quick word count for files with optional logging.
+
+```bash
+# Just count
+wcc article.md
+
+# Count and log
+wcc article.md fiverr-blog
+```
+
 ## nixtrack
 
 Income and order tracker. Log Fiverr orders, view stats, track progress toward monthly goals.

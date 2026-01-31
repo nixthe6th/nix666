@@ -1,0 +1,37 @@
+#!/bin/bash
+# wcc — Word count check for files, with optional logging
+# Usage: wcc <file> [project-name]
+
+FILE="$1"
+PROJECT="${2:-general}"
+
+if [[ -z "$FILE" ]]; then
+    echo "wcc — Word count check for files"
+    echo ""
+    echo "Usage:"
+    echo "  wcc <file>              Count words in file"
+    echo "  wcc <file> <project>    Count and log to wordcount"
+    echo ""
+    echo "Examples:"
+    echo "  wcc article.md"
+    echo "  wcc blog-post.md 'fiverr-blog'"
+    exit 1
+fi
+
+if [[ ! -f "$FILE" ]]; then
+    echo "❌ File not found: $FILE"
+    exit 1
+fi
+
+WORDS=$(wc -w < "$FILE")
+echo "📝 $FILE: $WORDS words"
+
+# If project specified, offer to log it
+if [[ -n "$2" ]]; then
+    echo ""
+    read -p "Log to wordcount? [y/N] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        wordcount add "$WORDS" "$PROJECT"
+    fi
+fi

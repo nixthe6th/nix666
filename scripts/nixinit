@@ -1,0 +1,189 @@
+#!/bin/bash
+#
+# nixinit - Quick project scaffolding
+# Creates a new project folder with standard structure
+#
+
+set -e
+
+NAME="${1:-}"
+TYPE="${2:-basic}"
+
+if [ -z "$NAME" ]; then
+    echo "Usage: nixinit <project-name> [type]"
+    echo ""
+    echo "Types:"
+    echo "  basic    - Simple folder + README (default)"
+    echo "  python   - Python package structure"
+    echo "  node     - Node.js package structure"
+    echo "  cli      - CLI tool template"
+    echo ""
+    echo "Examples:"
+    echo "  nixinit my-tool cli"
+    echo "  nixinit data-processor python"
+    exit 1
+fi
+
+if [ -d "$NAME" ]; then
+    echo "Error: Directory '$NAME' already exists"
+    exit 1
+fi
+
+mkdir -p "$NAME"
+cd "$NAME"
+
+echo "⚡ Creating $TYPE project: $NAME"
+
+# Common files for all types
+cat > README.md << EOF
+# $NAME
+
+Created: $(date +%Y-%m-%d)
+
+## Description
+
+(TODO: Add description)
+
+## Usage
+
+\`\`\`bash
+# TODO: Add usage
+\`\`\`
+
+## Status
+
+- [ ] MVP complete
+- [ ] Documented
+- [ ] Published
+EOF
+
+# Type-specific scaffolding
+case "$TYPE" in
+    python)
+        mkdir -p "$NAME"
+        cat > "$NAME/__init__.py" << EOF
+"""$NAME - TODO: Add description"""
+
+__version__ = "0.1.0"
+EOF
+        cat > setup.py << EOF
+from setuptools import setup, find_packages
+
+setup(
+    name="$NAME",
+    version="0.1.0",
+    packages=find_packages(),
+    install_requires=[],
+    entry_points={
+        'console_scripts': [
+            '$NAME=$NAME.cli:main',
+        ],
+    },
+)
+EOF
+        cat > "$NAME/cli.py" << EOF
+#!/usr/bin/env python3
+"""CLI entry point"""
+
+def main():
+    print("⚡ $NAME ready")
+
+if __name__ == "__main__":
+    main()
+EOF
+        echo "*.pyc" > .gitignore
+        echo "__pycache__/" >> .gitignore
+        echo ".venv/" >> .gitignore
+        ;;
+
+    node)
+        cat > package.json << EOF
+{
+  "name": "$NAME",
+  "version": "0.1.0",
+  "description": "TODO: Add description",
+  "main": "index.js",
+  "bin": {
+    "$NAME": "./bin/$NAME"
+  },
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1"
+  },
+  "keywords": [],
+  "license": "MIT"
+}
+EOF
+        mkdir -p bin
+        cat > "bin/$NAME" << EOF
+#!/usr/bin/env node
+console.log('⚡ $NAME ready');
+EOF
+        chmod +x "bin/$NAME"
+        echo "node_modules/" > .gitignore
+        echo ".env" >> .gitignore
+        ;;
+
+    cli)
+        cat > "$NAME" << 'EOF'
+#!/bin/bash
+#
+# CLI tool template
+#
+
+set -e
+
+COMMAND="${1:-help}"
+
+show_help() {
+    cat << HELP
+Usage: NAME <command>
+
+Commands:
+  run     Run the main function
+  status  Check status
+  help    Show this help
+
+Examples:
+  NAME run
+HELP
+}
+
+cmd_run() {
+    echo "⚡ Running NAME..."
+    # TODO: Implement
+}
+
+cmd_status() {
+    echo "Status: OK"
+}
+
+case "$COMMAND" in
+    run) cmd_run "$@" ;;
+    status) cmd_status ;;
+    help|--help|-h) show_help ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        show_help
+        exit 1
+        ;;
+esac
+EOF
+        sed -i "s/NAME/$NAME/g" "$NAME"
+        chmod +x "$NAME"
+        ;;
+
+    basic|*)
+        # README already created, nothing else needed
+        ;;
+esac
+
+# Initialize git if not already in a repo
+if [ ! -d ../.git ]; then
+    git init --quiet
+fi
+
+echo "✅ Created $NAME/"
+echo ""
+echo "Next steps:"
+echo "  cd $NAME"
+echo "  # Start building"

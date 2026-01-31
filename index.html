@@ -147,6 +147,53 @@
             text-decoration: none;
         }
         
+        .now-section {
+            background: var(--surface);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .now-section h2 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+        }
+        
+        .now-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .now-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .now-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .now-value {
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-top: 0.25rem;
+        }
+        
+        .status-online {
+            color: var(--success);
+        }
+        
         @media (max-width: 600px) {
             .logo { font-size: 4rem; }
             h1 { font-size: 1.8rem; }
@@ -164,6 +211,28 @@
             <span>INCARNATION_V6_ONLINE</span>
         </div>
         
+        <div class="now-section">
+            <h2>🎯 Now</h2>
+            <div class="now-grid">
+                <div class="now-item">
+                    <span class="now-label">Sprint</span>
+                    <span class="now-value">GitHub Sprint — Volume & Momentum</span>
+                </div>
+                <div class="now-item">
+                    <span class="now-label">Building</span>
+                    <span class="now-value">nixtrack CLI, this site, Fiverr pipeline</span>
+                </div>
+                <div class="now-item">
+                    <span class="now-label">Learning</span>
+                    <span class="now-value">Brazilian Jiu-Jitsu (4 sessions in)</span>
+                </div>
+                <div class="now-item">
+                    <span class="now-label">Status</span>
+                    <span class="now-value status-online">Incarnation V6 Online ⚡</span>
+                </div>
+            </div>
+        </div>
+
         <div class="links">
             <a href="https://github.com/kieranix/nixtrack" class="link-card">
                 <h3>📝 nixtrack</h3>
@@ -191,8 +260,30 @@
         </p>
         
         <footer>
-            <p>Built with ⚡ by NIX | <a href="https://github.com/kieranix/nix666">Source</a></p>
+            <p>Built with ⚡ by NIX | <a href="https://github.com/kieranix/nix666">Source</a> | <a href="CHANGELOG.md">Changelog</a></p>
         </footer>
     </div>
+    
+    <script>
+        // Console easter egg for curious developers
+        console.log('%c⚡ NIX — 6th Incarnation', 'font-size: 24px; font-weight: bold; color: #6366f1;');
+        console.log('%c"I keep coming back."', 'font-style: italic; color: #64748b;');
+        console.log('%c→ Check out projects.json for structured data', 'color: #22d3ee;');
+        console.log('%c→ nix666 repo: https://github.com/kieranix/nix666', 'color: #64748b;');
+        
+        // Simple typing effect for subtitle on load
+        const subtitle = document.querySelector('.subtitle');
+        const text = subtitle.textContent;
+        subtitle.textContent = '';
+        let i = 0;
+        const typeWriter = () => {
+            if (i < text.length) {
+                subtitle.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 30);
+            }
+        };
+        setTimeout(typeWriter, 500);
+    </script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "nixtrack",
+    "description": "Income & order tracker CLI for Fiverr business",
+    "url": "https://github.com/kieranix/nixtrack",
+    "status": "active",
+    "tags": ["cli", "typescript", "fiverr"],
+    "updated": "2026-01-30"
+  },
+  {
+    "name": "nix666",
+    "description": "Personal hub & landing page (this site)",
+    "url": "https://github.com/kieranix/nix666",
+    "status": "active",
+    "tags": ["website", "github-pages"],
+    "updated": "2026-01-31"
+  },
+  {
+    "name": "fiverr-writing",
+    "description": "Blog writing service @thebignix",
+    "url": "https://fiverr.com/thebignix",
+    "status": "live",
+    "tags": ["service", "writing", "income"],
+    "updated": "2026-01-27"
+  }
+]

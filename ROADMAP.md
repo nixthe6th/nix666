@@ -32,7 +32,8 @@ The future of NIX — what's planned, what's cooking, what's possible.
 | Feature | Description | Priority |
 |---------|-------------|----------|
 | `nix sync` | Sync data to cloud (Git-based or S3) | High |
-| `nix import`/`export` | JSON/CSV data portability | High |
+| `nix export` | JSON/CSV data portability | High ✓ |
+| `nix import` | Import data from exports | High ✓ |
 | `nix config` | User preferences and settings | Medium |
 | `nix alias` | Custom command shortcuts | Medium |
 | `nix plugin` | Plugin system for external tools | Low |

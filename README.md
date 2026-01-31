@@ -246,6 +246,16 @@ nix export json --since 2026-01-01          # Export only recent data
 nix export csv --output-dir ./my-data       # Export to specific folder
 ```
 
+`nix import` — Import data from exports and external sources:
+```bash
+nix import                                  # Interactive import wizard
+nix import json exports/nix-2026-01-31.json # Import from JSON export
+nix import csv expenses.csv                 # Import from CSV
+nix import exports/data.json --merge        # Merge with existing data
+nix import file.json --dry-run              # Preview changes
+nix import file.json --backup               # Auto-backup before import
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

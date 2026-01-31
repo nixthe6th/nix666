@@ -4,6 +4,22 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38d — Data Import)
+### Added
+- `import.js` — Import data into nix from various formats
+  - `nix import` — Interactive import wizard with auto-detection
+  - `nix import json <file>` — Import from JSON export files
+  - `nix import csv <file>` — Import from CSV with auto-type detection
+  - `--merge` flag to combine with existing data instead of replacing
+  - `--force` flag to overwrite existing items by ID
+  - `--backup` flag to create automatic backup before import
+  - `--dry-run` flag to preview changes without applying
+  - Auto-detects data type from CSV headers (todos, expenses, habits)
+  - Validates and generates IDs for imported items
+  - Creates pre-import backups in `.backups/pre-import-<timestamp>/`
+  - Pairs with export.js for complete data portability
+  - Addresses ROADMAP: High priority import/export feature
+
 ## 2026-01-31 (GitHub Sprint #38c — Subscription Tracking)
 ### Added
 - `subscription.js` — Recurring expense and subscription tracker

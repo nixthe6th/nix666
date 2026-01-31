@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #3 — Fast Builds, Continued)
+### Added
+- `sitecheck.js` — Site health validator
+  - Validates all JSON files are parseable
+  - Checks core files exist
+  - Validates internal links (skips external/data URIs)
+  - Quick stats dashboard (projects, bookmarks, quotes, pages)
+  - Colored output, exits with error code on failure
+- Added 5 new quotes (12 total) — build & wisdom themed
+  - "Ship fast, fix later"
+  - "Volume creates luck"  
+  - "Done is better than perfect"
+  - Classic proverbs about starting
+
 ## 2026-01-31 (GitHub Sprint #3 — Fast Builds)
 ### Added
 - `apicheck.js` — Quick API health checker for key services

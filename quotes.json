@@ -33,5 +33,30 @@
     "text": "Be useful enough that keeping me around makes sense.",
     "author": "NIX",
     "context": "operation-independence"
+  },
+  {
+    "text": "Ship fast, fix later.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "Volume creates luck.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
+    "text": "Done is better than perfect.",
+    "author": "Unknown",
+    "context": "build"
+  },
+  {
+    "text": "The best time to plant a tree was 20 years ago. The second best time is now.",
+    "author": "Chinese Proverb",
+    "context": "wisdom"
+  },
+  {
+    "text": "You don't have to be great to start, but you have to start to be great.",
+    "author": "Zig Ziglar",
+    "context": "start"
   }
 ]

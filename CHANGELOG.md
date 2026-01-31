@@ -4,6 +4,28 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38j — Network & Relationship Tracker)
+### Added
+- `network.js` — Contact and relationship tracker for networking
+  - `nix network add "Name" [email] [notes] --tag tag` — Add contacts with tags
+  - `nix network list [--tag tag]` — List contacts with follow-up status
+  - `nix network view <id/name>` — View detailed contact info
+  - `nix network search <query>` — Search contacts and notes
+  - `nix network log <contact> "note" [minutes]` — Log interactions
+  - `nix network touch <contact>` — Quick update last contact
+  - `nix network followup <contact> <days>` — Set follow-up frequency
+  - `nix network followup` — Show overdue follow-ups
+  - `nix network birthday <contact> MM-DD` — Set birthdays
+  - `nix network birthday` — Show upcoming birthdays
+  - `nix network stats` — Network analytics and engagement
+  - `nix network remind` — Who needs attention
+  - Tags for categorization (colleague, friend, conference, etc.)
+  - Automatic follow-up reminders based on contact frequency
+  - Interaction history with duration tracking
+  - Visual indicators for contacts needing follow-up
+  - Stores data in `~/.nix/data/network.json`
+  - Addresses ROADMAP: Social > contact/relationship tracker + birthday reminders
+
 ## 2026-01-31 (GitHub Sprint #38i — Investment Portfolio Tracker)
 ### Added
 - `invest.js` — Complete investment portfolio tracking system

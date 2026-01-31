@@ -318,6 +318,23 @@ nix invest dividend list                          # View all dividends
 nix invest history AAPL                           # Show price/purchase history
 ```
 
+`nix network` — Contact and relationship tracker for networking:
+```bash
+nix network add "Alex Chen" "alex@work.com" "Met at ReactConf" --tag dev
+nix network list                                # Show all contacts
+nix network list --tag colleague                # Filter by tag
+nix network search "React"                      # Search contacts
+nix network view alex                           # View contact details
+nix network log alex "Coffee chat" 45           # Log interaction
+nix network touch alex                          # Quick "just contacted"
+nix network followup alex 14                    # Set 14-day follow-up
+nix network followup                            # Show who needs follow-up
+nix network birthday alex 03-15                 # Set birthday
+nix network birthday                            # Show upcoming birthdays
+nix network stats                               # Network analytics
+nix network remind                              # Who to reach out to
+```
+
 See [`scripts/README.md`](scripts/README.md) for all commands.
 
 Want to add your own? Check [`CONTRIBUTING.md`](CONTRIBUTING.md) for patterns and templates.

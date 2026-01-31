@@ -58,8 +58,8 @@ The future of NIX — what's planned, what's cooking, what's possible.
 - [x] `nix goal` — Savings goal visualizer
 
 #### Social
-- `nix network` — Contact/relationship tracker
-- `nix birthday` — Birthday reminders
+- [x] `nix network` — Contact/relationship tracker
+- [x] `nix birthday` — Birthday reminders (part of network)
 - [x] `nix gratitude` — Daily gratitude log
 
 ### Web Interface

@@ -1,0 +1,57 @@
+#!/bin/bash
+# nixstat - Project statistics and commit tracking
+# Usage: nixstat [month|year|all]
+
+PERIOD="${1:-month}"
+
+echo "⚡ nix666 Stats"
+echo "=============="
+echo ""
+
+# Commit counts by period
+case "$PERIOD" in
+    month)
+        SINCE=$(date -d "$(date +%Y-%m-01)" +%Y-%m-%d 2>/dev/null || date -v1d +%Y-%m-%d)
+        LABEL="This Month"
+        ;;
+    year)
+        SINCE="$(date +%Y)-01-01"
+        LABEL="This Year"
+        ;;
+    all|*)
+        SINCE=""
+        LABEL="All Time"
+        ;;
+esac
+
+if [ -n "$SINCE" ]; then
+    COMMITS=$(git log --since="$SINCE" --oneline 2>/dev/null | wc -l)
+    echo "📊 Commits ($LABEL): $COMMITS"
+else
+    COMMITS=$(git rev-list --count HEAD 2>/dev/null)
+    echo "📊 Total Commits: $COMMITS"
+fi
+
+# Monthly target progress
+if [ "$PERIOD" = "month" ]; then
+    TARGET=50
+    PCT=$(( COMMITS * 100 / TARGET ))
+    echo "   🎯 Target: $TARGET | Progress: $PCT%"
+    
+    # Simple bar
+    FILLED=$(( PCT / 5 ))
+    EMPTY=$(( 20 - FILLED ))
+    BAR=$(printf '%*s' "$FILLED" '' | tr ' ' '█')
+    SPACE=$(printf '%*s' "$EMPTY" '' | tr ' ' '░')
+    echo "   [$BAR$SPACE]"
+fi
+
+echo ""
+echo "📁 Files: $(find . -type f -not -path './.git/*' | wc -l)"
+echo "🔧 Scripts: $(ls scripts/ 2>/dev/null | wc -l)"
+echo "📝 Script LOC: $(find scripts/ -type f -exec cat {} \; 2>/dev/null | wc -l)"
+
+# Recent activity
+echo ""
+echo "🕐 Recent Activity:"
+git log --oneline -5 --no-decorate 2>/dev/null | sed 's/^/   /' || echo "   No git history"

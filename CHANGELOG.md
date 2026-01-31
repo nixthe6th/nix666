@@ -4,6 +4,19 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #38l — Custom Command Aliases)
+### Added
+- `alias.js` — Custom command shortcuts for frequently used commands
+  - `nix alias` — List all defined aliases
+  - `nix alias add <name> <command>` — Create new shortcut
+  - `nix alias remove <name>` — Delete an alias
+  - `nix alias clear` — Remove all aliases
+  - Direct execution: `nix <alias>` runs the aliased command
+  - Supports argument substitution with `$1`, `$2`, etc
+  - Aliases stored in `~/.nix666/aliases.json`
+  - Bash wrapper updated to check aliases before erroring
+  - Addresses ROADMAP: Core CLI Enhancements > `nix alias`
+
 ## 2026-01-31 (GitHub Sprint #38k — Data Compaction Tool)
 ### Added
 - `compact.js` — Archive old data to address "Large JSON files" known issue

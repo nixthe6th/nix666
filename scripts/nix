@@ -69,6 +69,7 @@ Commands:
   outline [cmd]           Quick outliner for writing (new/list/add/done/export)
   timeblock [cmd]         Daily time blocking planner (add/template/clear)
   invest [cmd]            Investment portfolio tracker (add/list/performance/allocation)
+  alias [cmd]             Custom command shortcuts (add/remove/list/clear)
   
   tools                   List all available tools
   help                    Show this help
@@ -328,6 +329,9 @@ main() {
         invest)
             node "$SCRIPT_DIR/../invest.js" "$@"
             ;;
+        alias)
+            node "$SCRIPT_DIR/../alias.js" "$@"
+            ;;
         tools)
             list_tools
             ;;
@@ -335,6 +339,20 @@ main() {
             show_help
             ;;
         *)
+            # Check if it's a user-defined alias
+            if [ -f "$HOME/.nix666/aliases.json" ]; then
+                alias_cmd=$(node -e "const a=require('$HOME/.nix666/aliases.json'); console.log(a['$cmd']||'')" 2>/dev/null)
+                if [ -n "$alias_cmd" ]; then
+                    # Replace $1, $2, etc with args
+                    for i in "$@"; do
+                        alias_cmd=$(echo "$alias_cmd" | sed "s/\\\$1/$1/; s/\\\$2/$2/; s/\\\$3/$3/")
+                        shift
+                    done
+                    echo "→ $alias_cmd"
+                    eval "$alias_cmd"
+                    exit 0
+                fi
+            fi
             echo "Unknown command: $cmd"
             echo "Run 'nix help' for usage"
             exit 1

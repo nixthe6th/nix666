@@ -116,6 +116,18 @@ nix water week                 # Show last 7 days
 nix water goal 3000            # Set daily goal
 ```
 
+`nix alias` — Custom command shortcuts (from ROADMAP):
+```bash
+nix alias                              # List all aliases
+nix alias add tf "nix todo focus"      # Create shortcut
+nix alias add stand "nix standup"      # Another shortcut
+nix alias remove tf                    # Delete alias
+nix alias clear                        # Remove all aliases
+
+# Use aliases like regular commands:
+nix tf                                 # Runs: nix todo focus
+```
+
 `nix timer` — Pomodoro timer with session tracking:
 ```bash
 nix timer                      # 25-minute pomodoro (default)

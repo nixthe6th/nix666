@@ -10,6 +10,7 @@ const path = require('path');
 const SPRINTS_FILE = path.join(__dirname, 'sprints.json');
 const TODOS_FILE = path.join(__dirname, 'data', 'todos.json');
 const PROJECTS_FILE = path.join(__dirname, 'projects.json');
+const SESSIONS_FILE = path.join(__dirname, 'data', 'sessions.json');
 
 // Colors
 const C = {
@@ -177,6 +178,57 @@ function showProjectStats(projects) {
   }
 }
 
+function showSessionStats(sessions) {
+  const now = Date.now();
+  const today = new Date().toISOString().split('T')[0];
+  
+  // Calculate stats
+  const totalSessions = sessions.length;
+  const totalHours = sessions.reduce((sum, s) => sum + (s.duration || 0), 0) / 60;
+  const todaySessions = sessions.filter(s => s.date === today);
+  const todayHours = todaySessions.reduce((sum, s) => sum + (s.duration || 0), 0) / 60;
+  
+  // Check for active session
+  const activeSession = sessions.find(s => s.endTime === null || s.endTime === undefined);
+  
+  console.log(C.bright + '\n⏱️  WORK SESSIONS' + C.reset);
+  console.log(C.gray + '─'.repeat(52) + C.reset);
+  
+  if (activeSession) {
+    const startMs = new Date(activeSession.startTime).getTime();
+    const elapsedMin = Math.floor((now - startMs) / 60000);
+    console.log(`  ${C.green}▶${C.reset} Active: ${C.bright}${activeSession.project}${C.reset} — ${elapsedMin}m`);
+  }
+  
+  console.log(`  ${C.cyan}●${C.reset} Today:     ${C.bright}${todayHours.toFixed(1)}h${C.reset} (${todaySessions.length} sessions)`);
+  console.log(`  ${C.blue}●${C.reset} All-time:  ${C.bright}${totalHours.toFixed(1)}h${C.reset} (${totalSessions} sessions)`);
+  
+  if (totalSessions > 0) {
+    const avgDuration = totalHours / totalSessions;
+    console.log(`  ${C.dim}Avg session: ${avgDuration.toFixed(1)}h${C.reset}`);
+  }
+  
+  // Top projects by hours
+  const projectHours = {};
+  sessions.forEach(s => {
+    if (s.project) {
+      projectHours[s.project] = (projectHours[s.project] || 0) + (s.duration || 0);
+    }
+  });
+  
+  const sortedProjects = Object.entries(projectHours)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3);
+  
+  if (sortedProjects.length > 0) {
+    console.log(`\n  ${C.dim}Top projects (hours):${C.reset}`);
+    sortedProjects.forEach(([proj, mins]) => {
+      const hours = (mins / 60).toFixed(1);
+      console.log(`    ${proj}: ${C.bright}${hours}h${C.reset}`);
+    });
+  }
+}
+
 function showCodingStreak() {
   try {
     const result = require('child_process').execSync(
@@ -220,6 +272,7 @@ function main() {
   const sprints = loadJSON(SPRINTS_FILE);
   const todos = loadJSON(TODOS_FILE) || [];
   const projects = loadJSON(PROJECTS_FILE);
+  const sessions = loadJSON(SESSIONS_FILE) || [];
   
   if (args.includes('--json')) {
     console.log(JSON.stringify({
@@ -254,6 +307,7 @@ function main() {
     sprints && showSprintStats(sprints);
     showTaskStats(todos);
     projects && showProjectStats(projects);
+    sessions.length > 0 && showSessionStats(sessions);
     showCodingStreak();
   }
   

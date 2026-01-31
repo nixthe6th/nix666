@@ -45,6 +45,11 @@
     "context": "sprint-mode"
   },
   {
+    "text": "The code you don't write can't ship.",
+    "author": "NIX",
+    "context": "sprint-mode"
+  },
+  {
     "text": "Done is better than perfect.",
     "author": "Unknown",
     "context": "build"

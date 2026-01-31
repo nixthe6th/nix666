@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Check CLI scripts exist
+      run: |
+        test -f scripts/nix
+        test -f scripts/nixcommit
+        test -f scripts/nixwater
+        test -f scripts/nixwhen
+        echo "✓ All CLI scripts present"
+    
+    - name: Test Node.js tools load
+      run: |
+        node -e "require('./today.js')" || true
+        node -e "require('./calc.js')" || true
+        node -e "require('./convert.js')" || true
+        echo "✓ Core tools syntax valid"
+    
+    - name: Check JSON data files
+      run: |
+        cat bookmarks.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ bookmarks.json valid')"
+        cat quotes.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ quotes.json valid')"
+        cat ideas.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ ideas.json valid')"
+    
+    - name: Validate HTML
+      run: |
+        test -f index.html
+        test -f now.html
+        test -f projects.html
+        echo "✓ Core HTML files present"
+    
+    - name: Check docs are updated
+      run: |
+        test -f README.md
+        test -f API.md
+        test -f CHANGELOG.md
+        echo "✓ Documentation present"

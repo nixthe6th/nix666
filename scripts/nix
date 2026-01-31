@@ -36,6 +36,7 @@ Commands:
   ideas [cmd]             Idea backlog management
   todo [cmd]              Task tracker (add/list/done/priority)
   log [cmd]               Daily logger (add/show/search)
+  habits [cmd]            Daily habit tracker (check/list/stats)
   
   tools                   List all available tools
   help                    Show this help
@@ -79,6 +80,7 @@ list_tools() {
     printf "  %-10s %s\n" "ideas.js" "Idea backlog"
     printf "  %-10s %s\n" "todo.js" "Task tracker"
     printf "  %-10s %s\n" "log.js" "Daily logger"
+    printf "  %-10s %s\n" "habits.js" "Habit tracker"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -162,6 +164,9 @@ main() {
             ;;
         todo)
             node "$SCRIPT_DIR/../todo.js" "$@"
+            ;;
+        habits)
+            node "$SCRIPT_DIR/../habits.js" "$@"
             ;;
         tools)
             list_tools

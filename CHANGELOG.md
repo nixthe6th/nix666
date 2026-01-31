@@ -4,6 +4,20 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-01-31 (GitHub Sprint #19 — Habit Tracker)
+### Added
+- `habits.js` — Daily habit tracker with streak visualization
+  - Track daily habits with simple check/uncheck commands
+  - Per-habit streak calculation (current consecutive days)
+  - Weekly progress bar (█ done ░ missed) for each habit
+  - Habit IDs for quick reference (4-char prefixes work)
+  - Stats dashboard: total check-ins, completion rate, best streak
+  - Sample habits included: Reading, Exercise, Deep Work, No Screens
+  - Commands: `check`, `uncheck`, `add`, `remove`, `stats`
+  - Integrated into `nix` CLI as `nix habits`
+  - Added to `projects.json` as active health tool
+- `data/habits.json` — Habit data with history tracking
+
 ## 2026-01-31 (GitHub Sprint #18 — API Documentation Generator)
 ### Added
 - `docs.js` — Auto-generate API documentation for CLI tools

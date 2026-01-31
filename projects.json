@@ -111,5 +111,13 @@
     "status": "active",
     "tags": ["tool", "node", "cli", "docs", "automation"],
     "updated": "2026-01-31"
+  },
+  {
+    "name": "habits",
+    "description": "Daily habit tracker with streaks and weekly progress visualization",
+    "url": "./habits.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "habits", "health"],
+    "updated": "2026-01-31"
   }
 ]

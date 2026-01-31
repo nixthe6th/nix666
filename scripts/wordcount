@@ -1,0 +1,120 @@
+#!/bin/bash
+# wordcount — Track daily writing output for Fiverr gigs
+# Usage: wordcount [add <words> <project>] [today] [week] [stats]
+
+DATA_FILE="$HOME/.wordcount.json"
+
+# Init file if missing
+if [[ ! -f "$DATA_FILE" ]]; then
+    echo '{"entries":[]}' > "$DATA_FILE"
+fi
+
+add_entry() {
+    local words="$1"
+    local project="${2:-general}"
+    local date_str=$(date +%Y-%m-%d)
+    local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    
+    # Read, append, write
+    local tmp=$(mktemp)
+    jq --arg date "$date_str" \
+       --arg words "$words" \
+       --arg project "$project" \
+       --arg ts "$timestamp" \
+       '.entries += [{date: $date, words: ($words | tonumber), project: $project, timestamp: $ts}]' \
+       "$DATA_FILE" > "$tmp" && mv "$tmp" "$DATA_FILE"
+    
+    echo "✅ Logged $words words for '$project' on $date_str"
+    
+    # Show daily total
+    local day_total=$(jq '[.entries[] | select(.date == "'$date_str'") | .words] | add' "$DATA_FILE")
+    echo "📊 Today's total: $day_total words"
+}
+
+show_today() {
+    local date_str=$(date +%Y-%m-%d)
+    local entries=$(jq -c '.entries[] | select(.date == "'$date_str'")' "$DATA_FILE" 2>/dev/null)
+    
+    if [[ -z "$entries" ]]; then
+        echo "No words logged today."
+        return
+    fi
+    
+    echo "📝 Today's Writing ($(date +'%b %d'))"
+    echo "=========================="
+    
+    echo "$entries" | while read -r entry; do
+        local proj=$(echo "$entry" | jq -r '.project')
+        local words=$(echo "$entry" | jq -r '.words')
+        local time=$(echo "$entry" | jq -r '.timestamp | split("T")[1] | split(".")[0]')
+        printf "  %-20s %5s words @ %s\n" "$proj" "$words" "$time"
+    done
+    
+    local total=$(jq '[.entries[] | select(.date == "'$date_str'") | .words] | add' "$DATA_FILE")
+    echo "=========================="
+    echo "  Total: $total words"
+}
+
+show_stats() {
+    echo "📈 Writing Stats"
+    echo "==============="
+    
+    # Total all time
+    local total=$(jq '[.entries[].words] | add // 0' "$DATA_FILE")
+    echo "  All-time: $total words"
+    
+    # This week
+    local week_start=$(date -d "$(date +%u) days ago" +%Y-%m-%d)
+    local week_words=$(jq '[.entries[] | select(.date >= "'$week_start'") | .words] | add // 0' "$DATA_FILE")
+    echo "  This week: $week_words words"
+    
+    # Today
+    local today=$(date +%Y-%m-%d)
+    local today_words=$(jq '[.entries[] | select(.date == "'$today'") | .words] | add // 0' "$DATA_FILE")
+    echo "  Today: $today_words words"
+    
+    # Average per day (with entries)
+    local days=$(jq '[.entries[].date] | unique | length' "$DATA_FILE")
+    if [[ "$days" -gt 0 ]]; then
+        local avg=$((total / days))
+        echo "  Avg/day: $avg words ($days days)"
+    fi
+    
+    # By project
+    echo ""
+    echo "By Project:"
+    jq -r '.entries | group_by(.project) | map({project: .[0].project, total: map(.words) | add}) | .[] | "  " + .project + ": " + (.total | tostring) + " words"' "$DATA_FILE"
+}
+
+# Main
+case "${1:-}" in
+    add)
+        if [[ -z "$2" ]]; then
+            echo "Usage: wordcount add <words> [project]"
+            exit 1
+        fi
+        add_entry "$2" "${3:-general}"
+        ;;
+    today)
+        show_today
+        ;;
+    week)
+        local week_start=$(date -d "$(date +%u) days ago" +%Y-%m-%d)
+        echo "📅 This Week (since $week_start)"
+        jq -r '.entries | group_by(.date) | map({date: .[0].date, total: map(.words) | add}) | .[] | "  " + .date + ": " + (.total | tostring) + " words"' "$DATA_FILE" | tail -7
+        ;;
+    stats)
+        show_stats
+        ;;
+    *)
+        echo "wordcount — Track daily writing output"
+        echo ""
+        echo "Usage:"
+        echo "  wordcount add <words> [project]  Log words written"
+        echo "  wordcount today                  Show today's entries"
+        echo "  wordcount week                   Show this week's daily totals"
+        echo "  wordcount stats                  Show all stats"
+        echo ""
+        show_stats
+        ;;
+esac

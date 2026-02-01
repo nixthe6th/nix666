@@ -72,7 +72,8 @@ Commands:
   alias [cmd]             Custom command shortcuts (add/remove/list/clear)
   correlate [cmd]         Find patterns in tracked data (sleep/mood/habits)
   sync [cmd]              Git-based data sync (setup/status/now/auto/daemon)
-  
+  cheat [category]        Quick command reference (daily/focus/health/learning)
+
   tools                   List all available tools
   help                    Show this help
 
@@ -340,6 +341,9 @@ main() {
             ;;
         sync)
             node "$SCRIPT_DIR/../sync.js" "$@"
+            ;;
+        cheat)
+            node "$SCRIPT_DIR/../cheatsheet.js" "$@"
             ;;
         tools)
             list_tools

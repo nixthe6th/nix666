@@ -161,5 +161,14 @@
     "tags": ["tool", "node", "cli", "sync", "backup", "git"],
     "updated": "2026-01-31",
     "tech": ["node"]
+  },
+  {
+    "name": "cheatsheet",
+    "description": "Quick command reference - categorized cheatsheet for all nix commands",
+    "url": "./cheatsheet.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "docs", "reference"],
+    "updated": "2026-02-01",
+    "tech": ["node"]
   }
 ]

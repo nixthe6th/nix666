@@ -372,6 +372,20 @@ Finds insights like:
 - Exercise vs wellbeing
 - Gratitude practice impact
 
+`nix calexport` — Export sprints to calendar (.ics format):
+```bash
+nix calexport                          # Print ICS to stdout
+nix calexport -f sprints.ics           # Save to file
+nix calexport --completed -f done.ics  # Export completed only
+nix calexport --since 2026-01-01       # Sprints from Jan 1
+nix calexport -d 30 -f recent.ics      # Last 30 days
+```
+
+Import into:
+- **Google Calendar:** Settings → Import & Export
+- **Apple Calendar:** File → Import
+- **Outlook:** File → Open & Export → Import/Export
+
 `nix sync` — Git-based data synchronization across devices:
 ```bash
 nix sync setup https://github.com/user/nix666-data.git  # Configure sync

@@ -73,6 +73,7 @@ Commands:
   correlate [cmd]         Find patterns in tracked data (sleep/mood/habits)
   sync [cmd]              Git-based data sync (setup/status/now/auto/daemon)
   cheat [category]        Quick command reference (daily/focus/health/learning)
+  calexport [opts]        Export sprints to calendar (.ics format)
 
   tools                   List all available tools
   help                    Show this help
@@ -143,6 +144,7 @@ list_tools() {
   printf "  %-10s %s\n" "outline.js" "Quick outliner for writing"
   printf "  %-10s %s\n" "invest.js" "Investment portfolio tracker"
   printf "  %-10s %s\n" "correlate.js" "Data correlation analysis"
+  printf "  %-10s %s\n" "calexport.js" "Calendar export for sprints"
     echo ""
     echo "Run 'nix help' for usage"
 }
@@ -344,6 +346,9 @@ main() {
             ;;
         cheat)
             node "$SCRIPT_DIR/../cheatsheet.js" "$@"
+            ;;
+        calexport)
+            node "$SCRIPT_DIR/../calexport.js" "$@"
             ;;
         tools)
             list_tools

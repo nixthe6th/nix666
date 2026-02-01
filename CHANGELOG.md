@@ -4,6 +4,24 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-02-01 (GitHub Sprint #39 — Calendar Export)
+### Added
+- `calexport.js` — Sprint calendar export tool (from ROADMAP feature requests)
+  - Export sprints to .ics format for Google Calendar, Apple Calendar, Outlook
+  - `nix calexport` — Print ICS to stdout
+  - `nix calexport -f sprints.ics` — Save to file
+  - `nix calexport --completed` — Export completed sprints only
+  - `nix calexport --since 2026-01-01` — Filter by start date
+  - `nix calexport -d 30` — Export last 30 days
+  - Full iCalendar spec compliance with proper escaping and formatting
+  - Event duration calculated from sprint start/completion times
+  - Deliverables included in event descriptions
+
+### Changed
+- `README.md` — Added calexport documentation
+- `scripts/README.md` — Added calexport to tools table
+- `scripts/nix` — Added calexport command dispatcher
+
 ## 2026-01-31 (GitHub Sprint #38p — AI Integration Foundation)
 ### Added
 - `docs/AI_INTEGRATION.md` — Comprehensive AI integration guide

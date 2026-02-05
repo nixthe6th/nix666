@@ -4,6 +4,40 @@ All notable changes to the NIX project hub.
 
 ## [Unreleased]
 
+## 2026-02-05 (GitHub Sprint #40 — Developer Experience)
+### Added
+- `Makefile` — Common development task automation
+  - `make install` — Install nix to ~/.local/bin
+  - `make test` — Run validation tests on all tools
+  - `make stats` — Show project statistics (tools, data, docs)
+  - `make backup` — Create timestamped data backups
+  - `make sync` — Trigger data synchronization
+  - `make dev` — Start development server
+  - `make version` — Show version info
+  - Zero-config convenience for contributors
+
+- `TROUBLESHOOTING.md` — Comprehensive troubleshooting guide
+  - Installation issues (PATH, permissions)
+  - Data file corruption recovery
+  - Sync conflict resolution
+  - Performance optimization tips
+  - Common error messages and solutions
+  - Recovery procedures for data loss
+  - Prevention tips for common issues
+
+- `.github/workflows/pages.yml` — Automated GitHub Pages deployment
+  - Builds and deploys on every push to main
+  - Validates required files before deployment
+  - Uses official GitHub Pages actions
+
+### Changed
+- `.github/workflows/ci.yml` — Enhanced CI pipeline
+  - Added more tool syntax validation tests
+  - Added JSON validation for all data files
+  - Added Makefile target verification
+  - Added Python script syntax checks
+  - Added documentation file presence checks
+
 ## 2026-02-01 (GitHub Sprint #39 — Calendar Export)
 ### Added
 - `calexport.js` — Sprint calendar export tool (from ROADMAP feature requests)

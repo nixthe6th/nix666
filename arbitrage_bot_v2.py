@@ -24,13 +24,13 @@ class Config:
     
     # Trading Settings
     DRY_RUN = os.getenv('DRY_RUN', 'true').lower() == 'true'  # Start in test mode
-    STARTING_CAPITAL = 100  # USDC
-    INITIAL_BET_SIZE = 10   # Start with $10
-    MAX_BET_SIZE = 20       # Scale up to $20 after wins
+    STARTING_CAPITAL = 10   # USDC - $10 total capital
+    INITIAL_BET_SIZE = 1    # Start with $1 per trade
+    MAX_BET_SIZE = 2        # Max $2 after consistent wins
     MIN_EDGE = 0.001        # 0.1% minimum edge (Sharbel's threshold)
     MAX_DAILY_TRADES = 10   # Limit trades per day
     COOLDOWN_SECONDS = 300  # 5 min between trades
-    COOLDOWN_AFTER_LOSS = 600  # 10 min after loss
+    COOLDOWN_AFTER_LOSS = 600  # 10 min after loss for assessment
     
     # Markets to trade
     TARGET_MARKETS = ['BTC', 'ETH', 'SOL']
@@ -255,23 +255,47 @@ class ArbitrageBot:
         return True
     
     def self_improvement(self):
-        """Adjust strategy based on performance"""
-        if self.losses >= 3:
-            logger.warning("Loss streak detected - analyzing patterns...")
-            
-            # Check if we need to scale down
-            if self.bet_size > Config.INITIAL_BET_SIZE:
-                self.bet_size = Config.INITIAL_BET_SIZE
-                logger.info(f"Scaled bet size DOWN to ${self.bet_size}")
-            
-            # Add cooldown after losses
-            logger.info("Adding extra cooldown after loss streak")
-            time.sleep(Config.COOLDOWN_AFTER_LOSS)
+        """Assess after every loss - Kieran's requirement"""
         
-        elif self.wins >= 5 and self.bet_size < Config.MAX_BET_SIZE:
-            # Scale up after consistent wins (Sharbel's approach)
-            self.bet_size = min(self.bet_size * 1.5, Config.MAX_BET_SIZE)
-            logger.info(f"Scaled bet size UP to ${self.bet_size}")
+        # Check for recent losses
+        recent_trades = self.trade_history[-5:] if len(self.trade_history) >= 5 else self.trade_history
+        recent_losses = sum(1 for t in recent_trades if t.get('result') == 'loss')
+        
+        if recent_losses > 0:
+            logger.warning("=" * 60)
+            logger.warning("LOSS DETECTED - ASSESSING STRATEGY")
+            logger.warning("=" * 60)
+            
+            # Log recent performance
+            logger.info(f"Recent trades: {len(recent_trades)}")
+            logger.info(f"Recent losses: {recent_losses}")
+            
+            # Multiple losses = pause and reassess
+            if recent_losses >= 2:
+                logger.warning("Multiple losses detected - PAUSING FOR ASSESSMENT")
+                
+                # Scale down to minimum
+                if self.bet_size > Config.INITIAL_BET_SIZE:
+                    self.bet_size = Config.INITIAL_BET_SIZE
+                    logger.info(f"Scaled bet size DOWN to ${self.bet_size}")
+                
+                # Extra cooldown for manual assessment
+                logger.info("Taking 10 minutes to reassess strategy...")
+                logger.info("Review your .env settings and market conditions")
+                time.sleep(Config.COOLDOWN_AFTER_LOSS)
+            else:
+                logger.info("Single loss - continuing with caution")
+                logger.info("Analyzing what went wrong...")
+                # Brief pause to reassess
+                time.sleep(60)
+            
+            logger.info("Assessment complete")
+            logger.info("=" * 60)
+        
+        # Scale up only after consistent wins (5+ wins, no recent losses)
+        elif self.wins >= 5 and recent_losses == 0 and self.bet_size < Config.MAX_BET_SIZE:
+            self.bet_size = min(self.bet_size + 0.5, Config.MAX_BET_SIZE)
+            logger.info(f"Scaled bet size UP to ${self.bet_size} after consistent wins")
     
     def print_stats(self):
         """Print current statistics"""

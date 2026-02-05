@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 """
-Chainlink Lag Exploit Bot v1.0
+Chainlink Lag Exploit Bot v1.1
 ===============================
 Strategy: Exploit the delay between Binance real-time prices and Chainlink oracle updates.
-Polymarket uses Chainlink for price resolution - Chainlink updates SLOWER than Binance.
 
-The Play:
-1. Watch Binance in real-time
-2. See BTC/ETH/SOL moving hard
-3. Chainlink hasn't updated yet → Polymarket odds are stale
-4. Buy cheap before odds adjust
-5. Chainlink catches up → you win
+FIXES in v1.1:
+- Removed CoinGecko (rate limited) - now uses Binance for everything
+- Added real wallet balance from Polygon network
+- Better rate limiting and caching
 """
 
 import os
@@ -30,9 +27,11 @@ class Config:
     # Wallet
     PRIVATE_KEY = os.getenv('POLYMARKET_PRIVATE_KEY', '')
     
+    # Derive wallet address from private key (if provided)
+    WALLET_ADDRESS = os.getenv('WALLET_ADDRESS', '')
+    
     # Trading Settings
     DRY_RUN = os.getenv('DRY_RUN', 'true').lower() == 'true'
-    STARTING_CAPITAL = 10      # $10 total
     BET_SIZE = 1               # $1 per trade
     MAX_BET_SIZE = 2           # Max $2 after wins
     
@@ -47,26 +46,17 @@ class Config:
     
     # Assets to monitor
     ASSETS = {
-        'BTC': {
-            'binance_symbol': 'BTCUSDT',
-            'chainlink_feed': '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c',  # BTC/USD on Ethereum
-            'coingecko_id': 'bitcoin'
-        },
-        'ETH': {
-            'binance_symbol': 'ETHUSDT',
-            'chainlink_feed': '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',  # ETH/USD on Ethereum
-            'coingecko_id': 'ethereum'
-        },
-        'SOL': {
-            'binance_symbol': 'SOLUSDT',
-            'chainlink_feed': '0x4ffC43a60e009B551865A93d232E33Fce9f01507',  # SOL/USD on Ethereum
-            'coingecko_id': 'solana'
-        }
+        'BTC': {'binance_symbol': 'BTCUSDT'},
+        'ETH': {'binance_symbol': 'ETHUSDT'},
+        'SOL': {'binance_symbol': 'SOLUSDT'}
     }
     
     # APIs
     BINANCE_API = "https://api.binance.com/api/v3"
-    POLYMARKET_API = "https://gamma-api.polymarket.com"
+    POLYGON_RPC = "https://polygon-rpc.com"
+    
+    # USDC Contract on Polygon
+    USDC_CONTRACT = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
 
 # ============= LOGGING =============
 logging.basicConfig(
@@ -79,156 +69,241 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# ============= WALLET FUNCTIONS =============
+def get_wallet_address_from_key(private_key):
+    """Derive wallet address from private key"""
+    try:
+        from eth_account import Account
+        if private_key.startswith('0x'):
+            account = Account.from_key(private_key)
+            return account.address
+    except ImportError:
+        logger.warning("eth_account not installed - can't derive address from key")
+    except Exception as e:
+        logger.error(f"Error deriving address: {e}")
+    return None
+
+def get_usdc_balance(wallet_address):
+    """Get USDC balance from Polygon network"""
+    if not wallet_address:
+        return None
+    
+    try:
+        # ERC20 balanceOf function signature
+        # balanceOf(address) = 0x70a08231
+        padded_address = wallet_address.lower().replace('0x', '').zfill(64)
+        data = f"0x70a08231{padded_address}"
+        
+        payload = {
+            "jsonrpc": "2.0",
+            "method": "eth_call",
+            "params": [{
+                "to": Config.USDC_CONTRACT,
+                "data": data
+            }, "latest"],
+            "id": 1
+        }
+        
+        response = requests.post(Config.POLYGON_RPC, json=payload, timeout=10)
+        response.raise_for_status()
+        result = response.json()
+        
+        if 'result' in result:
+            # USDC has 6 decimals
+            balance_wei = int(result['result'], 16)
+            balance_usdc = balance_wei / 1_000_000
+            return balance_usdc
+        
+        return None
+        
+    except Exception as e:
+        logger.error(f"Error getting USDC balance: {e}")
+        return None
+
 # ============= PRICE TRACKER =============
 class PriceTracker:
-    """Track prices from multiple sources to detect lag"""
+    """Track prices from Binance to detect momentum and simulate lag"""
     
     def __init__(self):
         self.price_history = {asset: [] for asset in Config.ASSETS}
-        self.last_binance = {}
-        self.last_chainlink = {}
+        self.last_prices = {}
+        self.cache = {}
+        self.cache_time = {}
+        self.CACHE_SECONDS = 2  # Cache prices for 2 seconds to avoid rate limits
     
     def get_binance_price(self, symbol):
-        """Get real-time price from Binance (fastest source)"""
+        """Get real-time price from Binance"""
+        # Check cache
+        cache_key = f"binance_{symbol}"
+        if cache_key in self.cache:
+            if time.time() - self.cache_time.get(cache_key, 0) < self.CACHE_SECONDS:
+                return self.cache[cache_key]
+        
         try:
             url = f"{Config.BINANCE_API}/ticker/price"
             params = {'symbol': symbol}
             response = requests.get(url, params=params, timeout=5)
             response.raise_for_status()
             data = response.json()
-            return float(data['price'])
+            price = float(data['price'])
+            
+            # Cache it
+            self.cache[cache_key] = price
+            self.cache_time[cache_key] = time.time()
+            
+            return price
         except Exception as e:
             logger.error(f"Binance error for {symbol}: {e}")
             return None
     
-    def get_chainlink_price(self, asset):
-        """
-        Get Chainlink oracle price.
-        In production, you'd query the actual Chainlink contract.
-        For now, we use CoinGecko as a proxy (it's close to Chainlink's update speed).
-        """
+    def get_binance_kline(self, symbol, interval='1m', limit=2):
+        """Get recent candles to detect momentum"""
+        cache_key = f"kline_{symbol}"
+        if cache_key in self.cache:
+            if time.time() - self.cache_time.get(cache_key, 0) < self.CACHE_SECONDS:
+                return self.cache[cache_key]
+        
         try:
-            coin_id = Config.ASSETS[asset]['coingecko_id']
-            url = f"https://api.coingecko.com/api/v3/simple/price"
-            params = {'ids': coin_id, 'vs_currencies': 'usd'}
+            url = f"{Config.BINANCE_API}/klines"
+            params = {'symbol': symbol, 'interval': interval, 'limit': limit}
             response = requests.get(url, params=params, timeout=5)
             response.raise_for_status()
             data = response.json()
-            return float(data[coin_id]['usd'])
+            
+            self.cache[cache_key] = data
+            self.cache_time[cache_key] = time.time()
+            
+            return data
         except Exception as e:
-            logger.error(f"CoinGecko/Chainlink proxy error for {asset}: {e}")
+            logger.error(f"Binance kline error for {symbol}: {e}")
             return None
     
-    def detect_lag(self, asset):
+    def detect_momentum(self, asset):
         """
-        Detect price lag between Binance (fast) and Chainlink (slow).
-        Returns: (lag_percent, direction) or (None, None) if no significant lag
+        Detect strong price momentum.
+        Returns: (momentum_percent, direction) or (None, None)
+        
+        The strategy: If price is moving hard in one direction,
+        Chainlink/Polymarket odds haven't caught up yet.
         """
-        binance_symbol = Config.ASSETS[asset]['binance_symbol']
+        symbol = Config.ASSETS[asset]['binance_symbol']
         
-        # Get prices
-        binance_price = self.get_binance_price(binance_symbol)
-        chainlink_price = self.get_chainlink_price(asset)
-        
-        if not binance_price or not chainlink_price:
+        # Get current price
+        current_price = self.get_binance_price(symbol)
+        if not current_price:
             return None, None
         
-        # Store for tracking
-        self.last_binance[asset] = binance_price
-        self.last_chainlink[asset] = chainlink_price
+        # Get recent candles
+        klines = self.get_binance_kline(symbol, '1m', 3)
+        if not klines or len(klines) < 2:
+            return None, None
         
-        # Calculate lag percentage
-        lag_percent = ((binance_price - chainlink_price) / chainlink_price) * 100
+        # Calculate momentum from last candle
+        last_candle = klines[-1]
+        prev_candle = klines[-2]
         
-        # Store price history for momentum detection
+        open_price = float(last_candle[1])
+        close_price = float(last_candle[4])
+        prev_close = float(prev_candle[4])
+        
+        # Momentum = how much price moved in last 1-2 minutes
+        momentum = ((current_price - prev_close) / prev_close) * 100
+        
+        # Store price history
+        self.last_prices[asset] = current_price
         self.price_history[asset].append({
             'time': time.time(),
-            'binance': binance_price,
-            'chainlink': chainlink_price,
-            'lag': lag_percent
+            'price': current_price,
+            'momentum': momentum
         })
         
-        # Keep only last 60 seconds of history
-        cutoff = time.time() - 60
-        self.price_history[asset] = [
-            p for p in self.price_history[asset] if p['time'] > cutoff
-        ]
+        # Keep only last 60 data points
+        self.price_history[asset] = self.price_history[asset][-60:]
         
         # Determine direction
-        if lag_percent > Config.MIN_LAG_PERCENT:
-            direction = 'UP'  # Binance higher than Chainlink = price going UP
-        elif lag_percent < -Config.MIN_LAG_PERCENT:
-            direction = 'DOWN'  # Binance lower than Chainlink = price going DOWN
+        if momentum > Config.MIN_MOMENTUM_PERCENT:
+            direction = 'UP'
+        elif momentum < -Config.MIN_MOMENTUM_PERCENT:
+            direction = 'DOWN'
         else:
             direction = None
         
-        return lag_percent, direction
-    
-    def get_momentum(self, asset):
-        """Check if there's strong momentum in the last minute"""
-        history = self.price_history[asset]
-        if len(history) < 2:
-            return 0
-        
-        oldest = history[0]['binance']
-        newest = history[-1]['binance']
-        momentum = ((newest - oldest) / oldest) * 100
-        return momentum
+        return momentum, direction
 
 # ============= BOT =============
 class ChainlinkLagBot:
     def __init__(self):
         self.tracker = PriceTracker()
-        self.balance = Config.STARTING_CAPITAL
+        self.wallet_address = None
+        self.balance = 0
         self.bet_size = Config.BET_SIZE
         self.wins = 0
         self.losses = 0
         self.trades = []
         self.last_trade_time = 0
         
+        # Get wallet address
+        if Config.WALLET_ADDRESS:
+            self.wallet_address = Config.WALLET_ADDRESS
+        elif Config.PRIVATE_KEY:
+            self.wallet_address = get_wallet_address_from_key(Config.PRIVATE_KEY)
+        
+        # Get initial balance
+        self.update_balance()
+        
         self.print_banner()
+    
+    def update_balance(self):
+        """Update balance from Polygon network"""
+        if self.wallet_address:
+            balance = get_usdc_balance(self.wallet_address)
+            if balance is not None:
+                self.balance = balance
+                logger.info(f"Wallet balance updated: ${self.balance:.2f} USDC")
+            else:
+                logger.warning("Could not fetch wallet balance")
+        else:
+            logger.warning("No wallet address - balance unknown")
     
     def print_banner(self):
         logger.info("=" * 60)
-        logger.info("   CHAINLINK LAG EXPLOIT BOT v1.0")
+        logger.info("   CHAINLINK LAG EXPLOIT BOT v1.1")
         logger.info("=" * 60)
         logger.info(f"   Mode: {'DRY RUN (TEST)' if Config.DRY_RUN else 'LIVE TRADING'}")
-        logger.info(f"   Capital: ${Config.STARTING_CAPITAL}")
+        if self.wallet_address:
+            logger.info(f"   Wallet: {self.wallet_address[:10]}...{self.wallet_address[-6:]}")
+        logger.info(f"   Balance: ${self.balance:.2f} USDC")
         logger.info(f"   Bet Size: ${Config.BET_SIZE}")
-        logger.info(f"   Min Lag Threshold: {Config.MIN_LAG_PERCENT}%")
+        logger.info(f"   Min Momentum: {Config.MIN_MOMENTUM_PERCENT}%")
         logger.info(f"   Assets: {', '.join(Config.ASSETS.keys())}")
         logger.info("=" * 60)
         logger.info("")
-        logger.info("   Strategy: Exploit Binance vs Chainlink price lag")
-        logger.info("   - Binance updates instantly")
-        logger.info("   - Chainlink/Polymarket updates slower")
-        logger.info("   - We bet on the direction Chainlink will move")
+        logger.info("   Strategy: Detect strong momentum on Binance")
+        logger.info("   When price moves fast, Chainlink/Polymarket lags behind")
+        logger.info("   Bet on the direction before odds adjust")
         logger.info("")
         logger.info("=" * 60)
     
     def find_opportunity(self):
-        """Scan all assets for lag opportunities"""
+        """Scan all assets for momentum opportunities"""
         for asset in Config.ASSETS:
-            lag_percent, direction = self.tracker.detect_lag(asset)
-            momentum = self.tracker.get_momentum(asset)
+            momentum, direction = self.tracker.detect_momentum(asset)
             
-            if lag_percent is None:
+            if momentum is None:
                 continue
             
-            binance = self.tracker.last_binance.get(asset, 0)
-            chainlink = self.tracker.last_chainlink.get(asset, 0)
+            price = self.tracker.last_prices.get(asset, 0)
             
             # Log current state
-            logger.info(f"{asset}: Binance=${binance:,.2f} | Chainlink=${chainlink:,.2f} | Lag={lag_percent:+.3f}% | Momentum={momentum:+.3f}%")
+            dir_arrow = "^" if momentum > 0 else "v" if momentum < 0 else "-"
+            logger.info(f"{asset}: ${price:,.2f} | Momentum: {momentum:+.3f}% {dir_arrow}")
             
-            # Check if we have an opportunity
+            # Check if we have a strong enough signal
             if direction and abs(momentum) > Config.MIN_MOMENTUM_PERCENT:
                 return {
                     'asset': asset,
                     'direction': direction,
-                    'binance_price': binance,
-                    'chainlink_price': chainlink,
-                    'lag_percent': lag_percent,
+                    'price': price,
                     'momentum': momentum
                 }
         
@@ -242,11 +317,10 @@ class ChainlinkLagBot:
         logger.info("!" * 60)
         logger.info(f"   Asset: {opportunity['asset']}")
         logger.info(f"   Direction: {opportunity['direction']}")
-        logger.info(f"   Binance: ${opportunity['binance_price']:,.2f}")
-        logger.info(f"   Chainlink: ${opportunity['chainlink_price']:,.2f}")
-        logger.info(f"   Lag: {opportunity['lag_percent']:+.3f}%")
+        logger.info(f"   Price: ${opportunity['price']:,.2f}")
         logger.info(f"   Momentum: {opportunity['momentum']:+.3f}%")
         logger.info(f"   Bet Size: ${self.bet_size}")
+        logger.info(f"   Balance: ${self.balance:.2f}")
         logger.info("!" * 60)
         
         if Config.DRY_RUN:
@@ -257,7 +331,7 @@ class ChainlinkLagBot:
         else:
             logger.info("")
             logger.info("   [LIVE MODE - Would place order here]")
-            logger.info("   Polymarket API integration needed")
+            # TODO: Integrate with Polymarket API for actual trading
             logger.info("")
         
         # Record trade
@@ -265,7 +339,8 @@ class ChainlinkLagBot:
             'time': datetime.now().isoformat(),
             'asset': opportunity['asset'],
             'direction': opportunity['direction'],
-            'lag': opportunity['lag_percent'],
+            'momentum': opportunity['momentum'],
+            'price': opportunity['price'],
             'bet_size': self.bet_size,
             'dry_run': Config.DRY_RUN
         })
@@ -273,29 +348,14 @@ class ChainlinkLagBot:
         self.last_trade_time = time.time()
         return True
     
-    def assess_after_loss(self):
-        """Pause and assess after a loss"""
-        logger.warning("")
-        logger.warning("=" * 60)
-        logger.warning("   LOSS DETECTED - ASSESSING STRATEGY")
-        logger.warning("=" * 60)
-        logger.warning(f"   Total Wins: {self.wins}")
-        logger.warning(f"   Total Losses: {self.losses}")
-        logger.warning(f"   Win Rate: {self.wins/(self.wins+self.losses)*100:.1f}%" if (self.wins+self.losses) > 0 else "   No trades yet")
-        logger.warning("")
-        logger.warning("   Pausing for assessment...")
-        logger.warning("   Review the logs and market conditions")
-        logger.warning("=" * 60)
-        time.sleep(Config.COOLDOWN_AFTER_LOSS)
-    
     def print_status(self):
         """Print current status"""
         win_rate = (self.wins / (self.wins + self.losses) * 100) if (self.wins + self.losses) > 0 else 0
         logger.info("")
         logger.info("-" * 60)
-        logger.info(f"   Balance: ${self.balance:.2f} | Bet: ${self.bet_size}")
+        logger.info(f"   Wallet: ${self.balance:.2f} USDC | Bet: ${self.bet_size}")
         logger.info(f"   Wins: {self.wins} | Losses: {self.losses} | Rate: {win_rate:.1f}%")
-        logger.info(f"   Trades Today: {len(self.trades)}")
+        logger.info(f"   Trades: {len(self.trades)}")
         logger.info("-" * 60)
     
     def run(self):
@@ -304,10 +364,18 @@ class ChainlinkLagBot:
         logger.info(f"Checking every {Config.CHECK_INTERVAL} seconds")
         logger.info("")
         
+        balance_check_interval = 60  # Check balance every 60 seconds
+        last_balance_check = 0
+        
         try:
             while True:
+                # Update balance periodically
+                if time.time() - last_balance_check > balance_check_interval:
+                    self.update_balance()
+                    last_balance_check = time.time()
+                
                 # Check cooldown
-                if time.time() - self.last_trade_time < Config.COOLDOWN_AFTER_TRADE:
+                if time.time() - self.last_trade_time < Config.COOLDOWN_AFTER_TRADE and self.last_trade_time > 0:
                     remaining = Config.COOLDOWN_AFTER_TRADE - (time.time() - self.last_trade_time)
                     logger.info(f"Cooldown: {remaining:.0f}s remaining...")
                     time.sleep(Config.CHECK_INTERVAL)
@@ -317,13 +385,13 @@ class ChainlinkLagBot:
                 self.print_status()
                 
                 # Scan for opportunities
-                logger.info("Scanning for lag opportunities...")
+                logger.info("Scanning for momentum...")
                 opportunity = self.find_opportunity()
                 
                 if opportunity:
                     self.execute_trade(opportunity)
                 else:
-                    logger.info("No significant lag detected. Waiting...")
+                    logger.info("No strong momentum detected. Waiting...")
                 
                 # Wait before next check
                 time.sleep(Config.CHECK_INTERVAL)
@@ -337,7 +405,7 @@ class ChainlinkLagBot:
 # ============= MAIN =============
 if __name__ == "__main__":
     print("")
-    print("Chainlink Lag Exploit Bot")
+    print("Chainlink Lag Exploit Bot v1.1")
     print("=" * 40)
     
     # Check for .env
@@ -347,9 +415,8 @@ if __name__ == "__main__":
         print("")
         print("Create a file called '.env' with:")
         print("  POLYMARKET_PRIVATE_KEY=your_key_here")
+        print("  WALLET_ADDRESS=0xYourWalletAddress")
         print("  DRY_RUN=true")
-        print("")
-        print("Starting in DRY RUN mode anyway...")
         print("")
     
     # Check for required packages
@@ -364,6 +431,16 @@ if __name__ == "__main__":
         print("  pip install requests python-dotenv")
         print("")
         sys.exit(1)
+    
+    # Optional: eth_account for deriving address from private key
+    try:
+        from eth_account import Account
+        print("eth_account: OK (can derive wallet address)")
+    except ImportError:
+        print("eth_account: Not installed (add WALLET_ADDRESS to .env manually)")
+        print("  To install: pip install eth-account")
+    
+    print("")
     
     # Start bot
     bot = ChainlinkLagBot()

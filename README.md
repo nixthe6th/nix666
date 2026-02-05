@@ -385,6 +385,21 @@ nix reflect export markdown          # Export to markdown
 
 Builds a reflection streak (🔥) and tracks your growth over time. Export to markdown for long-term journaling.
 
+`nix pomodoro` — Enhanced Pomodoro timer with task integration:
+```bash
+nix pomodoro                         # Start 25-min session with task picker
+nix pomodoro start abc1              # Start with specific todo ID
+nix pomodoro start "Custom task"     # Start with custom task name
+nix pomodoro status                  # Check time remaining
+nix pomodoro complete                # Mark session as complete
+nix pomodoro complete "Shipped!"     # Complete with notes
+nix pomodoro cancel                  # Cancel current session
+nix pomodoro stats                   # Productivity statistics
+nix pomodoro history                 # Session history
+```
+
+Auto-selects high-priority tasks, tracks completion streaks, and provides insights into your focus patterns.
+
 `nix calexport` — Export sprints to calendar (.ics format):
 ```bash
 nix calexport                          # Print ICS to stdout

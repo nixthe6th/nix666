@@ -179,5 +179,14 @@
     "tags": ["tool", "node", "cli", "journal", "reflection", "wellness"],
     "updated": "2026-02-05",
     "tech": ["node"]
+  },
+  {
+    "name": "pomodoro",
+    "description": "Enhanced Pomodoro timer with task integration - auto-selects todos, tracks completion, and provides productivity stats",
+    "url": "./pomodoro.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "productivity", "focus", "timer"],
+    "updated": "2026-02-05",
+    "tech": ["node"]
   }
 ]

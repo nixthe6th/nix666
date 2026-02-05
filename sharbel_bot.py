@@ -5,11 +5,11 @@ SHARBEL'S POLYMARKET BOT v4.0
 Based on actual strategy from Sharbel's video transcript.
 
 THE STRATEGY:
-1. At START of 15-min window → record opening price
+1. At START of 15-min window -> record opening price
 2. Wait until LAST 30 SECONDS before close
 3. Compare current Binance price vs opening price
-4. If price went UP → bet UP
-5. If price went DOWN → bet DOWN
+4. If price went UP -> bet UP
+5. If price went DOWN -> bet DOWN
 6. With only 30s left, price unlikely to reverse = easy win
 
 THE EDGE:
@@ -313,17 +313,21 @@ class SharbelsBot:
                     'seconds_left': secs_left
                 })
         
-        # Analyze each asset
+        # Analyze each asset - USE CALCULATED WINDOW, not market's timestamp
         for market in markets:
             asset = market['asset']
-            window_start = market.get('window_start', window['start'])
+            # ALWAYS use our calculated window timestamp for consistency
+            window_start = window['start']
             
             # Get opening and current prices
             open_price = self.tracker.get_opening_price(window_start, asset)
             current_price = get_binance_price(Config.ASSETS[asset]['binance'])
             
             if not open_price:
-                log.info(f"  {asset}: No opening price recorded - skipping")
+                # Debug: show what windows we have
+                stored_windows = list(self.tracker.window_prices.keys())
+                log.info(f"  {asset}: No opening price for window {window_start}")
+                log.info(f"    Stored windows: {stored_windows}")
                 continue
             
             if not current_price:
@@ -336,15 +340,15 @@ class SharbelsBot:
             # Determine direction
             if change_percent > 0:
                 direction = "UP"
-                arrow = "↑"
+                arrow = "UP"
             elif change_percent < 0:
                 direction = "DOWN"
-                arrow = "↓"
+                arrow = "DOWN"
             else:
                 direction = "FLAT"
-                arrow = "→"
+                arrow = "->"
             
-            log.info(f"  {asset}: ${open_price:,.2f} → ${current_price:,.2f} ({change_percent:+.2f}%) {arrow}")
+            log.info(f"  {asset}: ${open_price:,.2f} -> ${current_price:,.2f} ({change_percent:+.2f}%) {arrow}")
             
             # Check if move is significant enough
             if abs(change_percent) < Config.MIN_PRICE_MOVE_PERCENT:

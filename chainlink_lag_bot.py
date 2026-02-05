@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 """
-Sharbel's 15-Minute Polymarket Bot v3.0
+Sharbel's 15-Minute Polymarket Bot v3.1
 =======================================
-TARGET: Bitcoin/ETH/SOL Up or Down - 15 minute markets
+TARGET: BTC/ETH/SOL Up or Down - 15 minute markets
 
-Strategy:
-1. Monitor the 15-minute "Up or Down" crypto markets
-2. Wait until ~60 seconds before market closes
-3. Check Binance price vs. the opening price
-4. Bet on UP if price is higher, DOWN if lower
-5. With only 60 seconds left, price won't move much = easy win
+Market Discovery: Uses computed slugs like btc-updown-15m-{timestamp}
+where timestamp aligns to 15-minute boundaries.
 """
 
 import os
@@ -19,7 +15,7 @@ import json
 import logging
 import requests
 import re
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,33 +25,31 @@ class Config:
     PRIVATE_KEY = os.getenv('POLYMARKET_PRIVATE_KEY', '')
     WALLET_ADDRESS = os.getenv('WALLET_ADDRESS', '')
     
-    # Trading
     DRY_RUN = os.getenv('DRY_RUN', 'true').lower() == 'true'
     BET_SIZE = 1
-    MAX_BET_SIZE = 2
     
-    # SHARBEL'S TIMING - Bet 60-90 seconds before close
-    BET_WINDOW_START = 90    # Start looking when 90 seconds left
-    BET_WINDOW_END = 30      # Stop betting when only 30 seconds left
+    # Timing - bet 60-90 seconds before close
+    BET_WINDOW_START = 90
+    BET_WINDOW_END = 30
     
-    # Edge Requirements
-    MIN_PRICE_CHANGE = 0.1   # Price must have moved 0.1% to bet
-    MAX_ODDS_TO_BUY = 0.82   # Don't buy if odds > 82%
-    MIN_ODDS_TO_BUY = 0.18   # Don't buy if odds < 18%
+    # Edge requirements
+    MIN_PRICE_CHANGE = 0.1   # 0.1% minimum price move
+    MAX_ODDS = 0.82
+    MIN_ODDS = 0.18
     
-    # Timing
     CHECK_INTERVAL = 5
-    COOLDOWN_AFTER_TRADE = 120
+    COOLDOWN = 120
     
-    # Target Markets - The 15-min Up/Down markets
-    MARKETS = {
-        'BTC': {'slug': 'btc-updown-15m', 'binance': 'BTCUSDT'},
-        'ETH': {'slug': 'eth-updown-15m', 'binance': 'ETHUSDT'},
-        'SOL': {'slug': 'sol-updown-15m', 'binance': 'SOLUSDT'},
-        'XRP': {'slug': 'xrp-updown-15m', 'binance': 'XRPUSDT'},
+    # 15-minute window in seconds
+    WINDOW_15M = 900
+    
+    # Assets and their slug prefixes
+    ASSETS = {
+        'BTC': {'slug_prefix': 'btc-updown-15m', 'binance': 'BTCUSDT'},
+        'ETH': {'slug_prefix': 'eth-updown-15m', 'binance': 'ETHUSDT'},
+        'SOL': {'slug_prefix': 'sol-updown-15m', 'binance': 'SOLUSDT'},
     }
     
-    # APIs
     BINANCE_API = "https://api.binance.com/api/v3"
     POLYMARKET_API = "https://gamma-api.polymarket.com"
     POLYMARKET_CLOB = "https://clob.polymarket.com"
@@ -90,139 +84,202 @@ def get_usdc_balance(wallet_address):
     except:
         return None
 
-# ============= POLYMARKET CLIENT =============
-class PolymarketClient:
+# ============= MARKET FINDER =============
+class MarketFinder:
+    """Find active 15-minute Up/Down markets using computed slugs"""
+    
     def __init__(self):
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0'
         })
     
-    def get_15min_markets(self):
-        """Fetch current 15-minute Up/Down markets"""
-        markets = []
+    def get_current_window_timestamps(self):
+        """Get timestamps for current and upcoming 15-min windows"""
+        now = int(time.time())
+        # Round down to nearest 15-minute boundary
+        current_window = (now // Config.WINDOW_15M) * Config.WINDOW_15M
+        
+        windows = []
+        for i in range(4):  # Current and next 3 windows
+            ts = current_window + (i * Config.WINDOW_15M)
+            # Calculate time until this window closes
+            window_end = ts + Config.WINDOW_15M
+            seconds_left = window_end - now
+            windows.append({
+                'timestamp': ts,
+                'end_time': window_end,
+                'seconds_left': seconds_left
+            })
+        
+        return windows
+    
+    def find_market_via_slug(self, asset, timestamp):
+        """Try to fetch market info using computed slug"""
+        slug_prefix = Config.ASSETS[asset]['slug_prefix']
+        slug = f"{slug_prefix}-{timestamp}"
         
         try:
-            # Get all events
+            # Try gamma API first
             url = f"{Config.POLYMARKET_API}/events"
-            params = {"active": "true", "closed": "false", "limit": 100}
-            r = self.session.get(url, params=params, timeout=15)
-            r.raise_for_status()
-            events = r.json()
+            params = {"slug": slug}
+            r = self.session.get(url, params=params, timeout=10)
             
-            for event in events:
-                slug = event.get('slug', '')
-                title = event.get('title', '')
+            if r.status_code == 200:
+                events = r.json()
+                if events and len(events) > 0:
+                    return self.parse_event(events[0], asset, timestamp)
+            
+            # Try CLOB API
+            url = f"{Config.POLYMARKET_CLOB}/markets/{slug}"
+            r = self.session.get(url, timeout=10)
+            if r.status_code == 200:
+                market = r.json()
+                return self.parse_clob_market(market, asset, timestamp)
                 
-                # Check if it's a 15-min up/down market
-                for asset, config in Config.MARKETS.items():
-                    if config['slug'] in slug or (asset.lower() in title.lower() and '15' in title and 'up' in title.lower()):
-                        market_data = self.parse_event(event, asset)
-                        if market_data:
-                            markets.append(market_data)
-                        break
+        except Exception as e:
+            logger.debug(f"Failed to fetch {slug}: {e}")
+        
+        return None
+    
+    def find_market_via_page_scrape(self, asset):
+        """Scrape crypto/15M page for market slugs"""
+        try:
+            url = "https://polymarket.com/crypto/15M"
+            r = self.session.get(url, timeout=15)
+            r.raise_for_status()
             
-            return markets
+            # Find all matching slugs in HTML
+            slug_prefix = Config.ASSETS[asset]['slug_prefix']
+            pattern = rf"{slug_prefix}-(\d+)"
+            matches = re.findall(pattern, r.text)
+            
+            if matches:
+                now = int(time.time())
+                # Find the most recent open market
+                timestamps = sorted(set(int(ts) for ts in matches), reverse=True)
+                
+                for ts in timestamps:
+                    window_end = ts + Config.WINDOW_15M
+                    if now < window_end:  # Market still open
+                        seconds_left = window_end - now
+                        return {
+                            'asset': asset,
+                            'slug': f"{slug_prefix}-{ts}",
+                            'timestamp': ts,
+                            'end_time': window_end,
+                            'seconds_left': seconds_left
+                        }
             
         except Exception as e:
-            logger.error(f"Error fetching markets: {e}")
-            return []
+            logger.debug(f"Page scrape failed: {e}")
+        
+        return None
     
-    def parse_event(self, event, asset):
-        """Parse event data into market info"""
+    def parse_event(self, event, asset, timestamp):
+        """Parse event data"""
         try:
-            # Get market details
             markets = event.get('markets', [])
             if not markets:
                 return None
             
-            market = markets[0]  # Usually one market per event
+            market = markets[0]
             
-            # Get end time
-            end_date = event.get('endDate') or market.get('endDate')
-            if not end_date:
-                return None
-            
-            # Parse end time
-            try:
-                if 'T' in end_date:
-                    end_time = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
-                else:
-                    end_time = datetime.fromtimestamp(int(end_date), tz=timezone.utc)
-            except:
-                return None
-            
-            # Calculate time remaining
-            now = datetime.now(timezone.utc)
-            seconds_left = (end_time - now).total_seconds()
-            
-            # Get odds
-            outcomes = market.get('outcomes', ['Up', 'Down'])
+            # Get prices
             prices_str = market.get('outcomePrices', '["0.5", "0.5"]')
             try:
                 prices = json.loads(prices_str) if isinstance(prices_str, str) else prices_str
-                up_price = float(prices[0]) if prices else 0.5
+                up_price = float(prices[0])
                 down_price = float(prices[1]) if len(prices) > 1 else 1 - up_price
             except:
                 up_price, down_price = 0.5, 0.5
             
-            # Get token IDs for trading
-            token_ids = market.get('clobTokenIds', [])
+            now = int(time.time())
+            window_end = timestamp + Config.WINDOW_15M
             
             return {
                 'asset': asset,
-                'event_id': event.get('id'),
-                'market_id': market.get('id'),
-                'condition_id': market.get('conditionId'),
-                'title': event.get('title', ''),
-                'end_time': end_time,
-                'seconds_left': seconds_left,
+                'slug': f"{Config.ASSETS[asset]['slug_prefix']}-{timestamp}",
+                'timestamp': timestamp,
+                'end_time': window_end,
+                'seconds_left': window_end - now,
                 'up_price': up_price,
                 'down_price': down_price,
-                'token_ids': token_ids,
-                'outcomes': outcomes
+                'condition_id': market.get('conditionId'),
+                'token_ids': market.get('clobTokenIds', [])
             }
-            
-        except Exception as e:
-            logger.error(f"Error parsing event: {e}")
+        except:
             return None
+    
+    def parse_clob_market(self, market, asset, timestamp):
+        """Parse CLOB market data"""
+        now = int(time.time())
+        window_end = timestamp + Config.WINDOW_15M
+        
+        return {
+            'asset': asset,
+            'slug': f"{Config.ASSETS[asset]['slug_prefix']}-{timestamp}",
+            'timestamp': timestamp,
+            'end_time': window_end,
+            'seconds_left': window_end - now,
+            'up_price': 0.5,  # Would need order book for actual prices
+            'down_price': 0.5,
+            'condition_id': market.get('condition_id'),
+            'token_ids': market.get('tokens', [])
+        }
+    
+    def find_all_active_markets(self):
+        """Find all currently active 15-min markets"""
+        markets = []
+        windows = self.get_current_window_timestamps()
+        
+        for asset in Config.ASSETS:
+            # Try computed slugs first
+            for window in windows:
+                if window['seconds_left'] > 0:  # Only open markets
+                    market = self.find_market_via_slug(asset, window['timestamp'])
+                    if market:
+                        markets.append(market)
+                        break
+            
+            # Fallback to page scrape
+            if not any(m['asset'] == asset for m in markets):
+                market = self.find_market_via_page_scrape(asset)
+                if market:
+                    markets.append(market)
+        
+        return markets
 
-# ============= BINANCE PRICE TRACKER =============
+# ============= BINANCE TRACKER =============
 class BinanceTracker:
     def __init__(self):
         self.cache = {}
         self.cache_time = {}
-        self.opening_prices = {}  # Track opening price for each market
     
     def get_price(self, asset):
-        """Get current price from Binance"""
         if asset in self.cache and time.time() - self.cache_time.get(asset, 0) < 2:
             return self.cache[asset]
         
         try:
-            symbol = Config.MARKETS.get(asset, {}).get('binance')
+            symbol = Config.ASSETS.get(asset, {}).get('binance')
             if not symbol:
                 return None
-            
             r = requests.get(f"{Config.BINANCE_API}/ticker/price", 
                            params={'symbol': symbol}, timeout=5)
             price = float(r.json()['price'])
-            
             self.cache[asset] = price
             self.cache_time[asset] = time.time()
             return price
-        except Exception as e:
-            logger.error(f"Binance error for {asset}: {e}")
+        except:
             return None
     
-    def get_price_change_15min(self, asset):
-        """Get price change over last 15 minutes"""
+    def get_15min_change(self, asset):
+        """Get price change in current 15-min window"""
         try:
-            symbol = Config.MARKETS.get(asset, {}).get('binance')
+            symbol = Config.ASSETS.get(asset, {}).get('binance')
             if not symbol:
                 return None, None
             
-            # Get klines for last 15 minutes
             r = requests.get(f"{Config.BINANCE_API}/klines",
                            params={'symbol': symbol, 'interval': '15m', 'limit': 2},
                            timeout=5)
@@ -231,23 +288,19 @@ class BinanceTracker:
             if len(klines) < 2:
                 return None, None
             
-            # Current 15-min candle
             current = klines[-1]
             open_price = float(current[1])
-            current_price = float(current[4])  # Close/current
+            current_price = float(current[4])
             
-            change_percent = ((current_price - open_price) / open_price) * 100
-            
-            return change_percent, open_price
-            
-        except Exception as e:
-            logger.error(f"Error getting 15min change for {asset}: {e}")
+            change = ((current_price - open_price) / open_price) * 100
+            return change, open_price
+        except:
             return None, None
 
-# ============= MAIN BOT =============
+# ============= BOT =============
 class SharbelsBot:
     def __init__(self):
-        self.polymarket = PolymarketClient()
+        self.finder = MarketFinder()
         self.binance = BinanceTracker()
         self.wallet = Config.WALLET_ADDRESS
         self.balance = get_usdc_balance(self.wallet) or 0
@@ -259,250 +312,195 @@ class SharbelsBot:
     def print_banner(self):
         logger.info("")
         logger.info("=" * 70)
-        logger.info("   SHARBEL'S POLYMARKET BOT v3.0")
-        logger.info("   Target: 15-Minute Up/Down Crypto Markets")
+        logger.info("   SHARBEL'S POLYMARKET BOT v3.1")
+        logger.info("   15-Minute Up/Down Crypto Markets")
         logger.info("=" * 70)
-        logger.info(f"   Mode: {'DRY RUN (TEST)' if Config.DRY_RUN else '*** LIVE TRADING ***'}")
-        logger.info(f"   Wallet: {self.wallet[:12]}...{self.wallet[-6:]}" if self.wallet else "   Wallet: Not configured")
+        logger.info(f"   Mode: {'DRY RUN' if Config.DRY_RUN else '*** LIVE ***'}")
+        logger.info(f"   Wallet: {self.wallet[:12]}...{self.wallet[-6:]}" if self.wallet else "   Wallet: Not set")
         logger.info(f"   Balance: ${self.balance:.2f} USDC")
         logger.info(f"   Bet Size: ${Config.BET_SIZE}")
-        logger.info(f"   Bet Window: {Config.BET_WINDOW_START}s to {Config.BET_WINDOW_END}s before close")
         logger.info("=" * 70)
         logger.info("")
         logger.info("   STRATEGY:")
-        logger.info("   1. Find 15-min 'Up or Down' markets (BTC, ETH, SOL, XRP)")
-        logger.info("   2. Wait until 60-90 seconds before market closes")
-        logger.info("   3. Check if price went UP or DOWN since market opened")
-        logger.info("   4. Bet on the current direction (momentum)")
-        logger.info("   5. With only 60s left, direction likely won't reverse")
+        logger.info("   1. Find BTC/ETH/SOL 15-min Up/Down markets")
+        logger.info("   2. Wait until 60-90 seconds before close")
+        logger.info("   3. Check if price went UP or DOWN this window")
+        logger.info("   4. Bet on the current direction")
         logger.info("")
         logger.info("=" * 70)
-        logger.info("")
     
-    def scan_markets(self):
-        """Scan for markets in the betting window"""
-        markets = self.polymarket.get_15min_markets()
-        ready_markets = []
+    def scan(self):
+        """Scan for markets"""
+        logger.info("Finding active 15-min markets...")
+        markets = self.finder.find_all_active_markets()
         
-        logger.info(f"Found {len(markets)} active 15-min markets:")
+        if not markets:
+            logger.info("  No markets found via API - trying page scrape...")
+            # Force page scrape for all assets
+            for asset in Config.ASSETS:
+                market = self.finder.find_market_via_page_scrape(asset)
+                if market:
+                    markets.append(market)
+        
+        ready = []
         
         for m in markets:
-            secs = m['seconds_left']
+            secs = m.get('seconds_left', 0)
             asset = m['asset']
             
-            # Get current price info
+            # Get price change
+            change, open_price = self.binance.get_15min_change(asset)
             current_price = self.binance.get_price(asset)
-            change, open_price = self.binance.get_price_change_15min(asset)
             
-            # Status message
+            # Status
             if secs <= 0:
                 status = "CLOSED"
             elif secs < Config.BET_WINDOW_END:
                 status = "TOO LATE"
             elif secs <= Config.BET_WINDOW_START:
                 status = ">>> READY <<<"
-                ready_markets.append(m)
+                # Add price data
+                m['change'] = change
+                m['open_price'] = open_price
+                m['current_price'] = current_price
+                ready.append(m)
             else:
                 mins = int(secs // 60)
                 secs_rem = int(secs % 60)
-                status = f"{mins}m {secs_rem}s left"
+                status = f"{mins}m {secs_rem}s"
             
-            # Price direction
-            direction = "UP" if change and change > 0 else "DOWN" if change and change < 0 else "FLAT"
+            direction = "UP" if change and change > 0 else "DOWN" if change and change < 0 else "?"
+            change_str = f"{change:+.2f}%" if change else "N/A"
             
-            logger.info(f"  {asset}: Up={m['up_price']:.0%} Down={m['down_price']:.0%} | Price {direction} {abs(change or 0):.2f}% | [{status}]")
+            logger.info(f"  {asset}: {direction} {change_str} | [{status}]")
         
-        return ready_markets
+        return ready
     
-    def analyze_bet(self, market):
-        """Decide whether to bet UP or DOWN"""
+    def analyze(self, market):
+        """Decide to bet UP or DOWN"""
         asset = market['asset']
-        up_price = market['up_price']
-        down_price = market['down_price']
+        change = market.get('change')
+        current_price = market.get('current_price')
+        open_price = market.get('open_price')
+        up_price = market.get('up_price', 0.5)
+        down_price = market.get('down_price', 0.5)
         
-        # Get price change since market opened
-        change_percent, open_price = self.binance.get_price_change_15min(asset)
-        current_price = self.binance.get_price(asset)
-        
-        if change_percent is None or current_price is None:
-            logger.info(f"  Could not get price data for {asset}")
+        if change is None:
             return None
         
-        # Determine bet direction based on price movement
-        if change_percent > Config.MIN_PRICE_CHANGE:
-            # Price went UP - bet on UP
-            bet_side = 'UP'
-            bet_price = up_price
-            confidence = "HIGH" if change_percent > 0.3 else "MEDIUM"
-        elif change_percent < -Config.MIN_PRICE_CHANGE:
-            # Price went DOWN - bet on DOWN
-            bet_side = 'DOWN'
-            bet_price = down_price
-            confidence = "HIGH" if change_percent < -0.3 else "MEDIUM"
+        # Determine bet based on price direction
+        if change > Config.MIN_PRICE_CHANGE:
+            side = 'UP'
+            price = up_price
+        elif change < -Config.MIN_PRICE_CHANGE:
+            side = 'DOWN'
+            price = down_price
         else:
-            # Price is flat - too risky
-            logger.info(f"  {asset} price is flat ({change_percent:+.2f}%) - skipping")
+            logger.info(f"  {asset} is flat ({change:+.2f}%) - skipping")
             return None
         
-        # Check if odds are worth it
-        if bet_price > Config.MAX_ODDS_TO_BUY:
-            logger.info(f"  {bet_side} odds too high ({bet_price:.0%}) - market already priced in")
+        # Check odds
+        if price > Config.MAX_ODDS:
+            logger.info(f"  {side} odds too high ({price:.0%})")
+            return None
+        if price < Config.MIN_ODDS:
+            logger.info(f"  {side} odds too low ({price:.0%})")
             return None
         
-        if bet_price < Config.MIN_ODDS_TO_BUY:
-            logger.info(f"  {bet_side} odds suspiciously low ({bet_price:.0%}) - possible trap")
-            return None
-        
-        # Calculate potential profit
-        # If we bet $1 at 0.60 and win, we get $1/$0.60 = $1.67
-        potential_return = Config.BET_SIZE / bet_price
-        potential_profit = potential_return - Config.BET_SIZE
+        profit = (Config.BET_SIZE / price) - Config.BET_SIZE
         
         return {
             'market': market,
             'asset': asset,
-            'bet_side': bet_side,
-            'bet_price': bet_price,
-            'current_price': current_price,
+            'side': side,
+            'odds': price,
+            'change': change,
             'open_price': open_price,
-            'change_percent': change_percent,
-            'confidence': confidence,
-            'potential_profit': potential_profit,
+            'current_price': current_price,
+            'potential_profit': profit,
             'seconds_left': market['seconds_left']
         }
     
-    def execute_bet(self, bet):
-        """Execute the bet"""
+    def execute(self, bet):
+        """Execute bet"""
         logger.info("")
         logger.info("*" * 70)
-        logger.info("   $$$ OPPORTUNITY FOUND - PLACING BET $$$")
+        logger.info("   $$$ PLACING BET $$$")
         logger.info("*" * 70)
-        logger.info(f"   Market: {bet['market']['title']}")
-        logger.info(f"   Time Left: {bet['seconds_left']:.0f} seconds")
+        logger.info(f"   {bet['asset']}: ${bet['open_price']:,.2f} -> ${bet['current_price']:,.2f}")
+        logger.info(f"   Change: {bet['change']:+.2f}%")
+        logger.info(f"   Time Left: {bet['seconds_left']:.0f}s")
         logger.info("")
-        logger.info(f"   {bet['asset']} Open Price:    ${bet['open_price']:,.2f}")
-        logger.info(f"   {bet['asset']} Current Price: ${bet['current_price']:,.2f}")
-        logger.info(f"   Price Change: {bet['change_percent']:+.2f}%")
-        logger.info(f"   Confidence: {bet['confidence']}")
-        logger.info("")
-        logger.info(f"   >>> BETTING: {bet['bet_side']} @ {bet['bet_price']:.0%} <<<")
-        logger.info(f"   Bet Size: ${Config.BET_SIZE:.2f}")
-        logger.info(f"   If Win: ${Config.BET_SIZE / bet['bet_price']:.2f} (profit: ${bet['potential_profit']:.2f})")
+        logger.info(f"   >>> BET: {bet['side']} @ {bet['odds']:.0%} <<<")
+        logger.info(f"   Bet: ${Config.BET_SIZE} | Potential Win: ${Config.BET_SIZE/bet['odds']:.2f}")
         logger.info("*" * 70)
         
         if Config.DRY_RUN:
-            logger.info("")
-            logger.info("   [DRY RUN - Bet recorded but NOT placed]")
-            logger.info("   Set DRY_RUN=false in .env to trade for real")
+            logger.info("   [DRY RUN - Not executed]")
         else:
-            logger.info("")
-            logger.info("   [LIVE MODE] Attempting to place order...")
-            # TODO: Implement actual CLOB order placement
-            # Requires: py-clob-client or direct API with signed transactions
-            logger.info("   Order placement requires CLOB API integration")
+            logger.info("   [LIVE] Would place order...")
         
-        logger.info("")
-        
-        # Record trade
         self.trades.append({
             'time': datetime.now().isoformat(),
             'asset': bet['asset'],
-            'side': bet['bet_side'],
-            'price': bet['bet_price'],
-            'change': bet['change_percent'],
-            'bet_size': Config.BET_SIZE,
-            'dry_run': Config.DRY_RUN
+            'side': bet['side'],
+            'odds': bet['odds'],
+            'change': bet['change']
         })
         
         self.last_trade = time.time()
     
     def run(self):
         """Main loop"""
-        logger.info("Starting bot... checking every 5 seconds")
-        logger.info("")
+        logger.info("Starting bot...")
         
         try:
             while True:
-                # Cooldown check
-                if self.last_trade > 0:
-                    elapsed = time.time() - self.last_trade
-                    if elapsed < Config.COOLDOWN_AFTER_TRADE:
-                        remaining = Config.COOLDOWN_AFTER_TRADE - elapsed
-                        logger.info(f"Cooldown: {remaining:.0f}s remaining")
-                        time.sleep(Config.CHECK_INTERVAL)
-                        continue
+                # Cooldown
+                if self.last_trade > 0 and time.time() - self.last_trade < Config.COOLDOWN:
+                    remaining = Config.COOLDOWN - (time.time() - self.last_trade)
+                    logger.info(f"Cooldown: {remaining:.0f}s")
+                    time.sleep(Config.CHECK_INTERVAL)
+                    continue
                 
                 logger.info("-" * 70)
-                logger.info("Scanning 15-minute Up/Down markets...")
-                logger.info("")
                 
-                # Find markets ready for betting
-                ready = self.scan_markets()
+                ready = self.scan()
                 
                 if not ready:
-                    logger.info("")
-                    logger.info("No markets in betting window (60-90s before close)")
-                    logger.info("Waiting for next opportunity...")
+                    logger.info("No markets in betting window")
                 else:
-                    # Analyze each ready market
                     for market in ready:
-                        logger.info("")
-                        logger.info(f"Analyzing {market['asset']} (closes in {market['seconds_left']:.0f}s)...")
-                        
-                        bet = self.analyze_bet(market)
-                        
+                        logger.info(f"\nAnalyzing {market['asset']}...")
+                        bet = self.analyze(market)
                         if bet:
-                            self.execute_bet(bet)
-                            break  # One bet at a time
+                            self.execute(bet)
+                            break
                 
-                logger.info("")
                 time.sleep(Config.CHECK_INTERVAL)
                 
         except KeyboardInterrupt:
-            logger.info("")
-            logger.info("=" * 70)
-            logger.info("Bot stopped by user")
-            logger.info(f"Total trades recorded: {len(self.trades)}")
-            for t in self.trades[-5:]:
-                logger.info(f"  {t['time'][:19]} | {t['asset']} {t['side']} @ {t['price']:.0%}")
-            logger.info("=" * 70)
+            logger.info("\nBot stopped")
+            logger.info(f"Total trades: {len(self.trades)}")
 
 # ============= MAIN =============
 if __name__ == "__main__":
-    print("")
-    print("=" * 50)
-    print("  Sharbel's Polymarket Bot v3.0")
-    print("  Target: 15-Minute Up/Down Crypto Markets")
-    print("=" * 50)
-    print("")
+    print("\nSharbel's Polymarket Bot v3.1")
+    print("=" * 40)
     
-    # Check packages
-    missing = []
     try:
         import requests
-    except ImportError:
-        missing.append('requests')
-    
-    try:
         from dotenv import load_dotenv
-    except ImportError:
-        missing.append('python-dotenv')
-    
-    if missing:
-        print(f"Missing packages: {', '.join(missing)}")
-        print(f"Run: pip install {' '.join(missing)}")
+    except ImportError as e:
+        print(f"Missing: {e}")
+        print("Run: pip install requests python-dotenv")
         sys.exit(1)
     
-    # Check .env
     if not os.path.exists('.env'):
-        print("No .env file found!")
-        print("")
-        print("Create a .env file with:")
-        print("  POLYMARKET_PRIVATE_KEY=0x...")
+        print("Create .env with:")
         print("  WALLET_ADDRESS=0x...")
         print("  DRY_RUN=true")
-        print("")
     
-    # Start bot
+    print()
     bot = SharbelsBot()
     bot.run()

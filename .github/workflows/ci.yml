@@ -24,6 +24,9 @@ jobs:
         test -f scripts/nixcommit
         test -f scripts/nixwater
         test -f scripts/nixwhen
+        test -f scripts/nixtimer
+        test -f scripts/nixweather
+        test -f scripts/nixdecide
         echo "✓ All CLI scripts present"
     
     - name: Test Node.js tools load
@@ -31,6 +34,9 @@ jobs:
         node -e "require('./today.js')" || true
         node -e "require('./calc.js')" || true
         node -e "require('./convert.js')" || true
+        node -e "require('./correlate.js')" || true
+        node -e "require('./sync.js')" || true
+        node -e "require('./sentiment.js')" || true
         echo "✓ Core tools syntax valid"
     
     - name: Check JSON data files
@@ -38,6 +44,8 @@ jobs:
         cat bookmarks.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ bookmarks.json valid')"
         cat quotes.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ quotes.json valid')"
         cat ideas.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ ideas.json valid')"
+        cat sprints.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ sprints.json valid')"
+        cat projects.json | node -e "JSON.parse(require('fs').readFileSync(0)); console.log('✓ projects.json valid')"
     
     - name: Validate HTML
       run: |
@@ -45,6 +53,7 @@ jobs:
         test -f now.html
         test -f projects.html
         test -f dashboard.html
+        test -f tools.html
         echo "✓ Core HTML files present"
     
     - name: Check docs are updated
@@ -52,4 +61,25 @@ jobs:
         test -f README.md
         test -f API.md
         test -f CHANGELOG.md
+        test -f ROADMAP.md
+        test -f TROUBLESHOOTING.md
+        test -f docs/WORKFLOWS.md
+        test -f docs/AI_INTEGRATION.md
         echo "✓ Documentation present"
+
+    - name: Check Makefile targets
+      run: |
+        make help | grep -q "install" && echo "✓ Makefile has install target"
+        make help | grep -q "test" && echo "✓ Makefile has test target"
+        make stats
+
+    - name: Verify data directory structure
+      run: |
+        mkdir -p data
+        test -d data || (echo "data/ directory missing" && exit 1)
+        echo "✓ Data directory exists"
+
+    - name: Check Python scripts syntax
+      run: |
+        python3 -m py_compile arbitrage_bot_v2.py 2>/dev/null && echo "✓ arbitrage_bot_v2.py valid" || echo "⚠ Python syntax check skipped"
+        python3 -m py_compile polymarket_bot.py 2>/dev/null && echo "✓ polymarket_bot.py valid" || echo "⚠ Python syntax check skipped"

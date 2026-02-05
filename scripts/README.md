@@ -46,6 +46,7 @@ nix tools                   # List all tools
 |------|---------|---------|
 | `correlate.js` | Data correlation analysis | `nix correlate sleep` |
 | `calexport.js` | Calendar export for sprints | `nix calexport -f sprints.ics` |
+| `reflect.js` | Daily reflection journal | `nix reflect quick "Shipped feature"` |
 | `quote.js` | Random motivation quotes | `nix quote` |
 | `focus.js` | Pomodoro timer | `nix focus 25` |
 | `done.js` | Sprint completion tracker | `nix done "shipped feature"` |

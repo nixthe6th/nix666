@@ -71,6 +71,7 @@ Commands:
   invest [cmd]            Investment portfolio tracker (add/list/performance/allocation)
   alias [cmd]             Custom command shortcuts (add/remove/list/clear)
   correlate [cmd]         Find patterns in tracked data (sleep/mood/habits)
+  reflect [cmd]           Daily reflection journal (daily/quick/list/stats)
   sync [cmd]              Git-based data sync (setup/status/now/auto/daemon)
   cheat [category]        Quick command reference (daily/focus/health/learning)
   calexport [opts]        Export sprints to calendar (.ics format)
@@ -340,6 +341,9 @@ main() {
             ;;
         correlate)
             node "$SCRIPT_DIR/../correlate.js" "$@"
+            ;;
+        reflect)
+            node "$SCRIPT_DIR/../reflect.js" "$@"
             ;;
         sync)
             node "$SCRIPT_DIR/../sync.js" "$@"

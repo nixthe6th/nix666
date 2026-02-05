@@ -170,5 +170,14 @@
     "tags": ["tool", "node", "cli", "docs", "reference"],
     "updated": "2026-02-01",
     "tech": ["node"]
+  },
+  {
+    "name": "reflect",
+    "description": "Daily reflection journal - structured prompts, streak tracking, and markdown export for personal growth",
+    "url": "./reflect.js",
+    "status": "active",
+    "tags": ["tool", "node", "cli", "journal", "reflection", "wellness"],
+    "updated": "2026-02-05",
+    "tech": ["node"]
   }
 ]

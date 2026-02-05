@@ -372,6 +372,19 @@ Finds insights like:
 - Exercise vs wellbeing
 - Gratitude practice impact
 
+`nix reflect` — Daily reflection journal with streak tracking:
+```bash
+nix reflect                          # Full daily reflection (5 prompts)
+nix reflect quick "Shipped feature!" # Quick one-line reflection
+nix reflect list                     # Show recent entries
+nix reflect list --week              # This week's reflections
+nix reflect stats                    # Streaks and patterns
+nix reflect prompt                   # Get a random prompt
+nix reflect export markdown          # Export to markdown
+```
+
+Builds a reflection streak (🔥) and tracks your growth over time. Export to markdown for long-term journaling.
+
 `nix calexport` — Export sprints to calendar (.ics format):
 ```bash
 nix calexport                          # Print ICS to stdout

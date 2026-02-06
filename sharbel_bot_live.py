@@ -205,27 +205,31 @@ class PolymarketTrader:
         
         try:
             from py_clob_client.order_builder.constants import BUY, SELL
+            from py_clob_client.clob_types import OrderArgs, OrderType
             
             order_side = BUY if side.upper() == 'BUY' else SELL
             
             log.info(f"Placing order: {side} {size} shares @ ${price:.2f}")
+            log.info(f"Token ID: {token_id}")
             
-            # Create and sign order
-            order = self.client.create_order(
+            # Create order args
+            order_args = OrderArgs(
                 token_id=token_id,
                 price=price,
                 size=size,
                 side=order_side
             )
             
-            # Submit order
-            result = self.client.post_order(order, "FOK")  # Fill-or-Kill
+            # Create and post order in one call (FOK = Fill-or-Kill)
+            result = self.client.create_and_post_order(order_args, OrderType.FOK)
             
             log.info(f"Order result: {result}")
             return result
             
         except Exception as e:
             log.error(f"Error placing order: {e}")
+            import traceback
+            log.error(traceback.format_exc())
             return None
 
 # ============= BINANCE TRACKER =============

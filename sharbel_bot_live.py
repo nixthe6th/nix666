@@ -135,8 +135,31 @@ class PolymarketTrader:
         if not self.client:
             return 0
         try:
-            balance = self.client.get_balance()
-            return float(balance) if balance else 0
+            # Try different methods based on py-clob-client version
+            try:
+                # Method 1: get_balance_allowance
+                result = self.client.get_balance_allowance()
+                if result and 'balance' in result:
+                    return float(result['balance'])
+            except:
+                pass
+            
+            try:
+                # Method 2: Direct API call
+                import requests
+                headers = self.client.create_level_1_headers()
+                r = requests.get(
+                    f"{Config.POLYMARKET_CLOB}/balance",
+                    headers=headers,
+                    timeout=10
+                )
+                if r.status_code == 200:
+                    data = r.json()
+                    return float(data.get('balance', 0))
+            except:
+                pass
+            
+            return 0
         except Exception as e:
             log.error(f"Error getting balance: {e}")
             return 0
